@@ -20,7 +20,6 @@ rules:
         type: HASH_MOD
         props:
           sharding-count: 16
-  # 数据加密存储规则
   - !ENCRYPT
     tables:
       t_user:
