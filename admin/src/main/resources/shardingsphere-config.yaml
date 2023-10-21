@@ -20,5 +20,22 @@ rules:
         type: HASH_MOD
         props:
           sharding-count: 16
+  # 数据加密存储规则
+  - !ENCRYPT
+    tables:
+      t_user:
+        columns:
+          phone:
+            cipherColumn: phone
+            encryptorName: common_encryptor
+          mail:
+            cipherColumn: mail
+            encryptorName: common_encryptor
+        queryWithCipherColumn: true
+    encryptors:
+      common_encryptor:
+        type: AES
+        props:
+          aes-key-value: d6oadClrrb9A3GWo
 props:
   sql-show: true
