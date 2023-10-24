@@ -33,7 +33,7 @@ public class UserTransmitFilter implements Filter {
 
     private static final List<String> IGNORE_URI = Lists.newArrayList(
             "/api/short-link/admin/v1/user/login",
-            "/api/short-link/admin/admin/v1/actual/user/has-username"
+            "/api/short-link/admin/v1/user/has-username"
     );
 
     @SneakyThrows
@@ -57,7 +57,7 @@ public class UserTransmitFilter implements Filter {
                         throw new ClientException(USER_TOKEN_FAIL);
                     }
                 } catch (Exception ex) {
-                    returnJson((HttpServletResponse) servletResponse,  JSON.toJSONString(Results.failure(new ClientException(USER_TOKEN_FAIL))));
+                    returnJson((HttpServletResponse) servletResponse, JSON.toJSONString(Results.failure(new ClientException(USER_TOKEN_FAIL))));
                     return;
                 }
                 UserInfoDTO userInfoDTO = JSON.parseObject(userInfoJsonStr.toString(), UserInfoDTO.class);
