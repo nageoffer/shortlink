@@ -20,11 +20,13 @@ import com.nageoffer.shortlink.project.common.convention.exception.ClientExcepti
 import com.nageoffer.shortlink.project.common.convention.exception.ServiceException;
 import com.nageoffer.shortlink.project.common.enums.VailDateTypeEnum;
 import com.nageoffer.shortlink.project.dao.entity.LinkAccessStatsDO;
+import com.nageoffer.shortlink.project.dao.entity.LinkBrowserStatsDO;
 import com.nageoffer.shortlink.project.dao.entity.LinkLocaleStatsDO;
 import com.nageoffer.shortlink.project.dao.entity.LinkOsStatsDO;
 import com.nageoffer.shortlink.project.dao.entity.ShortLinkDO;
 import com.nageoffer.shortlink.project.dao.entity.ShortLinkGotoDO;
 import com.nageoffer.shortlink.project.dao.mapper.LinkAccessStatsMapper;
+import com.nageoffer.shortlink.project.dao.mapper.LinkBrowserStatsMapper;
 import com.nageoffer.shortlink.project.dao.mapper.LinkLocaleStatsMapper;
 import com.nageoffer.shortlink.project.dao.mapper.LinkOsStatsMapper;
 import com.nageoffer.shortlink.project.dao.mapper.ShortLinkGotoMapper;
@@ -89,6 +91,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final LinkAccessStatsMapper linkAccessStatsMapper;
     private final LinkLocaleStatsMapper linkLocaleStatsMapper;
     private final LinkOsStatsMapper linkOsStatsMapper;
+    private final LinkBrowserStatsMapper linkBrowserStatsMapper;
 
     @Value("${short-link.stats.locale.amap-key}")
     private String statsLocaleAmapKey;
@@ -348,6 +351,14 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                         .date(new Date())
                         .build();
                 linkOsStatsMapper.shortLinkOsState(linkOsStatsDO);
+                LinkBrowserStatsDO linkBrowserStatsDO = LinkBrowserStatsDO.builder()
+                        .browser(LinkUtil.getBrowser(((HttpServletRequest) request)))
+                        .cnt(1)
+                        .gid(gid)
+                        .fullShortUrl(fullShortUrl)
+                        .date(new Date())
+                        .build();
+                linkBrowserStatsMapper.shortLinkBrowserState(linkBrowserStatsDO);
             }
         } catch (Throwable ex) {
             log.error("短链接访问量统计异常", ex);
