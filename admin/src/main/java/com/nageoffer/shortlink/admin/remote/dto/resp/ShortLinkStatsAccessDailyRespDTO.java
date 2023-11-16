@@ -1,23 +1,21 @@
-package com.nageoffer.shortlink.project.dto.resp;
+package com.nageoffer.shortlink.admin.remote.dto.resp;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * 短链接基础访问监控响应参数
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ShortLinkStatsAccessDailyRespDTO {
 
     /**
      * 日期
      */
-    private String date;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date date;
 
     /**
      * 访问量
