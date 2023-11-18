@@ -122,10 +122,10 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
         // 一周访问详情
         List<Integer> weekdayStats = new ArrayList<>();
         List<LinkAccessStatsDO> listWeekdayStatsByShortLink = linkAccessStatsMapper.listWeekdayStatsByShortLink(requestParam);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i < 8; i++) {
             AtomicInteger weekday = new AtomicInteger(i);
             int weekdayCnt = listWeekdayStatsByShortLink.stream()
-                    .filter(each -> Objects.equals(each.getHour(), weekday.get()))
+                    .filter(each -> Objects.equals(each.getWeekday(), weekday.get()))
                     .findFirst()
                     .map(LinkAccessStatsDO::getPv)
                     .orElse(0);
