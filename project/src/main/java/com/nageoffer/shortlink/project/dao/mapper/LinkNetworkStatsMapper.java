@@ -19,6 +19,7 @@ package com.nageoffer.shortlink.project.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.project.dao.entity.LinkNetworkStatsDO;
+import com.nageoffer.shortlink.project.dto.req.ShortLinkGroupStatsReqDTO;
 import com.nageoffer.shortlink.project.dto.req.ShortLinkStatsReqDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -55,4 +56,19 @@ public interface LinkNetworkStatsMapper extends BaseMapper<LinkNetworkStatsDO> {
             "GROUP BY " +
             "    full_short_url, gid, network;")
     List<LinkNetworkStatsDO> listNetworkStatsByShortLink(@Param("param") ShortLinkStatsReqDTO requestParam);
+
+    /**
+     * 根据分组获取指定日期内访问网络监控数据
+     */
+    @Select("SELECT " +
+            "    network, " +
+            "    SUM(cnt) AS cnt " +
+            "FROM " +
+            "    t_link_network_stats " +
+            "WHERE " +
+            "    gid = #{param.gid} " +
+            "    AND date BETWEEN #{param.startDate} and #{param.endDate} " +
+            "GROUP BY " +
+            "    gid, network;")
+    List<LinkNetworkStatsDO> listNetworkStatsByGroup(@Param("param") ShortLinkGroupStatsReqDTO requestParam);
 }
