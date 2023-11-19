@@ -6,6 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 数据库持久层配置类
+ * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ */
 @Configuration
 public class DataBaseConfiguration {
 

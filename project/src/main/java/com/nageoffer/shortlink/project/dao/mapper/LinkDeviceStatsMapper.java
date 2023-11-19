@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 访问设备监控持久层
+ * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface LinkDeviceStatsMapper extends BaseMapper<LinkDeviceStatsDO> {
 
