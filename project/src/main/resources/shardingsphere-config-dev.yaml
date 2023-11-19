@@ -27,6 +27,8 @@ rules:
           standard:
             shardingColumn: gid
             shardingAlgorithmName: link_stats_today_hash_mod
+    bindingTables:
+      - t_link, t_link_stats_today
     shardingAlgorithms:
       link_table_hash_mod:
         type: HASH_MOD
