@@ -5,6 +5,7 @@ import { removeKey } from '@/core/auth.js'
 const removeCookies = () => {
   removeKey('Authorization')
 }
+// test('should first', () => { second })
 </script>
 
 <template>
