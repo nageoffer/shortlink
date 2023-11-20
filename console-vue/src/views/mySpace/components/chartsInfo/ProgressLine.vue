@@ -1,6 +1,6 @@
 <template>
   <div class="main-box">
-    <span v-if="dataLists?.length === 0"> 所选日期内没有访问数据 </span>
+    <span v-if="!dataLists"> 所选日期内没有访问数据 </span>
     <div v-else>
       <div class="flex-box" v-for="(item, index) in dataLists" :key="index">
         <div class="flex-item">
