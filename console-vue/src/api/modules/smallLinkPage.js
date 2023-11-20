@@ -51,7 +51,7 @@ export default {
       method: 'post',
       url: '/recycle-bin/recover',
       data
-    }) 
+    })
   },
   removeLink(data) {
     return http({
@@ -60,11 +60,20 @@ export default {
       data
     })
   },
+  // 查询单链的图表数据
   queryLinkStats(data) {
     return http({
       method: 'get',
       params: data,
       url: 'stats'
+    })
+  },
+  // 查询分组的访问记录
+  queryLinkTable(data) {
+    return http({
+      method: 'get',
+      params: data,
+      url: 'stats/access-record'
     })
   }
 }

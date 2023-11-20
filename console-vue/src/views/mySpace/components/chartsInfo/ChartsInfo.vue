@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="props.title" width="70%" :before-close="handleClose">
-    <div style="position: absolute; right: 30px; z-index: 999;">
+    <div style="position: absolute; right: 30px; z-index: 999">
       <el-date-picker
         v-model="dateValue"
         :clearable="true"
@@ -12,9 +12,9 @@
         :size="size"
       />
     </div>
-    <el-tabs type="card">
-      <!-- 切换 -->
-      <el-tab-pane label="访问数据">
+    <el-tabs type="card" v-model="showPane">
+      <!-- 切换， name用于确定展示哪个标签，和showPane对应 -->
+      <el-tab-pane name="访问数据" label="访问数据">
         <!-- 数据图表 -->
         <div class="content-box" style="height: calc(100vh - 280px); overflow: scroll">
           <!-- 地图 -->
@@ -110,7 +110,7 @@
                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
                     22, 23
                   ],
-                  value: props.info?.hourStats
+                  value: props.info?.hourStats || new Array(24).fill(0)
                 }"
               ></BarChart>
             </template>
@@ -121,8 +121,8 @@
               <BarChart
                 style="height: 100%; width: 100%"
                 :chartData="{
-                  xAxis: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-                  value: props.info?.weekdayStats
+                  xAxis: ['周一', '周二', '周三', '周四', '周无', '周六', '周日'],
+                  value: props.info?.weekdayStats || new Array(7).fill(0)
                 }"
               ></BarChart>
             </template>
@@ -192,13 +192,46 @@
           </TitleContent>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="历史记录">历史记录</el-tab-pane>
+      <el-tab-pane name="历史记录" label="历史记录">
+        <el-table
+          :data="tableInfo?.data?.data?.records"
+          style="width: 100%; height: calc(100vh - 300px)"
+        >
+          <el-table-column prop="createTime" label="访问时间" width="160" />
+          <el-table-column prop="ip" label="访问IP" width="140" />
+          <el-table-column prop="locale" label="访客地区"> </el-table-column>
+          <el-table-column prop="device" label="设备信息">
+            <template #default="scope">
+              <div class="flex-box">
+                <img :src="getUrl1(scope?.row?.browser)" width="20" alt="" />
+                <img :src="getUrl2(scope?.row?.os)" width="20" alt="" />
+                <img :src="getUrl3(scope?.row?.device)" width="20" alt="" />
+                <img :src="getUrl4(scope?.row?.network)" width="20" alt="" />
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="uvType" label="访客类型" />
+        </el-table>
+        <!-- 分页器 -->
+        <div class="pagination-block">
+          <el-pagination
+            v-model:current-page="pageParams.current"
+            v-model:page-size="pageParams.size"
+            :page-sizes="[10, 15, 20, 30]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalNums"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </el-dialog>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import TitleContent from './TitleContent.vue'
 import * as echarts from 'echarts'
 import 'echarts/map/js/china.js'
@@ -207,12 +240,94 @@ import BarChart from './BarChart.vue'
 import KeyValue from './KeyValue.vue'
 import ProgressLine from './ProgressLine.vue'
 import ProgressPie from './ProgressPie.vue'
+import edge from '@/assets/png/edge.png'
+import Andriod from '@/assets/png/Andriod.png'
+import Chorme from '@/assets/png/Chorme.png'
+import firefox from '@/assets/png/firefox.png'
+import iOS from '@/assets/png/iOS.png'
+import macOS from '@/assets/png/macOS.png'
+import other from '@/assets/png/other.png'
+import Safair from '@/assets/png/Safair.png'
+import WeChat from '@/assets/png/WeChat.png'
+import Windows from '@/assets/png/Windows.png'
+import linux from '@/assets/png/linux.png'
+import wifi from '@/assets/png/wifi.png'
+import PC from '@/assets/png/电脑.png'
+import Mobile from '@/assets/png/移动设备.png'
+import MobileDevices from '@/assets/png/移动设备.png'
+
+const dailyXAxis = ref([])
+const showPane = ref('访问数据')
+// 浏览器
+const getUrl1 = (img) => {
+  if (img) {
+    img = img.toLowerCase()
+  }
+  if (img?.includes('edge')) {
+    return edge
+  } else if (img?.includes('chrome')) {
+    return Chorme
+  } else if (img?.includes('fire')) {
+    return firefox
+  } else if (img?.includes('safair')) {
+    return Safair
+  } else if (img?.includes('wechat') || img?.includes('微信')) {
+    return WeChat
+  } else {
+    return other
+  }
+}
+// 操作系统
+const getUrl2 = (img) => {
+  if (img) {
+    img = img.toLowerCase()
+  }
+  if (img?.includes('andriod')) {
+    return Andriod
+  } else if (img?.includes('ios')) {
+    return iOS
+  } else if (img?.includes('mac')) {
+    return macOS
+  } else if (img?.includes('windows')) {
+    return Windows
+  } else if (img?.includes('linux')) {
+    return linux
+  } else {
+    return other
+  }
+}
+// 访问设备（pc或者移动设备）
+const getUrl3 = (img) => {
+  if (img) {
+    img = img.toLowerCase()
+  }
+  if (img?.includes('pc')) {
+    return PC
+  } else {
+    return Mobile
+  }
+}
+// 访问网络（wifi和移动网络）
+const getUrl4 = (img) => {
+  if (img) {
+    img = img.toLowerCase()
+  }
+  if (img?.includes('Mobile')) {
+    return MobileDevices
+  } else {
+    return wifi
+  }
+}
 const dateValue = ref()
-const emit = defineEmits(['changeTime'])
+const emit = defineEmits(['changeTime', 'changePage'])
 watch(
   () => dateValue.value,
-  newValue => {
+  (newValue) => {
     console.log(newValue)
+    // 解决首次关闭数据统计页面需要点两次关闭键的bug
+    if (!newValue && !dialogVisible.value) {
+      return
+    }
     emit('changeTime', newValue)
   }
 )
@@ -221,8 +336,33 @@ const props = defineProps({
     type: String,
     default: '默认标题'
   },
-  info: Object
+  info: Object,
+  tableInfo: Object
 })
+const pageParams = reactive({
+  current: 1,
+  size: 10
+})
+const totalNums = ref(0)
+watch(
+  () => props.tableInfo,
+  () => {
+    totalNums.value = props?.tableInfo?.data?.data?.total
+  }
+)
+watch(
+  () => pageParams,
+  (newValue) => {
+    // 解决首次关闭数据统计页面需要点两次关闭键的bug
+    if (!newValue && !dialogVisible.value) {
+      return
+    }
+    emit('changePage', newValue)
+  },
+  {
+    deep: true
+  }
+)
 // const title = ref(props.title)
 // const info = ref(props.info)
 
@@ -241,8 +381,9 @@ const props = defineProps({
 // )
 const dialogVisible = ref(false)
 const handleClose = () => {
-  unVisible()
   dateValue.value = null
+  unVisible()
+  showPane.value = '访问数据'
 }
 const isVisible = () => {
   dialogVisible.value = true
@@ -269,7 +410,7 @@ watch(
   () => props.info?.localeCnStats,
   () => {
     chinaTotalNum.value = 0
-    chinaMapData.value = props.info.localeCnStats.map((item) => {
+    chinaMapData.value = props.info?.localeCnStats.map((item) => {
       let { cnt, locale, ratio } = item
       locale = locale.replace('省', '')
       chinaTotalNum.value += cnt
@@ -621,7 +762,7 @@ const initLineChart = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: dailyXAxis.value
     },
     yAxis: {
       type: 'value'
@@ -673,14 +814,17 @@ watch(
     visitsData.value = props?.info?.daily
     // 获取总数量和数据集数组
     visitsData?.value?.forEach((item) => {
-      const { pv, uv, uip } = item
+      const { pv, uv, uip, date } = item
+      const formDate = date.split('-')[1] + '月' + date.split('-')[2] + '日'
       totalPv.value += pv
       totalUv.value += uv
       totalUip.value += uip
       pvList.value.push(pv)
       uvList.value.push(uv)
       uipList.value.push(uip)
+      dailyXAxis.value.push(formDate)
     })
+    console.log(pvList.value, uvList.value, uipList.value)
     initLineChart()
   }
 )
@@ -793,7 +937,11 @@ watch(
 
 .lineChart {
   margin: 10px;
-  width: 400px;
+  width: 600px;
   height: 200px;
+}
+.flex-box {
+  display: flex;
+  justify-content: space-around;
 }
 </style>

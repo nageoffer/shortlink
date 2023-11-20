@@ -38,5 +38,21 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 查询分组的图表数据
+  queryGroupStats(data) {
+    return http({
+      method: 'get',
+      params: data,
+      url: 'stats/group'
+    })
+  },
+  // 查询分组的访问记录
+  queryGroupTable(data) {
+    return http({
+      method: 'get',
+      params: data,
+      url: 'stats/access-record/group'
+    })
   }
 }
