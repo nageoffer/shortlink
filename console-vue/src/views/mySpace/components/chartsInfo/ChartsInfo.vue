@@ -1,5 +1,19 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="props.title" width="70%" :before-close="handleClose">
+    <template #header>
+      <div style="display: flex">
+        <img v-if="!isGroup" :src="getImgUrl(props.favicon)" width="25" height="25" alt="" />
+        <div style="display: flex; flex-direction: column; margin-left: 5px">
+          <span style="font-size: 25px; line-height: 25px; font-weight: 550">{{
+            props.title
+          }}</span>
+          <span v-if="!isGroup" style="margin-top: 5px; font-size: 15px">{{
+            props.originUrl
+          }}</span>
+        </div>
+      </div>
+      <span v-if="isGroup" style="margin: 5px 0 0 5px">共{{ props.nums }}条短链接</span>
+    </template>
     <div style="position: absolute; right: 30px; z-index: 999">
       <el-date-picker
         v-model="dateValue"
@@ -9,10 +23,11 @@
         start-placeholder="开始时间"
         end-placeholder="结束时间"
         value-format="YYYY-MM-DD"
+        :shortcuts="shortcuts"
         :size="size"
       />
     </div>
-    <el-tabs type="card" v-model="showPane">
+    <el-tabs v-model="showPane">
       <!-- 切换， name用于确定展示哪个标签，和showPane对应 -->
       <el-tab-pane name="访问数据" label="访问数据">
         <!-- 数据图表 -->
@@ -31,12 +46,20 @@
               <div class="list-chart">
                 <div v-show="isChina" class="top10">
                   <span style="font-size: 14px">TOP 10 省份</span>
-                  <template v-for="(item, index) in chinaMapData" :key="item.name">
+                  <div>
+                    <span
+                      v-if="!chinaMapData ?? chinaMapData?.length === 0"
+                      style="font-size: 14px; color: black; font-weight: 100"
+                      >所选日期内没有访问数据</span
+                    >
+                  </div>
+                  <div class="top-item" v-for="(item, index) in chinaMapData" :key="item.name">
                     <div v-if="index <= 9" class="key-value">
-                      <span>{{ item.name }}</span>
-                      <span>{{ item.value }}</span>
+                      <span>{{ index + 1 + '. ' + item.name }}</span>
+                      <span>{{ item.ratio * 100 }}%</span>
+                      <span>{{ item.value }}次</span>
                     </div>
-                  </template>
+                  </div>
                 </div>
                 <div v-show="!isChina" class="top10">
                   <span>TOP 10 国家</span>
@@ -161,7 +184,7 @@
             </template>
           </TitleContent>
           <!-- 访客类型 -->
-          <TitleContent class="chart-item" title="访客类型" style="width: 390px">
+          <TitleContent v-if="!isGroup" class="chart-item" title="访客类型" style="width: 390px">
             <template #content>
               <ProgressPie
                 style="height: 100%; width: 100%"
@@ -211,7 +234,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="uvType" label="访客类型" />
+          <el-table-column v-if="!isGroup" prop="uvType" label="访客类型" />
         </el-table>
         <!-- 分页器 -->
         <div class="pagination-block">
@@ -255,8 +278,52 @@ import wifi from '@/assets/png/wifi.png'
 import PC from '@/assets/png/电脑.png'
 import Mobile from '@/assets/png/移动设备.png'
 import MobileDevices from '@/assets/png/移动设备.png'
+import defaultImg from '@/assets/png/短链默认图标.png'
+import { getTodayFormatDate, getLastWeekFormatDate } from '@/utils/plugins.js'
 
-const dailyXAxis = ref([])
+// 选择时间
+const shortcuts = [
+  {
+    text: '今天',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 0)
+      return [start, end]
+    }
+  },
+  {
+    text: '昨天',
+    value: () => {
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 1)
+      return [start, start]
+    }
+  },
+  {
+    text: '近七天',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    }
+  },
+  {
+    text: '近三十天',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    }
+  }
+]
+const getImgUrl = (url) => {
+  return url ?? defaultImg
+}
+const dailyXAxis = ref()
+// const dailyXAxis = ref([])
 const showPane = ref('访问数据')
 // 浏览器
 const getUrl1 = (img) => {
@@ -318,7 +385,7 @@ const getUrl4 = (img) => {
     return wifi
   }
 }
-const dateValue = ref()
+const dateValue = ref([getLastWeekFormatDate(), getTodayFormatDate()])
 const emit = defineEmits(['changeTime', 'changePage'])
 watch(
   () => dateValue.value,
@@ -337,7 +404,11 @@ const props = defineProps({
     default: '默认标题'
   },
   info: Object,
-  tableInfo: Object
+  tableInfo: Object,
+  isGroup: Boolean,
+  nums: Number,
+  favicon: String,
+  originUrl: String
 })
 const pageParams = reactive({
   current: 1,
@@ -384,6 +455,7 @@ const handleClose = () => {
   dateValue.value = null
   unVisible()
   showPane.value = '访问数据'
+  dateValue.value = [getLastWeekFormatDate(), getTodayFormatDate()]
 }
 const isVisible = () => {
   dialogVisible.value = true
@@ -414,7 +486,7 @@ watch(
       let { cnt, locale, ratio } = item
       locale = locale.replace('省', '')
       chinaTotalNum.value += cnt
-      return { name: locale, value: cnt }
+      return { name: locale, value: cnt, ratio }
     })
     console.log(chinaMapData)
     initChinaMap()
@@ -811,6 +883,7 @@ watch(
     pvList.value = []
     uvList.value = []
     uipList.value = []
+    dailyXAxis.value = []
     visitsData.value = props?.info?.daily
     // 获取总数量和数据集数组
     visitsData?.value?.forEach((item) => {
@@ -919,8 +992,20 @@ watch(
   justify-content: space-between;
 
   .top10 {
-    padding: 5px 30px;
-    width: 170px;
+    padding: 15px 30px;
+    width: 400px;
+    .top-item {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 200px;
+      div {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        margin-right: 30px;
+      }
+    }
 
     span:nth-child(1) {
       color: #3464e0;
@@ -931,6 +1016,7 @@ watch(
     .key-value {
       display: flex;
       justify-content: space-between;
+      width: 150px;
     }
   }
 }
@@ -943,5 +1029,10 @@ watch(
 .flex-box {
   display: flex;
   justify-content: space-around;
+}
+.pagination-block {
+  .el-pagination {
+    margin-left: 20%;
+  }
 }
 </style>
