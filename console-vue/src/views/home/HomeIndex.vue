@@ -5,12 +5,16 @@
         <div class="header">
           <div @click="toMySpace" class="logo">拿个offer-SaaS短链接</div>
           <div style="display: flex; align-items: center">
-            <span class="link-span">文档</span>
-            <span class="link-span">博客</span>
-            <span class="link-span">社区</span>
+            <a class="link-span" style="text-decoration:none;" target="_blank" href="https://nageoffer.com/shortlink/">文档</a>
+            <a class="link-span" style="text-decoration:none;" target="_blank" href="https://nageoffer.com/shortlink/">博客</a>
+            <a class="link-span" style="text-decoration:none;" target="_blank" href="https://nageoffer.com/shortlink/">社区</a>
             <el-dropdown>
               <div class="block">
-                <el-avatar :size="30" class="avatar" :style="`background:${extractColorByName(firstName)}`">{{ firstName }}
+                <el-avatar
+                  :size="30"
+                  class="avatar"
+                  :style="`background:${extractColorByName(firstName)}`"
+                  >{{ firstName }}
                 </el-avatar>
               </div>
               <template #dropdown>
@@ -90,12 +94,12 @@ onMounted(async () => {
   firstName.value = res?.data?.data?.realName?.split('')[0]
 })
 const extractColorByName = (name) => {
-  var temp = [];
-  temp.push("#");
+  var temp = []
+  temp.push('#')
   for (let index = 0; index < name.length; index++) {
-    temp.push(parseInt(name[index].charCodeAt(0), 10).toString(16));
+    temp.push(parseInt(name[index].charCodeAt(0), 10).toString(16))
   }
-  return temp.slice(0, 5).join('').slice(0, 4);
+  return temp.slice(0, 5).join('').slice(0, 4)
 }
 </script>
 
@@ -147,7 +151,8 @@ const extractColorByName = (name) => {
   font-size: 15px;
   font-weight: 600;
   color: #e8e8e8;
-  font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+  font-family: Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC',
+    'Microsoft YaHei', 'WenQuanYi Micro Hei';
   // font-family: 'Helvetica Neue', Helvetica, STHeiTi, Arial, sans-serif;
   cursor: pointer;
 }

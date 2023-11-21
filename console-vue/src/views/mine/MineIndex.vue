@@ -1,14 +1,18 @@
 <template>
-  <div style="display: flex; height: 100%; width: 100%;">
+  <div style="display: flex; height: 100%; width: 100%">
     <div class="options-box">
       <div>
         <span>账号设置</span>
       </div>
     </div>
     <div class="main-box">
-      <el-descriptions class="margin-top content-box" title="个人信息" :column="1" :size="size" border>
-        <template #extra>
-        </template>
+      <el-descriptions
+        class="margin-top content-box"
+        title="个人信息"
+        :column="1"
+        :size="size"
+        border
+      >
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
@@ -54,17 +58,28 @@
           <span>{{ userInfo?.data?.data?.mail }}</span>
         </el-descriptions-item>
       </el-descriptions>
-            <el-button type="primary" @click="dialogVisible = !dialogVisible">修改个人信息</el-button>
+      <el-button style="position: absolute;left: 35px; top: 250px; " type="primary" @click="dialogVisible = !dialogVisible">修改个人信息</el-button>
     </div>
-    
   </div>
   <!-- 修改信息 -->
   <el-dialog v-model="dialogVisible" title="修改个人信息" width="60%" :before-close="handleClose">
     <div class="register" :class="{ hidden: isLogin }">
-      <el-form ref="loginFormRef" :model="userInfoForm" label-width="50px" class="form-container" width="width"
-        :rules="formRule">
+      <el-form
+        ref="loginFormRef"
+        :model="userInfoForm"
+        label-width="50px"
+        class="form-container"
+        width="width"
+        :rules="formRule"
+      >
         <el-form-item prop="username">
-          <el-input v-model="userInfoForm.username" placeholder="请输入用户名" maxlength="11" show-word-limit disabled>
+          <el-input
+            v-model="userInfoForm.username"
+            placeholder="请输入用户名"
+            maxlength="11"
+            show-word-limit
+            disabled
+          >
             <template v-slot:prepend> 用户名 </template>
           </el-input>
         </el-form-item>
@@ -74,26 +89,39 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="phone">
-          <el-input v-model="userInfoForm.phone" placeholder="请输入手机号" show-word-limit clearable>
+          <el-input
+            v-model="userInfoForm.phone"
+            placeholder="请输入手机号"
+            show-word-limit
+            clearable
+          >
             <template v-slot:prepend> 手机号 </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="realName">
-          <el-input v-model="userInfoForm.realName" placeholder="请输入姓名" show-word-limit clearable>
+          <el-input
+            v-model="userInfoForm.realName"
+            placeholder="请输入姓名"
+            show-word-limit
+            clearable
+          >
             <template v-slot:prepend> 姓<span class="second-font">名</span> </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="userInfoForm.password" placeholder="默认密码，如需修改可输入新密码" show-word-limit clearable>
+          <el-input
+            v-model="userInfoForm.password"
+            placeholder="默认密码，如需修改可输入新密码"
+            show-word-limit
+            clearable
+          >
             <template v-slot:prepend> 密<span class="second-font">码</span> </template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <div style=" width: 100%;display: flex; justify-content: flex-end;">
+          <div style="width: 100%; display: flex; justify-content: flex-end">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="changeUserInfo(loginFormRef)">
-              提交
-            </el-button>
+            <el-button type="primary" @click="changeUserInfo(loginFormRef)"> 提交 </el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -144,9 +172,7 @@ const formRule = reactive({
     { required: false, message: '请输入密码', trigger: 'blur' },
     { min: 8, max: 15, message: '密码长度请在八位以上', trigger: 'blur' }
   ],
-  realNamee: [
-    { required: true, message: '请输姓名', trigger: 'blur' },
-  ]
+  realNamee: [{ required: true, message: '请输姓名', trigger: 'blur' }]
 })
 const changeUserInfo = (formEl) => {
   if (!formEl) return
@@ -165,6 +191,7 @@ const changeUserInfo = (formEl) => {
 
 <style lang="scss" scoped>
 .main-box {
+  position: relative;
   flex: 1;
   padding: 15px;
   background-color: rgb(238, 240, 245);
@@ -175,7 +202,7 @@ const changeUserInfo = (formEl) => {
 
 .content-box {
   flex: 1;
-  background-color: white;
+  background-color: #ffffff;
   padding: 20px;
 }
 
@@ -203,11 +230,17 @@ const changeUserInfo = (formEl) => {
     display: flex;
     height: 50px;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
+    padding-left: 15px;
     background-color: rgb(235, 239, 250);
-    font-family: PingFangSC-Semibold, PingFang SC;
+    font-family:
+      PingFangSC-Semibold,
+      PingFang SC;
     color: #3464e0;
     font-weight: 600;
   }
+}
+:deep(.el-descriptions__body) {
+  width: 500px;
 }
 </style>

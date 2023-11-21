@@ -55,7 +55,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-              <span class="item-length">{{ item.shortLinkCount ?? 0}}</span>
+              <span class="item-length">{{ item.shortLinkCount ?? 0 }}</span>
             </div>
           </div>
         </li>
@@ -110,11 +110,12 @@
               暂无链接
             </div>
           </template>
+          <el-table-column type="selection" width="35" />
           <el-table-column label="短链接信息" prop="info" min-width="300">
             <template #header>
-              <span>短链接信息</span>
               <el-dropdown>
                 <div class="block" style="margin-top: 3px">
+                  <span>短链接信息</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
@@ -198,9 +199,9 @@
           </el-table-column>
           <el-table-column label="访问次数" prop="times" width="120">
             <template #header>
-              <span>访问次数</span>
               <el-dropdown>
                 <div class="block" style="margin-top: 3px">
+                  <span>访问次数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
@@ -230,9 +231,9 @@
           </el-table-column>
           <el-table-column label="访问人数" prop="people" width="120">
             <template #header>
-              <span>访问人数</span>
               <el-dropdown>
                 <div class="block" style="margin-top: 3px">
+                  <span>访问人数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
@@ -255,16 +256,16 @@
                 </div>
                 <div class="total-box">
                   <span>累计</span>
-                  <span>{{ scope.row.totalPv }}</span>
+                  <span>{{ scope.row.totalUv }}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="IP数" prop="IP" width="120">
             <template #header>
-              <span>IP数</span>
               <el-dropdown>
                 <div class="block" style="margin-top: 3px">
+                  <span>IP数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
@@ -385,6 +386,10 @@
       :title="chartsInfoTitle"
       :info="chartsInfo"
       :tableInfo="tableInfo"
+      :isGroup="isGroup"
+      :nums="nums"
+      :favicon="favicon1"
+      :originUrl="originUrl1"
       @changeTime="changeTime"
       @changePage="changePage"
       top="60px"
@@ -480,11 +485,16 @@ import Sortable from 'sortablejs'
 import { cloneDeep } from 'lodash'
 import ChartsInfo from './components/chartsInfo/ChartsInfo.vue'
 import CreateLink from './components/createLink/CreateLink.vue'
-import { getTomorrowFormatDate, getLastWeekFormatDate } from '@/utils/plugins.js'
+import { getTodayFormatDate, getLastWeekFormatDate } from '@/utils/plugins.js'
 import EditLink from './components/editLink/EditLink.vue'
 import { ElMessage } from 'element-plus'
 import defaultImg from '@/assets/png/短链默认图标.png'
 import QRCode from './components/qrCode/QRCode.vue'
+
+// 查看图表的时候传过去展示的，没什么用
+const nums = ref(0)
+const favicon1 = ref()
+const originUrl1 = ref()
 
 const { proxy } = getCurrentInstance()
 const API = proxy.$API
@@ -512,13 +522,13 @@ const afterAddLink = () => {
   }
 }
 const statsFormData = reactive({
-  endDate: getTomorrowFormatDate(),
+  endDate: getTodayFormatDate(),
   startDate: getLastWeekFormatDate(),
   size: 10,
   current: 1
 })
 const initStatsFormData = () => {
-  statsFormData.endDate = getTomorrowFormatDate()
+  statsFormData.endDate = getTodayFormatDate()
   statsFormData.startDate = getLastWeekFormatDate()
 }
 const visitLink = {
@@ -533,7 +543,9 @@ const tableGid = ref()
 const chartsVisible = async (rowInfo, dateList) => {
   chartsInfoTitle.value = rowInfo?.describe
   // 如果传入的group为true的话就查询分组的数据，如果没传就查询单链的数据
-  const { fullShortUrl, gid, group } = rowInfo
+  const { fullShortUrl, gid, group, originUrl, favicon } = rowInfo
+  originUrl1.value = originUrl
+  favicon1.value = favicon
   isGroup.value = group
   tableFullShortUrl.value = fullShortUrl
   tableGid.value = gid
@@ -546,8 +558,8 @@ const chartsVisible = async (rowInfo, dateList) => {
     initStatsFormData()
   } else {
     // 否则就按照传过来的数据去请求数据
-    statsFormData.startDate = dateList?.[0]
-    statsFormData.endDate = dateList?.[1]
+    statsFormData.startDate = dateList?.[0] + ' 00:00:00'
+    statsFormData.endDate = dateList?.[1] + ' 23:59:59'
   }
   let res = null
   let tableRes = null
@@ -572,8 +584,8 @@ const changeTimeData = async (rowInfo, dateList) => {
     initStatsFormData()
   } else {
     // 否则就按照传过来的数据去请求数据
-    statsFormData.startDate = dateList?.[0]
-    statsFormData.endDate = dateList?.[1]
+    statsFormData.startDate = dateList?.[0] + ' 00:00:00'
+    statsFormData.endDate = dateList?.[1] + ' 23:59:59'
   }
   let res = null
   let tableRes = null
@@ -604,7 +616,11 @@ const changePage = async (page) => {
   if (isGroup.value) {
     tableRes = await API.group.queryGroupTable({ gid: tableGid.value, ...statsFormData })
   } else {
-    tableRes = await API.smallLinkPage.queryLinkTable({ gid: tableGid.value, fullShortUrl: tableFullShortUrl.value, ...statsFormData })
+    tableRes = await API.smallLinkPage.queryLinkTable({
+      gid: tableGid.value,
+      fullShortUrl: tableFullShortUrl.value,
+      ...statsFormData
+    })
   }
   tableInfo.value = tableRes
 }
@@ -689,7 +705,8 @@ watch(
 const totalNums = ref(0)
 const queryPage = async () => {
   pageParams.gid = editableTabs.value?.[selectedIndex.value]?.gid
-  // console.log('------', editableTabs.value, selectedIndex.value)
+  nums.value = editableTabs.value?.[selectedIndex.value]?.shortLinkCount || 0
+  console.log('------', editableTabs.value, selectedIndex.value)
   const res = await API.smallLinkPage.queryPage(pageParams)
   tableData.value = res.data?.data?.records
   totalNums.value = +res.data?.data?.total
@@ -1004,6 +1021,7 @@ const removeLink = (data) => {
 }
 
 .block:hover {
+  color: rgb(121, 187, 255);
   .el-icon {
     color: rgb(121, 187, 255) !important;
   }
