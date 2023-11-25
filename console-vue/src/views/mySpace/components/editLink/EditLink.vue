@@ -84,6 +84,7 @@ const formData = reactive({
   domain: defaultDomain,
   originUrl: editData.originUrl,
   gid: editData.gid,
+  originalGid: editData.gid,
   createdType: editData.createdType,
   validDate: editData.validDate,
   describe: editData.describe,
@@ -156,10 +157,11 @@ watch(
 )
 watch(
   () => props.editData,
-  nV => {
-    console.log(nV)
+  (nV) => {
+    // console.log(nV, oV)
     formData.originUrl = nV.originUrl
     formData.gid = nV.gid
+    formData.originGid = nV.gid
     formData.createdType = nV.createdType
     formData.validDate = nV.validDate
     formData.describe = nV.describe
