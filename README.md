@@ -26,6 +26,8 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 短链接经常出现在咱们日常生活中，大家总是能在某些活动节日里收到各种营销短信，里边就会出现短链接。帮助企业在营销活动中，识别用户行为、点击率等关键信息监控。
 
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/IMG_9858-20231126.jpg)
+
 主要作用包括但不限于以下几个方面：
 
 - **提升用户体验**：用户更容易记忆和分享短链接，增强了用户的体验。
@@ -33,7 +35,11 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 - **美化**：短链接通常更美观、简洁，不会包含一大串字符。
 - **统计和分析**：可以追踪短链接的访问情况，了解用户的行为和喜好。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/IMG_9858-new.jpg)
+
+## 官方文档
+
+- 什么是 SaaS 短链接系统：[https://nageoffer.com/shortlink](https://nageoffer.com/shortlink)
+- 🔥SaaS 短链接视频教程：[https://nageoffer.com/shortlink/video](https://nageoffer.com/shortlink/video)
 
 ## 技术架构
 
@@ -82,4 +88,4 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 短链接视频学习地址：[手摸手视频学习SaaS短链接项目](https://nageoffer.com/shortlink/video/)
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%A7%86%E9%A2%91%20(4).png)
+![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20231122173916783.png)

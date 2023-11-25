@@ -15,30 +15,27 @@
  * limitations under the License.
  */
 
-package com.nageoffer.shortlink.project.dto.req;
+package com.nageoffer.shortlink.project.dto.resp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
- * 短链接创建请求对象
+ * 短链接基础信息响应参数
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class ShortLinkCreateReqDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ShortLinkBaseInfoRespDTO {
 
     /**
-     * 域名
+     * 描述信息
      */
-    private String domain;
+    private String describe;
 
     /**
      * 原始链接
@@ -46,28 +43,7 @@ public class ShortLinkCreateReqDTO {
     private String originUrl;
 
     /**
-     * 分组标识
+     * 短链接
      */
-    private String gid;
-
-    /**
-     * 创建类型 0：接口创建 1：控制台创建
-     */
-    private Integer createdType;
-
-    /**
-     * 有效期类型 0：永久有效 1：自定义
-     */
-    private Integer validDateType;
-
-    /**
-     * 有效期
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date validDate;
-
-    /**
-     * 描述
-     */
-    private String describe;
+    private String fullShortUrl;
 }
