@@ -44,10 +44,10 @@
                 ORDER BY todayUip DESC
             </when>
             <when test="orderTag == 'totalPv'">
-                ORDER BY t.total_uv DESC
+                ORDER BY t.total_pv DESC
             </when>
             <when test="orderTag == 'totalUv'">
-                ORDER BY t.total_pv DESC
+                ORDER BY t.total_uv DESC
             </when>
             <when test="orderTag == 'totalUip'">
                 ORDER BY t.total_uip DESC
