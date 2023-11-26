@@ -7,7 +7,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -17,12 +17,12 @@ const router = createRouter({
     {
       path: '/home',
       name: 'LayoutIndex',
-      redirect: '/home/mySpace',
+      redirect: '/home/space',
       component: () => import('@/views/home/HomeIndex.vue'),
       children: [
         {
           // 前面不能加/
-          path: 'mySpace',
+          path: 'space',
           name: 'MySpace',
           component: () => import('@/views/mySpace/MySpaceIndex.vue'),
           meta: { title: '我的空间' }
@@ -34,10 +34,10 @@ const router = createRouter({
           meta: { title: '账户设置' }
         },
         {
-          path: 'mine',
+          path: 'account',
           name: 'Mine',
           component: () => import('@/views/mine/MineIndex.vue'),
-          meta: {title: '个人中心'}
+          meta: { title: '个人中心' }
         }
       ]
     }

@@ -27,54 +27,12 @@
         :size="size"
       />
     </div>
+    <!-- 具体展示内容 -->
     <el-tabs v-model="showPane">
       <!-- 切换， name用于确定展示哪个标签，和showPane对应 -->
       <el-tab-pane name="访问数据" label="访问数据">
         <!-- 数据图表 -->
-        <div class="content-box" style="height: calc(100vh - 280px); overflow: scroll">
-          <!-- 地图 -->
-          <TitleContent
-            class="chart-item"
-            style="width: 800px"
-            title="访问地区"
-            @onMounted="initMap"
-          >
-            <template #titleButton>
-              <!-- <el-button @click="isChina = !isChina">切换为世界地图</el-button> -->
-            </template>
-            <template #content>
-              <div class="list-chart">
-                <div v-show="isChina" class="top10">
-                  <span style="font-size: 14px">TOP 10 省份</span>
-                  <div>
-                    <span
-                      v-if="!chinaMapData ?? chinaMapData?.length === 0"
-                      style="font-size: 14px; color: black; font-weight: 100"
-                      >所选日期内没有访问数据</span
-                    >
-                  </div>
-                  <div class="top-item" v-for="(item, index) in chinaMapData" :key="item.name">
-                    <div v-if="index <= 9" class="key-value">
-                      <span>{{ index + 1 + '. ' + item.name }}</span>
-                      <span>{{ item.ratio * 100 }}%</span>
-                      <span>{{ item.value }}次</span>
-                    </div>
-                  </div>
-                </div>
-                <div v-show="!isChina" class="top10">
-                  <span>TOP 10 国家</span>
-                  <template v-for="(item, index) in worldMapData" :key="item.name">
-                    <div v-if="index <= 9" class="key-value">
-                      <span>{{ item.name }}</span>
-                      <span>{{ item.value }}</span>
-                    </div>
-                  </template>
-                </div>
-                <div v-show="isChina" class="chinaMap"></div>
-                <div v-show="!isChina" class="worldMap"></div>
-              </div>
-            </template>
-          </TitleContent>
+        <div class="content-box scroll-box" style="height: calc(100vh - 280px); overflow: scroll">
           <!-- 访问曲线 -->
           <TitleContent
             class="chart-item"
@@ -123,6 +81,49 @@
               </div>
             </template>
           </TitleContent>
+          <!-- 地图 -->
+          <TitleContent
+            class="chart-item"
+            style="width: 800px"
+            title="访问地区"
+            @onMounted="initMap"
+          >
+            <template #titleButton>
+              <!-- <el-button @click="isChina = !isChina">切换为世界地图</el-button> -->
+            </template>
+            <template #content>
+              <div class="list-chart">
+                <div v-show="isChina" class="top10">
+                  <span style="font-size: 14px">TOP 10 省份</span>
+                  <div>
+                    <span
+                      v-if="!chinaMapData ?? chinaMapData?.length === 0"
+                      style="font-size: 14px; color: black; font-weight: 100"
+                      >所选日期内没有访问数据</span
+                    >
+                  </div>
+                  <div class="top-item" v-for="(item, index) in chinaMapData" :key="item.name">
+                    <div v-if="index <= 9" class="key-value">
+                      <span>{{ index + 1 + '. ' + item.name }}</span>
+                      <span>{{ item.ratio * 100 }}%</span>
+                      <span>{{ item.value }}次</span>
+                    </div>
+                  </div>
+                </div>
+                <div v-show="!isChina" class="top10">
+                  <span>TOP 10 国家</span>
+                  <template v-for="(item, index) in worldMapData" :key="item.name">
+                    <div v-if="index <= 9" class="key-value">
+                      <span>{{ item.name }}</span>
+                      <span>{{ item.value }}</span>
+                    </div>
+                  </template>
+                </div>
+                <div v-show="isChina" class="chinaMap"></div>
+                <div v-show="!isChina" class="worldMap"></div>
+              </div>
+            </template>
+          </TitleContent>
           <!-- 24小时分布 -->
           <TitleContent class="chart-item" title="24小时分布" style="width: 800px">
             <template #content>
@@ -138,6 +139,15 @@
               ></BarChart>
             </template>
           </TitleContent>
+          <!-- 高频访问IP -->
+          <TitleContent class="chart-item" title="高频访问IP" style="width: 390px">
+            <template #content>
+              <KeyValue
+                :dataLists="props.info?.topIpStats"
+                style="height: 100%; width: 100%"
+              ></KeyValue>
+            </template>
+          </TitleContent>
           <!-- 一周分布 -->
           <TitleContent class="chart-item" title="一周分布" style="width: 390px">
             <template #content>
@@ -150,15 +160,7 @@
               ></BarChart>
             </template>
           </TitleContent>
-          <!-- 高频访问IP -->
-          <TitleContent class="chart-item" title="高频访问IP" style="width: 390px">
-            <template #content>
-              <KeyValue
-                :dataLists="props.info?.topIpStats"
-                style="height: 100%; width: 100%"
-              ></KeyValue>
-            </template>
-          </TitleContent>
+
           <!-- 访问来源TOP5 -->
           <!-- <TitleContent class="chart-item" title="访问来源 TOP5" style="width: 390px">
             <template #content>
@@ -456,6 +458,7 @@ const handleClose = () => {
   unVisible()
   showPane.value = '访问数据'
   dateValue.value = [getLastWeekFormatDate(), getTodayFormatDate()]
+  document.querySelector('.scroll-box').scrollTop = 0
 }
 const isVisible = () => {
   dialogVisible.value = true
@@ -827,7 +830,7 @@ const initLineChart = () => {
     },
     grid: {
       left: '3%',
-      right: '4%',
+      right: '9%',
       bottom: '3%',
       containLabel: true
     },
