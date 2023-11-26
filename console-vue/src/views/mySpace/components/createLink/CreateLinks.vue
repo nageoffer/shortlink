@@ -3,31 +3,23 @@
     <el-form ref="ruleFormRef" :model="formData" :rules="formRule" label-width="80px">
       <el-form-item label="跳转链接" prop="originUrl">
         <el-input
-          v-if="isSingle"
-          v-model="formData.originUrl"
-          placeholder="请输入http://或https://开头的链接或应用跳转链接"
-        ></el-input>
-        <el-input
-          v-else
           :rows="4"
           v-model="formData.originUrl"
           type="textarea"
           placeholder="请输入http://或https://开头的链接或应用跳转链接，一行一个，最多100行"
         />
+        <span style="font-size: 12px">{{ originUrlRows + '/' + maxDescribeRows }}</span>
       </el-form-item>
       <el-form-item label="描述信息" prop="describe">
         <el-input
-          maxlength="100"
-          show-word-limit
           v-loading="isLoading"
           :rows="4"
           v-model="formData.describe"
           type="textarea"
-          placeholder="请输入描述信息"
+          placeholder="请输入描述信息，一行一个，描述信息行数请与链接行数相等"
         />
-        <span style="font-size: 12px">{{ '将创建' + describeRows + '条短链' }}</span>
+        <span style="font-size: 12px">{{ describeRows + '/' + maxDescribeRows }}</span>
       </el-form-item>
-
       <el-form-item label="短链分组" prop="gid">
         <el-select v-model="formData.gid" placeholder="请选择">
           <el-option
@@ -80,7 +72,6 @@ const store = useStore()
 const defaultDomain = store.state.domain ?? ' '
 const props = defineProps({
   groupInfo: Array,
-  isSingle: Boolean, // 单个创建传true， 批量创建传false,
   defaultGid: String
 })
 const { proxy } = getCurrentInstance()
@@ -138,38 +129,38 @@ const maxOriginUrlRows = ref(100) // 最多多少行
 // 链接有多少行
 const originUrlRows = ref(0)
 // 防抖
-const fd = (fn, delay) => {
-  let timer = null
-  return function (url) {
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-    }
-    timer = setTimeout(() => {
-      fn(url)
-    }, delay)
-  }
-}
+// const fd = (fn, delay) => {
+//   let timer = null
+//   return function (url) {
+//     if (timer) {
+//       clearTimeout(timer)
+//       timer = null
+//     }
+//     timer = setTimeout(() => {
+//       fn(url)
+//     }, delay)
+//   }
+// }
 const isLoading = ref(false)
-const queryTitle = (url) => {
-  if (reg.test(url)) {
-    isLoading.value = true
-    API.smallLinkPage.queryTitle({ url: url }).then((res) => {
-      formData.describe = res?.data?.data
-      isLoading.value = false
-    })
-  }
-}
-const getTitle = fd(queryTitle, 1000)
+// const queryTitle = (url) => {
+//   if (reg.test(url)) {
+//     isLoading.value = true
+//     API.smallLinkPage.queryTitle({ url: url }).then((res) => {
+//       formData.describe = res?.data?.data
+//       isLoading.value = false
+//     })
+//   }
+// }
+// const getTitle = fd(queryTitle, 1000)
 watch(
   () => formData.originUrl,
   (nV) => {
     originUrlRows.value = (nV || '').split(/\r|\r\n|\n/)?.length ?? 0
-    // 只有在描述内容为空时才会去查询链接对应的标题
-    if (!formData.describe) {
-      // 外边包一层防抖
-      getTitle(nV)
-    }
+    // // 只有在描述内容为空时才会去查询链接对应的标题
+    // if (!formData.describe) {
+    //   // 外边包一层防抖
+    //   getTitle(nV)
+    // }
   }
 )
 const maxDescribeRows = ref(100) // 最多多少行
@@ -238,8 +229,15 @@ const formRule = reactive({
     { required: true, message: '请输入描述信息', trigger: 'blur' },
     {
       validator: function (rule, value, callback) {
+        if (value) {
+          value.split(/\r|\r\n|\n/).forEach((item) => {
+            if (item === '' || !item) {
+              callback(new Error('请不要输入空行'))
+            }
+          })
+        }
         // console.log('============', value, value.split('/n'))
-        if (props.isSingle === false && describeRows.value !== originUrlRows.value) {
+        if (describeRows.value !== originUrlRows.value) {
           callback(new Error('标题数量与链接数量不等'))
         }
         if (describeRows.value > maxDescribeRows.value) {
@@ -270,7 +268,11 @@ const disabledDate = (time) => {
   return new Date(time).getTime() < new Date().getTime() //选当前时间之后的时间
 }
 
-console.log(new Date().getTime())
+// console.log(new Date().getTime())
+// 将输入框中的含有\n的字符串变为数组
+const transferStrToArray = (str) => {
+  return str.split(/[\n]+/)
+}
 // 将组件里面的确认和取消点击事件传出去
 const emits = defineEmits(['onSubmit', 'cancel'])
 // 点击确定按钮后的校验
@@ -284,14 +286,18 @@ const onSubmit = async (formEl) => {
   }
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      const res = await API.smallLinkPage.addSmallLink(formData)
+      console.log('这是formdata', formData)
+      let { describe, originUrl } = formData
+      describe = transferStrToArray(describe)
+      originUrl = transferStrToArray(originUrl)
+      const res = await API.smallLinkPage.addSmallLink({ ...formData, describe, originUrl })
       ElMessage.success('创建成功！')
       emits('onSubmit', false)
       console.log('submit!', res)
       submitDisable.value = false
     } else {
       console.log('error submit!', fields)
-      ElMessage.error('创建失败！')
+      // ElMessage.error('创建失败！')
     }
   })
 }

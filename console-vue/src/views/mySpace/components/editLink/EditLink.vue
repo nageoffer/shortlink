@@ -167,6 +167,9 @@ watch(
     formData.describe = nV.describe
     formData.validDateType = nV.validDateType
     formData.fullShortUrl = nV.fullShortUrl
+  },
+  {
+    immediate: true
   }
 )
 // 校验规则

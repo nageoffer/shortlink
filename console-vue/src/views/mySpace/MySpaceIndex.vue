@@ -24,6 +24,7 @@
             <div class="flex-box">
               <!-- 图标 -->
               <el-tooltip
+                show-after="500"
                 class="box-item"
                 effect="dark"
                 :content="'查看图表'"
@@ -134,12 +135,13 @@
               >
                 <img :src="getImgUrl(scope.row.favicon)" width="20" height="20" alt="" />
                 <div class="name-date">
-                  <el-tooltip :content="scope.row.describe">
+                  <el-tooltip show-after="500" :content="scope.row.describe">
                     <span>{{ scope.row.describe }}</span>
                   </el-tooltip>
                   <div class="time" style="display: flex">
                     <span>{{ scope.row.createTime }}</span>
                     <el-tooltip
+                      show-after="500"
                       v-if="scope?.row?.validDate"
                       :content="'到期时间：' + scope?.row?.validDate"
                     >
@@ -169,7 +171,7 @@
                   :href="'http://' + scope.row.fullShortUrl"
                   >{{ scope.row.domain + '/' + scope.row.shortUri }}</el-link
                 >
-                <el-tooltip :content="scope.row.originUrl">
+                <el-tooltip show-after="500" :content="scope.row.originUrl">
                   <span>{{ scope.row.originUrl }}</span>
                 </el-tooltip>
               </div>
@@ -182,6 +184,7 @@
                 <QRCode :url="'http://' + scope.row.fullShortUrl"></QRCode>
                 <!-- 表格中的复制链接按钮 -->
                 <el-tooltip
+                  show-after="500"
                   class="box-item"
                   effect="dark"
                   content="复制链接"
@@ -306,6 +309,7 @@
               <el-link :underline="false" class="el-link" type="primary">编辑</el-link> -->
                 <!-- 表格中的数据按钮 -->
                 <el-tooltip
+                  show-after="500"
                   class="box-item"
                   effect="dark"
                   content="查看图表"
@@ -318,13 +322,25 @@
                 <!-- 正常页面展示编辑和删除 -->
                 <template v-if="selectedIndex !== -1">
                   <!-- 表格中的编辑按钮 -->
-                  <el-tooltip class="box-item" effect="dark" content="编辑" placement="bottom-end">
+                  <el-tooltip
+                    show-after="500"
+                    class="box-item"
+                    effect="dark"
+                    content="编辑"
+                    placement="bottom-end"
+                  >
                     <el-icon @click="editLink(scope.row)" class="table-edit">
                       <Tools />
                     </el-icon>
                   </el-tooltip>
                   <!-- 删除按钮 -->
-                  <el-tooltip class="box-item" effect="dark" content="删除" placement="bottom-end">
+                  <el-tooltip
+                    show-after="500"
+                    class="box-item"
+                    effect="dark"
+                    content="删除"
+                    placement="bottom-end"
+                  >
                     <el-popconfirm
                       width="100"
                       title="是否移入回收站"
@@ -341,13 +357,25 @@
                 <!-- 回收站操作 -->
                 <template v-else>
                   <!-- 回收站中的恢复按钮 -->
-                  <el-tooltip class="box-item" effect="dark" content="恢复" placement="bottom-end">
+                  <el-tooltip
+                    show-after="500"
+                    class="box-item"
+                    effect="dark"
+                    content="恢复"
+                    placement="bottom-end"
+                  >
                     <el-icon @click="recoverLink(scope.row)" class="table-edit">
                       <HelpFilled />
                     </el-icon>
                   </el-tooltip>
                   <!-- 回收站中的删除按钮 -->
-                  <el-tooltip class="box-item" effect="dark" content="删除" placement="bottom-end">
+                  <el-tooltip
+                    show-after="500"
+                    class="box-item"
+                    effect="dark"
+                    content="删除"
+                    placement="bottom-end"
+                  >
                     <el-popconfirm
                       width="300"
                       title="删除后短链跳转会失效，同时停止数据统计，这是一个不可逆的操作，是否删除?"
@@ -441,6 +469,7 @@
             :groupInfo="editableTabs"
             @onSubmit="addLink"
             @cancel="cancelAddLink"
+            :defaultGid="pageParams.gid"
             :is-single="true"
           ></CreateLink>
         </el-tab-pane>
@@ -468,13 +497,13 @@
     </el-dialog>
     <!-- 批量创建短链弹框 -->
     <el-dialog @close="afterAddLink" v-model="isAddSmallLinks" title="批量链接">
-      <CreateLink
+      <CreateLinks
         ref="createLink2Ref"
         :groupInfo="editableTabs"
         @onSubmit="addLink"
         @cancel="cancelAddLink"
-        :is-single="false"
-      ></CreateLink>
+        :defaultGid="pageParams.gid"
+      ></CreateLinks>
     </el-dialog>
   </div>
 </template>
@@ -485,6 +514,7 @@ import Sortable from 'sortablejs'
 import { cloneDeep } from 'lodash'
 import ChartsInfo from './components/chartsInfo/ChartsInfo.vue'
 import CreateLink from './components/createLink/CreateLink.vue'
+import CreateLinks from './components/createLink/CreateLinks.vue'
 import { getTodayFormatDate, getLastWeekFormatDate } from '@/utils/plugins.js'
 import EditLink from './components/editLink/EditLink.vue'
 import { ElMessage } from 'element-plus'
