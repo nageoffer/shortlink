@@ -84,7 +84,7 @@ const formData = reactive({
   domain: defaultDomain,
   originUrl: editData.originUrl,
   gid: editData.gid,
-  originalGid: editData.gid,
+  originGid: editData.gid,
   createdType: editData.createdType,
   validDate: editData.validDate,
   describe: editData.describe,
