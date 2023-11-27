@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header height="50px" style="padding: 0">
+      <el-header height="54px" style="padding: 0">
         <div class="header">
           <div @click="toMySpace" class="logo">拿个offer-SaaS短链接</div>
           <div style="display: flex; align-items: center">
@@ -16,15 +16,22 @@
               class="link-span"
               style="text-decoration: none"
               target="_blank"
-              href="https://nageoffer.com/shortlink/"
-              >博客</a
+              href="https://nageoffer.com/group/"
+              >社群</a
             >
             <a
-              class="link-span"
-              style="text-decoration: none"
-              target="_blank"
-              href="https://nageoffer.com/shortlink/"
-              >社区</a
+                class="link-span"
+                style="text-decoration: none"
+                target="_blank"
+                href="https://nageoffer.com/shortlink/video/"
+            >🔥视频教程</a
+            >
+            <a
+                class="link-span"
+                style="text-decoration: none"
+                target="_blank"
+                href="https://nageoffer.com"
+            >控制台样例</a
             >
             <el-dropdown>
               <div class="block">
@@ -140,7 +147,7 @@ const extractColorByName = (name) => {
 }
 
 .header {
-  background-color: #2550cd;
+  background-color: #333333;
   padding: 0 30px 0 20px;
   height: 100%;
   display: flex;
@@ -176,19 +183,21 @@ const extractColorByName = (name) => {
 }
 
 .logo:hover {
-  color: #82b1cc;
+  color: #fff;
 }
 
 .link-span {
-  color: #e8e8e8;
+  color: #fff !important;
   margin-right: 30px;
   font-size: 16px;
   font-family: 'Helvetica Neue', Helvetica, STHeiTi, Arial, sans-serif;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .link-span:hover {
-  color: #80b0cb;
+  text-decoration: underline !important;
+  color: #fff;
 }
 
 .avatar {
