@@ -104,7 +104,7 @@ const logout = async () => {
   removeKey()
   localStorage.removeItem('token')
   localStorage.removeItem('username')
-  router.push('/')
+  router.push('/login')
   ElMessage.success('成功退出！')
 }
 // 点击左上方的图片跳转到我的空间
