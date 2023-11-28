@@ -281,6 +281,8 @@ import PC from '@/assets/png/电脑.png'
 import Mobile from '@/assets/png/移动设备.png'
 import MobileDevices from '@/assets/png/移动设备.png'
 import defaultImg from '@/assets/png/短链默认图标.png'
+import opera from '@/assets/png/opera.png'
+import IE from '@/assets/png/IE.png'
 import { getTodayFormatDate, getLastWeekFormatDate } from '@/utils/plugins.js'
 
 // 选择时间
@@ -338,11 +340,17 @@ const getUrl1 = (img) => {
     return Chorme
   } else if (img?.includes('fire')) {
     return firefox
-  } else if (img?.includes('safair')) {
+  } else if (img?.includes('safari')) {
     return Safair
   } else if (img?.includes('wechat') || img?.includes('微信')) {
     return WeChat
-  } else {
+  } else if (img?.includes('opera')) {
+    return opera
+  }
+   else if (img?.includes('internet')) {
+    return IE
+  }
+  else {
     return other
   }
 }

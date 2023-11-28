@@ -37,6 +37,8 @@ import Safair from '@/assets/png/Safair.png'
 import WeChat from '@/assets/png/WeChat.png'
 import Windows from '@/assets/png/Windows.png'
 import linux from '@/assets/png/linux.png'
+import opera from '@/assets/png/opera.png'
+import IE from '@/assets/png/IE.png'
 
 defineProps({
   dataLists: {
@@ -69,7 +71,7 @@ const getUrl = (img1, img2) => {
     return edge
   } else if (img1?.includes('chrome') || img2?.includes('chrome')) {
     return Chorme
-  } else if (img1?.includes('andriod') || img2?.includes('andriod')) {
+  } else if (img1?.includes('android') || img2?.includes('android')) {
     return Andriod
   } else if (img1?.includes('fire') || img2?.includes('fire')) {
     return firefox
@@ -77,11 +79,17 @@ const getUrl = (img1, img2) => {
     return iOS
   } else if (img1?.includes('mac') || img2?.includes('mac')) {
     return macOS
-  } else if (img1?.includes('safair') || img2?.includes('safair')) {
+  } else if (img1?.includes('safari') || img2?.includes('safari')) {
     return Safair
   } else if (img1?.includes('windows') || img2?.includes('windows')) {
     return Windows
-  } else if (
+  } else if (img1?.includes('opera') || img2?.includes('opera')) {
+    return opera
+  }
+   else if (img1?.includes('internet') || img2?.includes('internet')) {
+    return IE
+  }
+  else if (
     img1?.includes('wechat') ||
     img1?.includes('微信') ||
     img2?.includes('wechat') ||

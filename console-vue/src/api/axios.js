@@ -3,7 +3,8 @@ import { getToken, getUsername } from '@/core/auth.js'
 // import Router from '../router'
 import { ElMessage } from 'element-plus'
 import { isNotEmpty } from '@/utils/plugins.js'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // const baseURL = '/resourcesharing/organizational'
 const baseURL = '/api/short-link/admin/v1'
 // 创建实例
@@ -28,8 +29,9 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (res) => {
     // 如果返回的code为 A000200代表登录过期或者没登录，将localStorage中的token清空
-    if (res.data.code === ' A000200') {
+    if (res.data.code === 'A000200') {
       localStorage.removeItem('token')
+      router.push('/login')
     }
     if (res.status == 0 || res.status == 200) {
       // 请求成功对响应数据做处理，此处返回的数据是axios.then(res)中接收的数据
