@@ -15,53 +15,14 @@
  * limitations under the License.
  */
 
-package com.nageoffer.shortlink.project.dto.req;
+package com.nageoffer.shortlink.project.service;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
-import java.util.Date;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.nageoffer.shortlink.project.dao.entity.LinkStatsTodayDO;
 
 /**
- * 短链接修改请求对象
+ * 短链接今日统计接口层
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
-@Data
-public class ShortLinkUpdateReqDTO {
-
-    /**
-     * 原始链接
-     */
-    private String originUrl;
-
-    /**
-     * 完整短链接
-     */
-    private String fullShortUrl;
-
-    /**
-     * 原始分组标识
-     */
-    private String originGid;
-
-    /**
-     * 分组标识
-     */
-    private String gid;
-
-    /**
-     * 有效期类型 0：永久有效 1：自定义
-     */
-    private Integer validDateType;
-
-    /**
-     * 有效期
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date validDate;
-
-    /**
-     * 描述
-     */
-    private String describe;
+public interface LinkStatsTodayService extends IService<LinkStatsTodayDO> {
 }

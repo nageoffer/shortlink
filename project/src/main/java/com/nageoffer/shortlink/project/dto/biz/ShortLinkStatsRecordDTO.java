@@ -15,24 +15,22 @@
  * limitations under the License.
  */
 
-package com.nageoffer.shortlink.project.dto.req;
+package com.nageoffer.shortlink.project.dto.biz;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
 /**
- * 短链接修改请求对象
+ * 短链接统计实体
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 @Data
-public class ShortLinkUpdateReqDTO {
-
-    /**
-     * 原始链接
-     */
-    private String originUrl;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ShortLinkStatsRecordDTO {
 
     /**
      * 完整短链接
@@ -40,28 +38,42 @@ public class ShortLinkUpdateReqDTO {
     private String fullShortUrl;
 
     /**
-     * 原始分组标识
+     * 访问用户IP
      */
-    private String originGid;
+    private String remoteAddr;
 
     /**
-     * 分组标识
+     * 操作系统
      */
-    private String gid;
+    private String os;
 
     /**
-     * 有效期类型 0：永久有效 1：自定义
+     * 浏览器
      */
-    private Integer validDateType;
+    private String browser;
 
     /**
-     * 有效期
+     * 操作设备
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date validDate;
+    private String device;
 
     /**
-     * 描述
+     * 网络
      */
-    private String describe;
+    private String network;
+
+    /**
+     * UV
+     */
+    private String uv;
+
+    /**
+     * UV访问标识
+     */
+    private Boolean uvFirstFlag;
+
+    /**
+     * UIP访问标识
+     */
+    private Boolean uipFirstFlag;
 }
