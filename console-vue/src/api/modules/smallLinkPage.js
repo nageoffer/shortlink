@@ -14,6 +14,15 @@ export default {
       data
     })
   },
+  addLinks(data) {
+    return http({
+      responseType: 'arraybuffer',
+      url: '/create/batch',
+      method: 'post',
+      data,
+      // responseType: 'blob'
+    })
+  },
   editSmallLink(data) {
     return http({
       url: '/update',

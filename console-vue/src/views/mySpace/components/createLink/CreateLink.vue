@@ -126,6 +126,15 @@ const formData = reactive({
   describe: null,
   validDateType: 0
 })
+watch(
+  () => formData,
+  nV => {
+    console.log('formData的新值', nV)
+  },
+  {
+    deep: true
+  }
+)
 const initFormData = () => {
   formData.domain = defaultDomain
   formData.originUrl = null
@@ -188,7 +197,11 @@ watch(
   (nV) => {
     groupInfo.value = nV
     // console.log('默认的gid', props.defaultGid)
-    formData.gid = nV[0].gid
+    if (props.defaultGid) {
+      formData.gid = props.defaultGid
+    } else {
+      formData.gid = nV[0].gid
+    }
   },
   {
     immediate: true
@@ -285,10 +298,14 @@ const onSubmit = async (formEl) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       const res = await API.smallLinkPage.addSmallLink(formData)
-      ElMessage.success('创建成功！')
-      emits('onSubmit', false)
-      console.log('submit!', res)
-      submitDisable.value = false
+      if (!res?.data?.success) {
+        ElMessage.error(res.data.message)
+      } else {
+        ElMessage.success('创建成功！')
+        emits('onSubmit', false)
+        console.log('submit!', res)
+        submitDisable.value = false
+      }
     } else {
       console.log('error submit!', fields)
       ElMessage.error('创建失败！')

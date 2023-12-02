@@ -83,6 +83,7 @@
           <div style="width: 100%; display: flex">
             <!-- <el-input style="flex: 1; margin-right: 20px" placeholder="请输入http://或https://开头的连接或引用跳转程序"></el-input> -->
             <el-button
+              class="addButton"
               type="primary"
               style="width: 130px; margin-right: 10px"
               @click="isAddSmallLink = true"
@@ -115,14 +116,18 @@
           <el-table-column label="短链接信息" prop="info" min-width="300">
             <template #header>
               <el-dropdown>
-                <div class="block" style="margin-top: 3px">
+                <div
+                  :class="{ orderIndex: orderIndex === 0 }"
+                  class="block"
+                  style="margin-top: 3px"
+                >
                   <span>短链接信息</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = null">创建时间</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = null, orderIndex = 0">创建时间</el-dropdown-item>
                 </template>
               </el-dropdown>
             </template>
@@ -133,7 +138,13 @@
                   isExpire: scope?.row?.validDateType === 1 && !isExpire(scope?.row?.validDate)
                 }"
               >
-                <img :src="getImgUrl(scope.row.favicon)" width="20" height="20" alt="" />
+                <img
+                  :src="getImgUrl(scope.row.favicon)"
+                  :key="scope?.row?.id"
+                  width="20"
+                  height="20"
+                  alt=""
+                />
                 <div class="name-date">
                   <el-tooltip show-after="500" :content="scope.row.describe">
                     <span>{{ scope.row.describe }}</span>
@@ -203,17 +214,21 @@
           <el-table-column label="访问次数" prop="times" width="120">
             <template #header>
               <el-dropdown>
-                <div class="block" style="margin-top: 3px">
+                <div
+                  :class="{ orderIndex: orderIndex === 1 }"
+                  class="block"
+                  style="margin-top: 3px"
+                >
                   <span>访问次数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayPv'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayPv', orderIndex = 1"
                     >今日访问次数</el-dropdown-item
                   >
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalPv'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalPv', orderIndex = 1"
                     >累计访问次数</el-dropdown-item
                   >
                 </template>
@@ -235,17 +250,21 @@
           <el-table-column label="访问人数" prop="people" width="120">
             <template #header>
               <el-dropdown>
-                <div class="block" style="margin-top: 3px">
+                <div
+                  :class="{ orderIndex: orderIndex === 2 }"
+                  class="block"
+                  style="margin-top: 3px"
+                >
                   <span>访问人数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayUv'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayUv', orderIndex = 2"
                     >今日访问人数</el-dropdown-item
                   >
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalUv'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalUv', orderIndex = 2"
                     >累计访问人数</el-dropdown-item
                   >
                 </template>
@@ -267,17 +286,21 @@
           <el-table-column label="IP数" prop="IP" width="120">
             <template #header>
               <el-dropdown>
-                <div class="block" style="margin-top: 3px">
+                <div
+                  :class="{ orderIndex: orderIndex === 3 }"
+                  class="block"
+                  style="margin-top: 3px"
+                >
                   <span>IP数</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayUip'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayUip', orderIndex = 3"
                     >今日IP数</el-dropdown-item
                   >
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalUip'"
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalUip', orderIndex = 3"
                     >累计IP数</el-dropdown-item
                   >
                 </template>
@@ -492,6 +515,7 @@
         :editData="editData"
         :groupInfo="editableTabs"
         @onSubmit="coverEditLink"
+        @updatePage="updatePage"
         @cancel="coverEditLink"
       ></EditLink>
     </el-dialog>
@@ -525,6 +549,7 @@ import QRCode from './components/qrCode/QRCode.vue'
 const nums = ref(0)
 const favicon1 = ref()
 const originUrl1 = ref()
+const orderIndex = ref(0)
 
 const { proxy } = getCurrentInstance()
 const API = proxy.$API
@@ -540,6 +565,8 @@ const editableTabs = ref([])
 const afterAddLink = () => {
   setTimeout(() => {
     getGroupInfo(queryPage) // 重新请求数据
+    // 按钮重新恢复可点击的样式
+    document.querySelector('.addButton') && document.querySelector('.addButton').blur()
   }, 0)
   if (createLink1Ref.value) {
     createLink1Ref.value.initFormData()
@@ -733,6 +760,7 @@ watch(
   }
 )
 const totalNums = ref(0)
+// 数据变化后更新当前页面
 const queryPage = async () => {
   pageParams.gid = editableTabs.value?.[selectedIndex.value]?.gid
   nums.value = editableTabs.value?.[selectedIndex.value]?.shortLinkCount || 0
@@ -751,13 +779,17 @@ const handleCurrentChange = () => {
   !isRecycleBin.value ? queryPage() : queryRecycleBinPage()
 }
 
-// 获取分组信息
+// 获取分组信息，更新页面的分组模块
 const getGroupInfo = async (fn) => {
   const res = await API.group.queryGroup()
   editableTabs.value = res.data?.data?.reverse()
   fn && fn()
 }
 getGroupInfo(queryPage)
+
+const updatePage = () => {
+  getGroupInfo(queryPage)
+}
 
 // 是否展示回收站相关的组件
 const isRecycleBin = ref(false)
@@ -1251,5 +1283,8 @@ const removeLink = (data) => {
 .demo-tabs .custom-tabs-label span {
   vertical-align: middle;
   margin-left: 4px;
+}
+.orderIndex {
+  color: #3677c2;
 }
 </style>
