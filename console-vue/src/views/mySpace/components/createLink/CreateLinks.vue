@@ -1,20 +1,20 @@
 <template>
   <div>
     <el-form ref="ruleFormRef" :model="formData" :rules="formRule" label-width="80px">
-      <el-form-item label="跳转链接" prop="originUrl">
+      <el-form-item label="跳转链接" prop="originUrls">
         <el-input
           :rows="4"
-          v-model="formData.originUrl"
+          v-model="formData.originUrls"
           type="textarea"
           placeholder="请输入http://或https://开头的链接或应用跳转链接，一行一个，最多100行"
         />
         <span style="font-size: 12px">{{ originUrlRows + '/' + maxDescribeRows }}</span>
       </el-form-item>
-      <el-form-item label="描述信息" prop="describe">
+      <el-form-item label="描述信息" prop="describes">
         <el-input
           v-loading="isLoading"
           :rows="4"
-          v-model="formData.describe"
+          v-model="formData.describes"
           type="textarea"
           placeholder="请输入描述信息，一行一个，描述信息行数请与链接行数相等"
         />
@@ -110,19 +110,19 @@ const shortcuts = [
 const groupInfo = ref()
 const formData = reactive({
   domain: defaultDomain,
-  originUrl: null,
+  originUrls: null,
   gid: null,
   createdType: 1,
   validDate: null,
-  describe: null,
+  describes: null,
   validDateType: 0
 })
 const initFormData = () => {
   formData.domain = defaultDomain
-  formData.originUrl = null
+  formData.originUrls = null
   formData.createdType = 1
   formData.validDate = null
-  formData.describe = null
+  formData.describes = null
   formData.validDateType = 0
 }
 const maxOriginUrlRows = ref(100) // 最多多少行
@@ -153,7 +153,7 @@ const isLoading = ref(false)
 // }
 // const getTitle = fd(queryTitle, 1000)
 watch(
-  () => formData.originUrl,
+  () => formData.originUrls,
   (nV) => {
     originUrlRows.value = (nV || '').split(/\r|\r\n|\n/)?.length ?? 0
     // // 只有在描述内容为空时才会去查询链接对应的标题
@@ -167,7 +167,7 @@ const maxDescribeRows = ref(100) // 最多多少行
 // 描述信息有多少行
 const describeRows = ref(0)
 watch(
-  () => formData.describe,
+  () => formData.describes,
   (nV) => {
     describeRows.value = (nV || '').split(/\r|\r\n|\n/)?.length ?? 0
   }
@@ -202,7 +202,7 @@ watch(
 
 // 校验规则
 const formRule = reactive({
-  originUrl: [
+  originUrls: [
     { required: true, message: '请输入链接', trigger: 'blur' },
     {
       validator: function (rule, value, callback) {
@@ -225,7 +225,7 @@ const formRule = reactive({
     }
   ],
   gid: [{ required: true, message: '请选择分组', trigger: 'blur' }],
-  describe: [
+  describes: [
     { required: true, message: '请输入描述信息', trigger: 'blur' },
     {
       validator: function (rule, value, callback) {
@@ -268,13 +268,31 @@ const disabledDate = (time) => {
   return new Date(time).getTime() < new Date().getTime() //选当前时间之后的时间
 }
 
-// console.log(new Date().getTime())
 // 将输入框中的含有\n的字符串变为数组
 const transferStrToArray = (str) => {
   return str.split(/[\n]+/)
 }
 // 将组件里面的确认和取消点击事件传出去
 const emits = defineEmits(['onSubmit', 'cancel'])
+
+function downLoadXls(res) {
+  let url = window.URL.createObjectURL(
+    new Blob([res.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+  )
+  // 创建A标签
+  let link = document.createElement('a')
+  link.style.display = 'none'
+  link.href = url
+  // 设置的下载文件文件名
+  const fileName = decodeURI(res.headers['content-disposition'].split(';')[1].split('filename*=')[1])
+  // 触发点击方法
+  link.setAttribute('download', fileName)
+  document.body.appendChild(link)
+  link.click()
+}
+
 // 点击确定按钮后的校验
 const ruleFormRef = ref()
 const submitDisable = ref(false)
@@ -287,14 +305,23 @@ const onSubmit = async (formEl) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       console.log('这是formdata', formData)
-      let { describe, originUrl } = formData
-      describe = transferStrToArray(describe)
-      originUrl = transferStrToArray(originUrl)
-      const res = await API.smallLinkPage.addSmallLink({ ...formData, describe, originUrl })
-      ElMessage.success('创建成功！')
-      emits('onSubmit', false)
-      console.log('submit!', res)
-      submitDisable.value = false
+      let { describes, originUrls } = formData
+      describes = transferStrToArray(describes)
+      originUrls = transferStrToArray(originUrls)
+      const res = await API.smallLinkPage.addLinks({ ...formData, describes, originUrls })
+      if (!res.data.data && res.data) {
+        ElMessage.success('创建成功！短链列表已开始下载')
+        emits('onSubmit', false)
+        submitDisable.value = false
+        downLoadXls(res)
+        console.log(res.data)
+      } else if (!res?.data?.success) {
+        ElMessage.error(res?.data?.message)
+      } else {
+        ElMessage.success('创建成功！短链列表已开始下载')
+        emits('onSubmit', false)
+        submitDisable.value = false
+      }
     } else {
       console.log('error submit!', fields)
       // ElMessage.error('创建失败！')

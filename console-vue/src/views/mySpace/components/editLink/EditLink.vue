@@ -231,7 +231,7 @@ const disabledDate = (time) => {
 
 console.log(new Date().getTime())
 // 将组件里面的确认和取消点击事件传出去
-const emits = defineEmits(['onSubmit', 'cancel'])
+const emits = defineEmits(['onSubmit', 'cancel', 'updatePage'])
 // 点击确定按钮后的校验
 const ruleFormRef = ref()
 const onSubmit = async (formEl) => {
@@ -243,6 +243,7 @@ const onSubmit = async (formEl) => {
       emits('onSubmit', false)
       const res = await API.smallLinkPage.editSmallLink(formData)
       console.log('submit!', res)
+      emits('updatePage')
     } else {
       console.log('error submit!', fields)
     }
