@@ -90,17 +90,10 @@ public class UserTransmitFilter implements Filter {
     }
 
     private void returnJson(HttpServletResponse response, String json) throws Exception {
-        PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
-        try {
-            writer = response.getWriter();
+        try (PrintWriter writer = response.getWriter()) {
             writer.print(json);
-
-        } catch (IOException e) {
-        } finally {
-            if (writer != null)
-                writer.close();
         }
     }
 }
