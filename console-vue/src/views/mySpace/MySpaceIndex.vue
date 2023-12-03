@@ -836,7 +836,7 @@ const addGroup = async () => {
     ElMessage.success('添加成功')
     getGroupInfo(queryPage)
   } else {
-    ElMessage.error('添加失败')
+    ElMessage.error(res1?.data.message)
   }
   isAddGroup.value = false
   addGroupLoading.value = false
