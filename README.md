@@ -35,11 +35,18 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 - **美化**：短链接通常更美观、简洁，不会包含一大串字符。
 - **统计和分析**：可以追踪短链接的访问情况，了解用户的行为和喜好。
 
-
 ## 官方文档
 
 - 什么是 SaaS 短链接系统：[https://nageoffer.com/shortlink](https://nageoffer.com/shortlink)
 - 🔥SaaS 短链接视频教程：[https://nageoffer.com/shortlink/video](https://nageoffer.com/shortlink/video)
+
+## 大话面试
+
+屏幕前的你是否遇到过网上面经杂乱，不知道如何筛选？八股文内容太多太杂，无法总结有效回答 Battle 面试官？
+
+大话面试小程序提供八股回答、实战项目以及面试真题，助力你在面试中脱颖而出。面对任何面试官都信心十足！
+
+![](https://oss.open8gu.com/xiaochengxu.png)
 
 ## 技术架构
 
