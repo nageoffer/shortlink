@@ -10,6 +10,9 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: 123456
+      channel-topic:
+        short-link-stats: 'short_link:stats-stream'
+        short-link-stats-group: 'short_link:stats-stream:only-group'
   mvc:
     view:
       prefix: /templates/
