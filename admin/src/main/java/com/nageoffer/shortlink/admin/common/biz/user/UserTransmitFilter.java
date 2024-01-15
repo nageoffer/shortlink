@@ -38,6 +38,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Objects;
 
+import static com.nageoffer.shortlink.admin.common.constant.RedisCacheConstant.USER_LOGIN_KEY;
 import static com.nageoffer.shortlink.admin.common.enums.UserErrorCodeEnum.USER_TOKEN_FAIL;
 
 /**
@@ -70,7 +71,7 @@ public class UserTransmitFilter implements Filter {
                 }
                 Object userInfoJsonStr;
                 try {
-                    userInfoJsonStr = stringRedisTemplate.opsForHash().get("login_" + username, token);
+                    userInfoJsonStr = stringRedisTemplate.opsForHash().get(USER_LOGIN_KEY + username, token);
                     if (userInfoJsonStr == null) {
                         throw new ClientException(USER_TOKEN_FAIL);
                     }
