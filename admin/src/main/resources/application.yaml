@@ -2,6 +2,8 @@ server:
   port: 8002
 
 spring:
+  application:
+    name: short-link-admin
   datasource:
     driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
     url: jdbc:shardingsphere:classpath:shardingsphere-config-${database.env:dev}.yaml
@@ -10,6 +12,10 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: 123456
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 short-link:
   group:
