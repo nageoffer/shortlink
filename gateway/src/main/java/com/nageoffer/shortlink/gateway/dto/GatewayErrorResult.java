@@ -15,40 +15,30 @@
  * limitations under the License.
  */
 
-package com.nageoffer.shortlink.admin.common.enums;
+package com.nageoffer.shortlink.gateway.dto;
 
-import com.nageoffer.shortlink.admin.common.convention.errorcode.IErrorCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * 用户错误码
+ * 网关错误返回信息
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
-public enum UserErrorCodeEnum implements IErrorCode {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class GatewayErrorResult {
 
-    USER_NULL("B000200", "用户记录不存在"),
+    /**
+     * HTTP 状态码
+     */
+    private Integer status;
 
-    USER_NAME_EXIST("B000201", "用户名已存在"),
-
-    USER_EXIST("B000202", "用户记录已存在"),
-
-    USER_SAVE_ERROR("B000203", "用户记录新增失败");
-
-    private final String code;
-
-    private final String message;
-
-    UserErrorCodeEnum(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    @Override
-    public String code() {
-        return code;
-    }
-
-    @Override
-    public String message() {
-        return message;
-    }
+    /**
+     * 返回信息
+     */
+    private String message;
 }
