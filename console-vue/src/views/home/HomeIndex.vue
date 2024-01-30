@@ -10,14 +10,14 @@
               style="text-decoration: none"
               target="_blank"
               href="https://nageoffer.com/shortlink/"
-              >文档</a
+              >官方文档</a
             >
             <a
               class="link-span"
               style="text-decoration: none"
               target="_blank"
               href="https://nageoffer.com/group/"
-              >社群</a
+              >加沟通群</a
             >
             <a
                 class="link-span"
@@ -30,8 +30,8 @@
                 class="link-span"
                 style="text-decoration: none"
                 target="_blank"
-                href="https://nageoffer.com"
-            >控制台样例</a
+                href="http://shortlink.magestack.cn"
+            >演示环境</a
             >
             <el-dropdown>
               <div class="block">

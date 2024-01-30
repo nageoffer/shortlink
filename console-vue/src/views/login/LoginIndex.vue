@@ -1,6 +1,6 @@
 <template>
   <div class="login-page">
-    <h1 class="title">短 链 接 平 台</h1>
+    <h1 class="title">SaaS 短 链 接 平 台</h1>
     <div class="login-box">
       <!-- 登录 -->
       <div class="logon" :class="{ hidden: !isLogin }">
@@ -104,7 +104,7 @@
   </div>
   <el-dialog v-model="isWC" title="人机验证" width="40%" :before-close="handleClose">
     <div class="verification-flex">
-      <span>扫码下方二维码，关注后回复：短链接，获取拿个offer-12306在线购票系统人机验证码</span>
+      <span>扫码下方二维码，关注后回复：link，获取拿个offer-SaaS短链接系统人机验证码</span>
       <img class="img" src="@/assets/png/公众号二维码.png" alt="">
       <el-form class="form" :model="verification" :rules="verificationRule" ref="verificationRef">
         <el-form-item prop="code" label="验证码">
@@ -137,8 +137,8 @@ const loginFormRef1 = ref()
 const loginFormRef2 = ref()
 const router = useRouter()
 const loginForm = reactive({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: 'admin123456',
 })
 const addForm = reactive({
   username: '',
@@ -267,7 +267,7 @@ const login = (formEl) => {
     if (valid) {
       // 当域名为下面这两个时，弹出公众号弹框
       let domain = window.location.host
-      if (domain === 'shortlink.magestack.cn' || domain === 'shortlink.nageoffer.com') {
+      if (domain !== 'shortlink.magestack.cn' || domain !== 'shortlink.nageoffer.com') {
         isWC.value = true
         return
       }
@@ -331,6 +331,11 @@ onBeforeUnmount(() => {
 const isLogin = ref(true)
 const moveRef = ref() // 左右移动的切换按钮模块
 const changeLogin = () => {
+  let domain = window.location.host
+  if (domain !== 'shortlink.magestack.cn' || domain !== 'shortlink.nageoffer.com') {
+    ElMessage.warning('演示环境暂不支持注册')
+    return
+  }
   isLogin.value = !isLogin.value
   if (isLogin.value) {
     moveRef.value.style.transform = 'translate(0, 0)'

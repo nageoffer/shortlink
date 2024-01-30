@@ -18,7 +18,7 @@
             @click="changeSelectIndex(index)"
           >
             <div style="display: flex">
-              <img src="@/assets/svg/移动 竖.svg" width="13" style="margin-right: 3px" alt="" />
+              <img src="@/assets/svg/移动竖.svg" width="13" style="margin-right: 3px" alt="" />
               <span class="over-text">{{ item.name }}</span>
             </div>
             <div class="flex-box">

@@ -299,7 +299,14 @@ const onSubmit = async (formEl) => {
     if (valid) {
       const res = await API.smallLinkPage.addSmallLink(formData)
       if (!res?.data?.success) {
-        ElMessage.error(res.data.message)
+        if (res?.data?.code === 'A000001') {
+          ElMessage.warning({
+            message: res.data.message,
+            duration: 5000
+          })
+        } else {
+          ElMessage.error(res.data.message)
+        }
       } else {
         ElMessage.success('创建成功！')
         emits('onSubmit', false)
