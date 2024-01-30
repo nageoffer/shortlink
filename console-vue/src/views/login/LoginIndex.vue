@@ -267,7 +267,7 @@ const login = (formEl) => {
     if (valid) {
       // 当域名为下面这两个时，弹出公众号弹框
       let domain = window.location.host
-      if (domain !== 'shortlink.magestack.cn' || domain !== 'shortlink.nageoffer.com') {
+      if (domain === 'shortlink.magestack.cn' || domain === 'shortlink.nageoffer.com') {
         isWC.value = true
         return
       }
@@ -332,7 +332,7 @@ const isLogin = ref(true)
 const moveRef = ref() // 左右移动的切换按钮模块
 const changeLogin = () => {
   let domain = window.location.host
-  if (domain !== 'shortlink.magestack.cn' || domain !== 'shortlink.nageoffer.com') {
+  if (domain === 'shortlink.magestack.cn' || domain === 'shortlink.nageoffer.com') {
     ElMessage.warning('演示环境暂不支持注册')
     return
   }
