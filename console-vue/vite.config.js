@@ -17,7 +17,9 @@ export default defineConfig({
         target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         ws: true,
-        rewrite: (path) => path.replace(/^\/api/, '') // 不可以省略rewrit
+        pathRewrite: {
+          '^/api': '/api'
+        }
       }
     }
   }

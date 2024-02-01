@@ -10,7 +10,7 @@ const baseURL = '/api/short-link/admin/v1'
 // 创建实例
 const http = axios.create({
   // api 代理为服务器请求地址
-    baseURL: '/api' + baseURL,
+    baseURL: baseURL,
   timeout: 15000
 })
 // 请求拦截 -->在请求发送之前做一些事情
