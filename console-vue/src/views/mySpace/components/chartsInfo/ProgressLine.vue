@@ -17,7 +17,7 @@
             color="#3464e0"
             :text-inside="true"
             :stroke-width="12"
-            :percentage="item?.ratio * 100"
+            :percentage="(item?.ratio * 100).toFixed(2)"
           />
         </div>
       </div>
