@@ -941,9 +941,10 @@ watch(
   .top10 {
     padding: 15px 30px;
     width: 400px;
-    height: 200px;
+    height: 270px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     .top-item {
       display: flex;
