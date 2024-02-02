@@ -433,6 +433,7 @@ watch(
     chinaMapData.value = props.info?.localeCnStats.map((item) => {
       let { cnt, locale, ratio } = item
       locale = locale.replace('省', '')
+      locale = locale.replace('市', '')
       chinaTotalNum.value += cnt
       return { name: locale, value: cnt, ratio }
     })
