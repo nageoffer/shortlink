@@ -33,8 +33,7 @@
             </template>
             <template #content>
               <div class="list-chart">
-                <div v-show="isLine" class="top10" style="padding-top: 15px">
-                  <span style="font-size: 14px">访问曲线</span>
+                <div v-show="isLine" class="top10" style="padding-top: 20px">
                   <div class="key-value" style="margin-top: 10px">
                     <span>访问次数</span>
                     <span>{{ totalPv }}</span>
@@ -120,7 +119,7 @@
           <TitleContent class="chart-item" title="一周分布" style="width: 390px">
             <template #content>
               <BarChart style="height: 100%; width: 100%" :chartData="{
-                xAxis: ['周一', '周二', '周三', '周四', '周无', '周六', '周日'],
+                xAxis: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                 value: props.info?.weekdayStats || new Array(7).fill(0)
               }"></BarChart>
             </template>
