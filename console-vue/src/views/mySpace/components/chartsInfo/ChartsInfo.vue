@@ -15,17 +15,8 @@
       <span v-if="isGroup" style="margin: 5px 0 0 5px">共{{ props.nums }}条短链接</span>
     </template>
     <div style="position: absolute; right: 30px; z-index: 999">
-      <el-date-picker
-        v-model="dateValue"
-        :clearable="true"
-        type="daterange"
-        range-separator="To"
-        start-placeholder="开始时间"
-        end-placeholder="结束时间"
-        value-format="YYYY-MM-DD"
-        :shortcuts="shortcuts"
-        :size="size"
-      />
+      <el-date-picker v-model="dateValue" :clearable="true" type="daterange" range-separator="To" start-placeholder="开始时间"
+        end-placeholder="结束时间" value-format="YYYY-MM-DD" :shortcuts="shortcuts" :size="size" />
     </div>
     <!-- 具体展示内容 -->
     <el-tabs v-model="showPane">
@@ -34,12 +25,7 @@
         <!-- 数据图表 -->
         <div class="content-box scroll-box" style="height: calc(100vh - 280px); overflow: scroll">
           <!-- 访问曲线 -->
-          <TitleContent
-            class="chart-item"
-            style="width: 800px"
-            title="访问曲线"
-            @onMounted="initLineChart"
-          >
+          <TitleContent class="chart-item" style="width: 800px" title="访问曲线" @onMounted="initLineChart">
             <template v-slot:titleButton>
               <div>
                 <el-button @click="isLine = !isLine">切换为曲线</el-button>
@@ -66,12 +52,8 @@
                 <div v-show="isLine" class="lineChart"></div>
                 <!-- 表格 -->
                 <div v-show="!isLine" style="padding: 20px">
-                  <el-table
-                    :data="visitsData"
-                    border
-                    style="width: 100%; height: 210px; overflow: scroll"
-                    :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-                  >
+                  <el-table :data="visitsData" border style="width: 100%; height: 210px; overflow: scroll"
+                    :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
                     <el-table-column prop="date" label="时间" width="160" />
                     <el-table-column prop="pv" label="访问次数" width="160" />
                     <el-table-column prop="uv" label="访问人数" width="160" />
@@ -82,12 +64,7 @@
             </template>
           </TitleContent>
           <!-- 地图 -->
-          <TitleContent
-            class="chart-item"
-            style="width: 800px"
-            title="访问地区"
-            @onMounted="initMap"
-          >
+          <TitleContent class="chart-item" style="width: 800px" title="访问地区" @onMounted="initMap">
             <template #titleButton>
               <!-- <el-button @click="isChina = !isChina">切换为世界地图</el-button> -->
             </template>
@@ -96,16 +73,13 @@
                 <div v-show="isChina" class="top10">
                   <span style="font-size: 14px">TOP 10 省份</span>
                   <div>
-                    <span
-                      v-if="!chinaMapData ?? chinaMapData?.length === 0"
-                      style="font-size: 14px; color: black; font-weight: 100"
-                      >所选日期内没有访问数据</span
-                    >
+                    <span v-if="!chinaMapData ?? chinaMapData?.length === 0"
+                      style="font-size: 14px; color: black; font-weight: 100">所选日期内没有访问数据</span>
                   </div>
                   <div class="top-item" v-for="(item, index) in chinaMapData" :key="item.name">
                     <div v-if="index <= 9" class="key-value">
                       <span>{{ index + 1 + '. ' + item.name }}</span>
-                      <span>{{ item.ratio * 100 }}%</span>
+                      <span>{{ (item.ratio * 100).toFixed(2) }}%</span>
                       <span>{{ item.value }}次</span>
                     </div>
                   </div>
@@ -127,37 +101,28 @@
           <!-- 24小时分布 -->
           <TitleContent class="chart-item" title="24小时分布" style="width: 800px">
             <template #content>
-              <BarChart
-                style="height: 100%; width: 100%"
-                :chartData="{
-                  xAxis: [
-                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-                    22, 23
-                  ],
-                  value: props.info?.hourStats || new Array(24).fill(0)
-                }"
-              ></BarChart>
+              <BarChart style="height: 100%; width: 100%" :chartData="{
+                xAxis: [
+                  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+                  22, 23
+                ],
+                value: props.info?.hourStats || new Array(24).fill(0)
+              }"></BarChart>
             </template>
           </TitleContent>
           <!-- 高频访问IP -->
           <TitleContent class="chart-item" title="高频访问IP" style="width: 390px">
             <template #content>
-              <KeyValue
-                :dataLists="props.info?.topIpStats"
-                style="height: 100%; width: 100%"
-              ></KeyValue>
+              <KeyValue :dataLists="props.info?.topIpStats" style="height: 100%; width: 100%"></KeyValue>
             </template>
           </TitleContent>
           <!-- 一周分布 -->
           <TitleContent class="chart-item" title="一周分布" style="width: 390px">
             <template #content>
-              <BarChart
-                style="height: 100%; width: 100%"
-                :chartData="{
-                  xAxis: ['周一', '周二', '周三', '周四', '周无', '周六', '周日'],
-                  value: props.info?.weekdayStats || new Array(7).fill(0)
-                }"
-              ></BarChart>
+              <BarChart style="height: 100%; width: 100%" :chartData="{
+                xAxis: ['周一', '周二', '周三', '周四', '周无', '周六', '周日'],
+                value: props.info?.weekdayStats || new Array(7).fill(0)
+              }"></BarChart>
             </template>
           </TitleContent>
 
@@ -170,58 +135,37 @@
           <!-- 操作系统 -->
           <TitleContent class="chart-item" title="操作系统" style="width: 390px">
             <template #content>
-              <ProgressLine
-                style="height: 100%; width: 100%"
-                :dataLists="props.info?.osStats"
-              ></ProgressLine>
+              <ProgressLine style="height: 100%; width: 100%" :dataLists="props.info?.osStats"></ProgressLine>
             </template>
           </TitleContent>
           <!-- 访问浏览器 -->
           <TitleContent class="chart-item" title="访问浏览器" style="width: 390px">
             <template #content>
-              <ProgressLine
-                style="height: 100%; width: 100%"
-                :dataLists="props.info?.browserStats"
-              ></ProgressLine>
+              <ProgressLine style="height: 100%; width: 100%" :dataLists="props.info?.browserStats"></ProgressLine>
             </template>
           </TitleContent>
           <!-- 访客类型 -->
           <TitleContent v-if="!isGroup" class="chart-item" title="访客类型" style="width: 390px">
             <template #content>
-              <ProgressPie
-                style="height: 100%; width: 100%"
-                :labels="['新访客', '旧访客']"
-                :data="userTypeList"
-              ></ProgressPie>
+              <ProgressPie style="height: 100%; width: 100%" :labels="['新访客', '旧访客']" :data="userTypeList"></ProgressPie>
             </template>
           </TitleContent>
           <!-- 访问网络 -->
           <TitleContent class="chart-item" title="访问网络" style="width: 390px">
             <template #content>
-              <ProgressPie
-                style="height: 100%; width: 100%"
-                :labels="['WIFI', '移动数据']"
-                :data="netWorkList"
-              ></ProgressPie>
+              <ProgressPie style="height: 100%; width: 100%" :labels="['WIFI', '移动数据']" :data="netWorkList"></ProgressPie>
             </template>
           </TitleContent>
           <!-- 访问设备 -->
           <TitleContent class="chart-item" title="访问设备" style="width: 390px">
             <template #content>
-              <ProgressPie
-                style="height: 100%; width: 100%"
-                :labels="['电脑', '移动设备']"
-                :data="deviceList"
-              ></ProgressPie>
+              <ProgressPie style="height: 100%; width: 100%" :labels="['电脑', '移动设备']" :data="deviceList"></ProgressPie>
             </template>
           </TitleContent>
         </div>
       </el-tab-pane>
       <el-tab-pane name="历史记录" label="历史记录">
-        <el-table
-          :data="tableInfo?.data?.data?.records"
-          style="width: 100%; height: calc(100vh - 300px)"
-        >
+        <el-table :data="tableInfo?.data?.data?.records" style="width: 100%; height: calc(100vh - 300px)">
           <el-table-column prop="createTime" label="访问时间" width="160" />
           <el-table-column prop="ip" label="访问IP" width="140" />
           <el-table-column prop="locale" label="访客地区"> </el-table-column>
@@ -240,15 +184,9 @@
         </el-table>
         <!-- 分页器 -->
         <div class="pagination-block">
-          <el-pagination
-            v-model:current-page="pageParams.current"
-            v-model:page-size="pageParams.size"
-            :page-sizes="[10, 15, 20, 30]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalNums"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination v-model:current-page="pageParams.current" v-model:page-size="pageParams.size"
+            :page-sizes="[10, 15, 20, 30]" layout="total, sizes, prev, pager, next, jumper" :total="totalNums"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -347,7 +285,7 @@ const getUrl1 = (img) => {
   } else if (img?.includes('opera')) {
     return opera
   }
-   else if (img?.includes('internet')) {
+  else if (img?.includes('internet')) {
     return IE
   }
   else {
@@ -1003,11 +941,15 @@ watch(
   .top10 {
     padding: 15px 30px;
     width: 400px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+
     .top-item {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      height: 200px;
+
       div {
         height: 40px;
         display: flex;
@@ -1035,10 +977,12 @@ watch(
   width: 600px;
   height: 200px;
 }
+
 .flex-box {
   display: flex;
   justify-content: space-around;
 }
+
 .pagination-block {
   .el-pagination {
     margin-left: 20%;

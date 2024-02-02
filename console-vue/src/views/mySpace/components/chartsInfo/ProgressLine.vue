@@ -6,7 +6,7 @@
         <div class="flex-item">
           <div>
             <img :src="getUrl(item?.browser, item?.os)" width="25" alt="" />
-            <span>{{ item?.browser || item?.os }} {{ item?.ratio * 100 }}%</span>
+            <span>{{ item?.browser || item?.os }} {{ (item?.ratio * 100).toFixed(2) }}%</span>
           </div>
           <div>
             <span>{{ item?.cnt }} 次</span>
