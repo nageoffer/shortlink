@@ -173,6 +173,10 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             baseMapper.insert(shortLinkDO);
             shortLinkGotoMapper.insert(linkGotoDO);
         } catch (DuplicateKeyException ex) {
+            // 首先判断是否存在布隆过滤器，如果不存在直接新增
+            if (!shortUriCreateCachePenetrationBloomFilter.contains(fullShortUrl)) {
+                shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
+            }
             throw new ServiceException(String.format("短链接：%s 生成重复", fullShortUrl));
         }
         stringRedisTemplate.opsForValue().set(
