@@ -467,6 +467,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     @SneakyThrows
     @Override
     public void restoreUrl(String shortUri, ServletRequest request, ServletResponse response) {
+        // 短链接接口的并发量有多少？如何测试？详情查看：https://nageoffer.com/shortlink/question
         // 面试中如何回答短链接是如何跳转长链接？详情查看：https://nageoffer.com/shortlink/question
         String serverName = request.getServerName();
         String serverPort = Optional.of(request.getServerPort())
