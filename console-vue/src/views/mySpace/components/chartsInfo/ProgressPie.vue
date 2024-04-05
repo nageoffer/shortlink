@@ -4,7 +4,7 @@
       <template #default>
         <div class="flex-box">
           <span class="percentage-value">{{ labels[0] }}: {{ data1Precentage }}%</span>
-          <span class="percentage-label">{{ data[0] }} 人</span>
+          <span class="percentage-label">{{ data[0] }} {{ labels[0] === '新访客' ? '人' : '次' }}</span>
         </div>
       </template>
     </el-progress>
@@ -12,7 +12,7 @@
       <template #default>
         <div class="flex-box">
           <span class="percentage-value">{{ labels[1] }}: {{ data2Precentage }}%</span>
-          <span class="percentage-label">{{ data[1] }} 人</span>
+          <span class="percentage-label">{{ data[1] }} {{ labels[1] === '旧访客' ? '人' : '次' }}</span>
         </div>
       </template>
     </el-progress>
