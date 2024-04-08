@@ -19,6 +19,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nageoffer.shortlink.project.dao.mapper.ShortLinkMapper">
 
+    <!-- 自增短链接访问次数 -->
+    <update id="incrementStats">
+        UPDATE t_link
+        SET total_pv  = total_pv + #{totalPv},
+            total_uv  = total_uv + #{totalUv},
+            total_uip = total_uip + #{totalUip}
+        WHERE gid = #{gid}
+          AND full_short_url = #{fullShortUrl}
+    </update>
+
     <!-- 分页查询短链接 -->
     <select id="pageLink" parameterType="com.nageoffer.shortlink.project.dto.req.ShortLinkPageReqDTO"
             resultType="com.nageoffer.shortlink.project.dao.entity.ShortLinkDO">
@@ -27,8 +37,7 @@
         COALESCE(s.today_uv, 0) AS todayUv,
         COALESCE(s.today_uip, 0) AS todayUip
         FROM t_link t
-        LEFT JOIN t_link_stats_today s ON t.gid = s.gid
-        AND t.full_short_url = s.full_short_url
+        LEFT JOIN t_link_stats_today s ON t.full_short_url = s.full_short_url
         AND s.date = CURDATE()
         WHERE t.gid = #{gid}
         AND t.enable_status = 0
@@ -56,5 +65,25 @@
                 ORDER BY t.create_time DESC
             </otherwise>
         </choose>
+    </select>
+
+    <!-- 分页统计回收站短链接 -->
+    <select id="pageRecycleBinLink"
+            parameterType="com.nageoffer.shortlink.project.dto.req.ShortLinkRecycleBinPageReqDTO"
+            resultType="com.nageoffer.shortlink.project.dao.entity.ShortLinkDO">
+        SELECT t.*,
+        COALESCE(s.today_pv, 0) AS todayPv,
+        COALESCE(s.today_uv, 0) AS todayUv,
+        COALESCE(s.today_uip, 0) AS todayUip
+        FROM t_link t
+        LEFT JOIN t_link_stats_today s ON t.full_short_url = s.full_short_url
+        AND s.date = CURDATE()
+        WHERE t.gid IN
+        <foreach item='item' index='index' collection='gidList' open='(' separator=',' close=')'>
+            #{item}
+        </foreach>
+        AND t.enable_status = 1
+        AND t.del_flag = 0
+        ORDER by t.update_time
     </select>
 </mapper>

@@ -48,11 +48,6 @@ public class LinkOsStatsDO extends BaseDO {
     private String fullShortUrl;
 
     /**
-     * 分组标识
-     */
-    private String gid;
-
-    /**
      * 日期
      */
     private Date date;
