@@ -72,7 +72,7 @@
         <!-- 展示回收站信息 -->
         <div v-else class="recycle-bin-box">
           <span>回收站</span>
-          <span>一共{{ recycleBinNums }}条短链接</span>
+          <span>共{{ recycleBinNums }}条短链接</span>
         </div>
         <!-- 表格展示区域 -->
         <el-table :data="tableData" height="calc(100vh - 240px)" style="width: calc(100vw - 230px)"
@@ -438,7 +438,7 @@ const tableGid = ref()
 const chartsVisible = async (rowInfo, dateList) => {
   chartsInfoTitle.value = rowInfo?.describe
   // 如果传入的group为true的话就查询分组的数据，如果没传就查询单链的数据
-  const { fullShortUrl, gid, group, originUrl, favicon } = rowInfo
+  const { fullShortUrl, gid, group, originUrl, favicon, enableStatus } = rowInfo
   originUrl1.value = originUrl
   favicon1.value = favicon
   isGroup.value = group
@@ -462,12 +462,11 @@ const chartsVisible = async (rowInfo, dateList) => {
     res = await API.group.queryGroupStats({ ...statsFormData, fullShortUrl, gid })
     tableRes = await API.group.queryGroupTable({ gid, ...statsFormData })
   } else {
-    res = await API.smallLinkPage.queryLinkStats({ ...statsFormData, fullShortUrl, gid })
-    tableRes = await API.smallLinkPage.queryLinkTable({ gid, fullShortUrl, ...statsFormData })
+    res = await API.smallLinkPage.queryLinkStats({ ...statsFormData, fullShortUrl, gid, enableStatus })
+    tableRes = await API.smallLinkPage.queryLinkTable({ gid, fullShortUrl, ...statsFormData, enableStatus })
   }
   tableInfo.value = tableRes
   chartsInfo.value = res?.data?.data
-  console.log(res?.data?.data)
   // debugger
 }
 // 图表修改时间后重新请求数
@@ -494,11 +493,9 @@ const changeTimeData = async (rowInfo, dateList) => {
   }
   tableInfo.value = tableRes
   chartsInfo.value = res?.data?.data
-  console.log(res?.data?.data)
 }
 // 修改时间
 const changeTime = (dateList) => {
-  console.log('修改了时间')
   changeTimeData(visitLink, dateList)
 }
 // 修改页码信息
@@ -593,7 +590,6 @@ const pageParams = reactive({
 watch(
   () => pageParams.orderTag,
   (nV) => {
-    console.log(nV)
     queryPage()
   }
 )
@@ -602,7 +598,6 @@ const totalNums = ref(0)
 const queryPage = async () => {
   pageParams.gid = editableTabs.value?.[selectedIndex.value]?.gid
   nums.value = editableTabs.value?.[selectedIndex.value]?.shortLinkCount || 0
-  console.log('------', editableTabs.value, selectedIndex.value)
   const res = await API.smallLinkPage.queryPage(pageParams)
   if (res?.data.success) {
     tableData.value = res.data?.data?.records

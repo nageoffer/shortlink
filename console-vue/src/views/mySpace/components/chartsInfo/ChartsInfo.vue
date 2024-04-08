@@ -337,7 +337,6 @@ const emit = defineEmits(['changeTime', 'changePage'])
 watch(
   () => dateValue.value,
   (newValue) => {
-    console.log(newValue)
     // 解决首次关闭数据统计页面需要点两次关闭键的bug
     if (!newValue && !dialogVisible.value) {
       return
@@ -437,7 +436,6 @@ watch(
       chinaTotalNum.value += cnt
       return { name: locale, value: cnt, ratio }
     })
-    console.log(chinaMapData)
     initChinaMap()
   },
   {
@@ -824,7 +822,6 @@ const uipList = ref([])
 watch(
   () => props?.info?.daily,
   () => {
-    console.log(props?.info?.daily)
     // 归零
     totalPv.value = 0
     totalUv.value = 0
@@ -846,7 +843,6 @@ watch(
       uipList.value.push(uip)
       dailyXAxis.value.push(formDate)
     })
-    console.log(pvList.value, uvList.value, uipList.value)
     initLineChart()
   }
 )

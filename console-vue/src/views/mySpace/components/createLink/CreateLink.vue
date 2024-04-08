@@ -129,7 +129,6 @@ const formData = reactive({
 watch(
   () => formData,
   nV => {
-    console.log('formData的新值', nV)
   },
   {
     deep: true
@@ -210,7 +209,6 @@ watch(
 watch(
   () => props.defaultGid,
   (nV) => {
-    console.log('数据发生变化了', props.defaultGid)
     if (props.defaultGid) {
       formData.gid = props.defaultGid
     } else {
@@ -283,7 +281,6 @@ const disabledDate = (time) => {
   return new Date(time).getTime() < new Date().getTime() //选当前时间之后的时间
 }
 
-console.log(new Date().getTime())
 // 将组件里面的确认和取消点击事件传出去
 const emits = defineEmits(['onSubmit', 'cancel'])
 // 点击确定按钮后的校验
@@ -310,11 +307,9 @@ const onSubmit = async (formEl) => {
       } else {
         ElMessage.success('创建成功！')
         emits('onSubmit', false)
-        console.log('submit!', res)
         submitDisable.value = false
       }
     } else {
-      console.log('error submit!', fields)
       ElMessage.error('创建失败！')
     }
   })
