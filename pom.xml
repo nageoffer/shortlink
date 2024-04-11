@@ -3,18 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.nageoffer.shortlink</groupId>
     <artifactId>shortlink-all</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>admin</module>
-        <module>aggregation</module>
-        <module>project</module>
-        <module>gateway</module>
-    </modules>
+    <description>
+        🔥热门推荐🔥SaaS 短链接系统，承载高并发和海量存储等场景难题。专为实习、校招以及社招而出的最新项目，项目质量不亚于12306铁路购票项目。
+    </description>
 
     <developers>
         <developer>
@@ -43,6 +39,13 @@
         <easyexcel.version>3.1.3</easyexcel.version>
         <spotless-maven-plugin.version>2.22.1</spotless-maven-plugin.version>
     </properties>
+
+    <modules>
+        <module>admin</module>
+        <module>aggregation</module>
+        <module>project</module>
+        <module>gateway</module>
+    </modules>
 
     <dependencies>
         <dependency>
