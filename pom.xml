@@ -16,6 +16,15 @@
         <module>gateway</module>
     </modules>
 
+    <developers>
+        <developer>
+            <name>马丁</name>
+            <email>machen@apache.org</email>
+            <url>https://github.com/magestacks</url>
+            <organization>Apache and openGoofy</organization>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>17</java.version>
         <spring-boot.version>3.0.7</spring-boot.version>
