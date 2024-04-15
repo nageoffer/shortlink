@@ -210,7 +210,7 @@ public interface LinkAccessLogsMapper extends BaseMapper<LinkAccessLogsDO> {
     @Select("SELECT " +
             "    tlal.* " +
             "FROM " +
-            "    t_link_1 tl " +
+            "    t_link tl " +
             "    INNER JOIN t_link_access_logs tlal ON tl.full_short_url = tlal.full_short_url " +
             "WHERE " +
             "    tl.gid = #{param.gid} " +
