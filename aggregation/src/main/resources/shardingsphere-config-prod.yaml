@@ -50,10 +50,6 @@ rules:
         type: HASH_MOD
         props:
           sharding-count: 16
-      link_stats_today_hash_mod:
-        type: HASH_MOD
-        props:
-          sharding-count: 16
   - !ENCRYPT
     tables:
       t_user:
