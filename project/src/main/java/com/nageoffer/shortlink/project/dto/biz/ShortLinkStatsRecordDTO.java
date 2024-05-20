@@ -22,6 +22,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * 短链接统计实体
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
@@ -81,4 +83,9 @@ public class ShortLinkStatsRecordDTO {
      * 消息队列唯一标识
      */
     private String keys;
+
+    /**
+     * 当前时间
+     */
+    private Date currentDate;
 }
