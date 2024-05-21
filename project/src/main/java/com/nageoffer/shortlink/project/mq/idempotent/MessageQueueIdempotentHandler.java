@@ -42,9 +42,9 @@ public class MessageQueueIdempotentHandler {
      * @param messageId 消息唯一标识
      * @return 消息是否消费过
      */
-    public boolean isMessageProcessed(String messageId) {
+    public boolean isMessageBeingConsumed(String messageId) {
         String key = IDEMPOTENT_KEY_PREFIX + messageId;
-        return Boolean.TRUE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 2, TimeUnit.MINUTES));
+        return Boolean.FALSE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key, "0", 2, TimeUnit.MINUTES));
     }
 
     /**
