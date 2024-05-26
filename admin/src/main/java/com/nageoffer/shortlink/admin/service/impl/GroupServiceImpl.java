@@ -171,15 +171,16 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     private String saveGroupUniqueReturnGid() {
         String gid = RandomGenerator.generateRandom();
-        if (!gidRegisterCachePenetrationBloomFilter.contains(gid)) {
-            GroupUniqueDO groupUniqueDO = GroupUniqueDO.builder()
-                    .gid(gid)
-                    .build();
-            try {
-                groupUniqueMapper.insert(groupUniqueDO);
-            } catch (DuplicateKeyException e) {
-                return null;
-            }
+        if (gidRegisterCachePenetrationBloomFilter.contains(gid)) {
+            return null;
+        }
+        GroupUniqueDO groupUniqueDO = GroupUniqueDO.builder()
+                .gid(gid)
+                .build();
+        try {
+            groupUniqueMapper.insert(groupUniqueDO);
+        } catch (DuplicateKeyException e) {
+            return null;
         }
         return gid;
     }
