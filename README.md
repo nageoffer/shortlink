@@ -9,7 +9,7 @@
 
 ## 简介
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20231115133642504.png)
+![](https://oss.open8gu.com/image-20231115133642504.png)
 
 短链接（Short Link）是指将一个原始的长 URL（Uniform Resource Locator）通过特定的算法或服务转化为一个更短、易于记忆的
 URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常长。
@@ -26,7 +26,7 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 短链接经常出现在咱们日常生活中，大家总是能在某些活动节日里收到各种营销短信，里边就会出现短链接。帮助企业在营销活动中，识别用户行为、点击率等关键信息监控。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/IMG_9858-20231126.jpg)
+![](https://oss.open8gu.com/IMG_9858-20231126.jpg)
 
 主要作用包括但不限于以下几个方面：
 
@@ -54,7 +54,7 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 通过学习短链接项目，不仅能了解其运作机制，还能接触最新技术体系带来的新特性，从而拓展技术视野并提升自身技术水平。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20231026132606180.png)
+![](https://oss.open8gu.com/image-20231026132606180.png)
 
 ## 加群沟通
 
@@ -64,7 +64,7 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 使用过程中有任何问题，或者对项目有什么建议，添加好友备注：`link`，领取项目学习资料，和 `4000+` 志同道合的朋友交流讨论。
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/1_990064918_171_84_3_716500817_c4659af930df3a2532d02b8fcc0f0cbe.png)
+![](https://oss.open8gu.com/1_990064918_171_84_3_716500817_c4659af930df3a2532d02b8fcc0f0cbe.png)
 
 ## 项目质量怎么样？
 
@@ -95,4 +95,4 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 短链接视频学习地址：[手摸手视频学习SaaS短链接项目](https://nageoffer.com/shortlink/video/)
 
-![](https://images-machen.oss-cn-beijing.aliyuncs.com/image-20231122173916783.png)
+![](https://oss.open8gu.com/image-20231122173916783.png)
