@@ -685,7 +685,7 @@ const deleteGroup = async (gid) => {
     ElMessage.success('删除成功')
     getGroupInfo(queryPage)
   } else {
-    ElMessage.error('删除失败')
+    ElMessage.error(res.data.message)
   }
 }
 // 编辑分组
@@ -767,8 +767,12 @@ const toRecycleBin = (data) => {
   API.smallLinkPage
     .toRecycleBin({ gid, fullShortUrl })
     .then((res) => {
-      ElMessage.success('删除成功')
-      getGroupInfo(queryPage)
+      if (res?.data?.code !== '0') {
+        ElMessage.error(res.data.message)
+      } else {
+        ElMessage.success('删除成功')
+        getGroupInfo(queryPage)
+      }
     })
     .catch((reason) => {
       ElMessage.error('删除失败')
@@ -795,8 +799,12 @@ const removeLink = (data) => {
   API.smallLinkPage
     .removeLink({ gid, fullShortUrl })
     .then((res) => {
-      ElMessage.success('删除成功')
-      queryRecycleBinPage()
+      if (res?.data?.code !== '0') {
+        ElMessage.error(res.data.message)
+      } else {
+        ElMessage.success('删除成功')
+        queryRecycleBinPage()
+      }
     })
     .catch((reason) => {
       ElMessage.error('删除失败')

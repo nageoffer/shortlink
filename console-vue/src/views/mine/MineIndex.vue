@@ -178,10 +178,15 @@ const changeUserInfo = (formEl) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
     if (valid) {
-      await API.user.editUser(userInfoForm.value)
-      getUserInfo()
-      dialogVisible.value = false
-      ElMessage.success('修改成功!')
+      await API.user.editUser(userInfoForm.value).then((res) => {
+        if (res?.data?.code !== '0') {
+          ElMessage.error(res.data.message)
+        } else {
+          getUserInfo()
+          dialogVisible.value = false
+          ElMessage.success('修改成功!')
+        }
+      })
     } else {
       return false
     }

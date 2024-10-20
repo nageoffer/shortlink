@@ -16,7 +16,7 @@
               class="link-span"
               style="text-decoration: none"
               target="_blank"
-              href="https://nageoffer.com/group/"
+              href="https://nageoffer.com/planet/group/"
               >加沟通群</a
             >
             <a
@@ -152,7 +152,8 @@ const truncateText = (text, maxLength) => {
 }
 
 .header {
-  background-color: #333333;
+  color: rgba(0,0,0,.85);
+  background-color: #252b30;
   padding: 0 0 0 20px;
   height: 100%;
   display: flex;

@@ -15,30 +15,30 @@
  * limitations under the License.
  */
 
-package com.nageoffer.shortlink.aggregation;
+package com.nageoffer.shortlink.aggregation.config;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
- * 短链接聚合应用
+ * 演示环境配置属性
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
-@EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = {
-        "com.nageoffer.shortlink.admin",
-        "com.nageoffer.shortlink.project",
-        "com.nageoffer.shortlink.aggregation"
-})
-@MapperScan(value = {
-        "com.nageoffer.shortlink.project.dao.mapper",
-        "com.nageoffer.shortlink.admin.dao.mapper"
-})
-public class AggregationServiceApplication {
+@Data
+@Component
+@ConfigurationProperties(prefix = "short-link.demo-mode")
+public class DemoModeProperties {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AggregationServiceApplication.class, args);
-    }
+    /**
+     * 是否开启演示环境模式
+     */
+    private Boolean enable;
+
+    /**
+     * 演示环境黑名单路径
+     */
+    private List<String> blacklist;
 }

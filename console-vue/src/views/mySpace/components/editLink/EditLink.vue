@@ -38,6 +38,7 @@
 <script setup>
 import { reactive, ref, onMounted, nextTick, watch, onBeforeUnmount, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+import {ElMessage} from "element-plus";
 
 const store = useStore()
 const defaultDomain = store.state.domain?? ' '
@@ -240,8 +241,12 @@ const onSubmit = async (formEl) => {
     if (valid) {
       emits('onSubmit', false)
       const res = await API.smallLinkPage.editSmallLink(formData)
-      emits('updatePage')
-    } else {
+      if (res?.data?.code !== '0') {
+        ElMessage.error(res.data.message)
+      } else {
+        ElMessage.success('修改成功')
+        emits('updatePage')
+      }
     }
   })
 }
