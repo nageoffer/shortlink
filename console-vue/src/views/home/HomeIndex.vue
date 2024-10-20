@@ -30,7 +30,7 @@
                 class="link-span"
                 style="text-decoration: none"
                 target="_blank"
-                href="http://shortlink.magestack.cn"
+                href="http://shortlink.nageoffer.com"
             >演示环境</a
             >
             <el-dropdown>
