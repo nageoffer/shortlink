@@ -57,7 +57,7 @@ public class DemoModeConfiguration implements WebMvcConfigurer {
                     && !Objects.equals(request.getMethod(), "GET")) {
                 response.setContentType("application/json;charset=UTF-8");
                 PrintWriter out = response.getWriter();
-                Result<Void> result = Results.failure("B000001", "演示环境部分部分功能受限，请访问短链接跳转、监控等功能");
+                Result<Void> result = Results.failure("B000001", "演示环境部分功能受限，请访问短链接跳转、监控等功能");
                 out.print(JSON.toJSONString(result)); // 返回指定的 JSON 字符串
                 out.flush();
                 return false;
