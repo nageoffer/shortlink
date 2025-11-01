@@ -65,6 +65,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -91,194 +93,249 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
         if (CollUtil.isEmpty(listStatsByShortLink)) {
             return null;
         }
-        // 基础访问数据
-        LinkAccessStatsDO pvUvUidStatsByShortLink = linkAccessLogsMapper.findPvUvUidStatsByShortLink(requestParam);
-        // 基础访问详情
-        List<ShortLinkStatsAccessDailyRespDTO> daily = new ArrayList<>();
-        List<String> rangeDates = DateUtil.rangeToList(DateUtil.parse(requestParam.getStartDate()), DateUtil.parse(requestParam.getEndDate()), DateField.DAY_OF_MONTH).stream()
-                .map(DateUtil::formatDate)
-                .toList();
-        rangeDates.forEach(each -> listStatsByShortLink.stream()
-                .filter(item -> Objects.equals(each, DateUtil.formatDate(item.getDate())))
-                .findFirst()
-                .ifPresentOrElse(item -> {
-                    ShortLinkStatsAccessDailyRespDTO accessDailyRespDTO = ShortLinkStatsAccessDailyRespDTO.builder()
-                            .date(each)
-                            .pv(item.getPv())
-                            .uv(item.getUv())
-                            .uip(item.getUip())
-                            .build();
-                    daily.add(accessDailyRespDTO);
-                }, () -> {
-                    ShortLinkStatsAccessDailyRespDTO accessDailyRespDTO = ShortLinkStatsAccessDailyRespDTO.builder()
-                            .date(each)
-                            .pv(0)
-                            .uv(0)
-                            .uip(0)
-                            .build();
-                    daily.add(accessDailyRespDTO);
-                }));
-        // 地区访问详情（仅国内）
-        List<ShortLinkStatsLocaleCNRespDTO> localeCnStats = new ArrayList<>();
-        List<LinkLocaleStatsDO> listedLocaleByShortLink = linkLocaleStatsMapper.listLocaleByShortLink(requestParam);
-        int localeCnSum = listedLocaleByShortLink.stream()
-                .mapToInt(LinkLocaleStatsDO::getCnt)
-                .sum();
-        listedLocaleByShortLink.forEach(each -> {
-            double ratio = (double) each.getCnt() / localeCnSum;
-            double actualRatio = Math.round(ratio * 100.0) / 100.0;
-            ShortLinkStatsLocaleCNRespDTO localeCNRespDTO = ShortLinkStatsLocaleCNRespDTO.builder()
-                    .cnt(each.getCnt())
-                    .locale(each.getProvince())
-                    .ratio(actualRatio)
-                    .build();
-            localeCnStats.add(localeCNRespDTO);
-        });
-        // 小时访问详情
-        List<Integer> hourStats = new ArrayList<>();
-        List<LinkAccessStatsDO> listHourStatsByShortLink = linkAccessStatsMapper.listHourStatsByShortLink(requestParam);
-        for (int i = 0; i < 24; i++) {
-            AtomicInteger hour = new AtomicInteger(i);
-            int hourCnt = listHourStatsByShortLink.stream()
-                    .filter(each -> Objects.equals(each.getHour(), hour.get()))
-                    .findFirst()
-                    .map(LinkAccessStatsDO::getPv)
-                    .orElse(0);
-            hourStats.add(hourCnt);
-        }
-        // 高频访问IP详情
-        List<ShortLinkStatsTopIpRespDTO> topIpStats = new ArrayList<>();
-        List<HashMap<String, Object>> listTopIpByShortLink = linkAccessLogsMapper.listTopIpByShortLink(requestParam);
-        listTopIpByShortLink.forEach(each -> {
-            ShortLinkStatsTopIpRespDTO statsTopIpRespDTO = ShortLinkStatsTopIpRespDTO.builder()
-                    .ip(each.get("ip").toString())
-                    .cnt(Integer.parseInt(each.get("count").toString()))
-                    .build();
-            topIpStats.add(statsTopIpRespDTO);
-        });
-        // 一周访问详情
-        List<Integer> weekdayStats = new ArrayList<>();
-        List<LinkAccessStatsDO> listWeekdayStatsByShortLink = linkAccessStatsMapper.listWeekdayStatsByShortLink(requestParam);
-        for (int i = 1; i < 8; i++) {
-            AtomicInteger weekday = new AtomicInteger(i);
-            int weekdayCnt = listWeekdayStatsByShortLink.stream()
-                    .filter(each -> Objects.equals(each.getWeekday(), weekday.get()))
-                    .findFirst()
-                    .map(LinkAccessStatsDO::getPv)
-                    .orElse(0);
-            weekdayStats.add(weekdayCnt);
-        }
-        // 浏览器访问详情
-        List<ShortLinkStatsBrowserRespDTO> browserStats = new ArrayList<>();
-        List<HashMap<String, Object>> listBrowserStatsByShortLink = linkBrowserStatsMapper.listBrowserStatsByShortLink(requestParam);
-        int browserSum = listBrowserStatsByShortLink.stream()
-                .mapToInt(each -> Integer.parseInt(each.get("count").toString()))
-                .sum();
-        listBrowserStatsByShortLink.forEach(each -> {
-            double ratio = (double) Integer.parseInt(each.get("count").toString()) / browserSum;
-            double actualRatio = Math.round(ratio * 100.0) / 100.0;
-            ShortLinkStatsBrowserRespDTO browserRespDTO = ShortLinkStatsBrowserRespDTO.builder()
-                    .cnt(Integer.parseInt(each.get("count").toString()))
-                    .browser(each.get("browser").toString())
-                    .ratio(actualRatio)
-                    .build();
-            browserStats.add(browserRespDTO);
-        });
-        // 操作系统访问详情
-        List<ShortLinkStatsOsRespDTO> osStats = new ArrayList<>();
-        List<HashMap<String, Object>> listOsStatsByShortLink = linkOsStatsMapper.listOsStatsByShortLink(requestParam);
-        int osSum = listOsStatsByShortLink.stream()
-                .mapToInt(each -> Integer.parseInt(each.get("count").toString()))
-                .sum();
-        listOsStatsByShortLink.forEach(each -> {
-            double ratio = (double) Integer.parseInt(each.get("count").toString()) / osSum;
-            double actualRatio = Math.round(ratio * 100.0) / 100.0;
-            ShortLinkStatsOsRespDTO osRespDTO = ShortLinkStatsOsRespDTO.builder()
-                    .cnt(Integer.parseInt(each.get("count").toString()))
-                    .os(each.get("os").toString())
-                    .ratio(actualRatio)
-                    .build();
-            osStats.add(osRespDTO);
-        });
-        // 访客访问类型详情
-        List<ShortLinkStatsUvRespDTO> uvTypeStats = new ArrayList<>();
-        HashMap<String, Object> findUvTypeByShortLink = linkAccessLogsMapper.findUvTypeCntByShortLink(requestParam);
-        int oldUserCnt = Integer.parseInt(
-                Optional.ofNullable(findUvTypeByShortLink)
-                        .map(each -> each.get("oldUserCnt"))
-                        .map(Object::toString)
-                        .orElse("0")
+
+        // 使用CompletableFuture并行执行各个统计任务
+        CompletableFuture<LinkAccessStatsDO> pvUvUidFuture = CompletableFuture.supplyAsync(() ->
+                linkAccessLogsMapper.findPvUvUidStatsByShortLink(requestParam)
         );
-        int newUserCnt = Integer.parseInt(
-                Optional.ofNullable(findUvTypeByShortLink)
-                        .map(each -> each.get("newUserCnt"))
-                        .map(Object::toString)
-                        .orElse("0")
-        );
-        int uvSum = oldUserCnt + newUserCnt;
-        double oldRatio = (double) oldUserCnt / uvSum;
-        double actualOldRatio = Math.round(oldRatio * 100.0) / 100.0;
-        double newRatio = (double) newUserCnt / uvSum;
-        double actualNewRatio = Math.round(newRatio * 100.0) / 100.0;
-        ShortLinkStatsUvRespDTO newUvRespDTO = ShortLinkStatsUvRespDTO.builder()
-                .uvType("newUser")
-                .cnt(newUserCnt)
-                .ratio(actualNewRatio)
-                .build();
-        uvTypeStats.add(newUvRespDTO);
-        ShortLinkStatsUvRespDTO oldUvRespDTO = ShortLinkStatsUvRespDTO.builder()
-                .uvType("oldUser")
-                .cnt(oldUserCnt)
-                .ratio(actualOldRatio)
-                .build();
-        uvTypeStats.add(oldUvRespDTO);
-        // 访问设备类型详情
-        List<ShortLinkStatsDeviceRespDTO> deviceStats = new ArrayList<>();
-        List<LinkDeviceStatsDO> listDeviceStatsByShortLink = linkDeviceStatsMapper.listDeviceStatsByShortLink(requestParam);
-        int deviceSum = listDeviceStatsByShortLink.stream()
-                .mapToInt(LinkDeviceStatsDO::getCnt)
-                .sum();
-        listDeviceStatsByShortLink.forEach(each -> {
-            double ratio = (double) each.getCnt() / deviceSum;
-            double actualRatio = Math.round(ratio * 100.0) / 100.0;
-            ShortLinkStatsDeviceRespDTO deviceRespDTO = ShortLinkStatsDeviceRespDTO.builder()
-                    .cnt(each.getCnt())
-                    .device(each.getDevice())
-                    .ratio(actualRatio)
-                    .build();
-            deviceStats.add(deviceRespDTO);
+
+        CompletableFuture<List<ShortLinkStatsAccessDailyRespDTO>> dailyFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsAccessDailyRespDTO> daily = new ArrayList<>();
+            List<String> rangeDates = DateUtil.rangeToList(DateUtil.parse(requestParam.getStartDate()), DateUtil.parse(requestParam.getEndDate()), DateField.DAY_OF_MONTH).stream()
+                    .map(DateUtil::formatDate)
+                    .toList();
+            rangeDates.forEach(each -> listStatsByShortLink.stream()
+                    .filter(item -> Objects.equals(each, DateUtil.formatDate(item.getDate())))
+                    .findFirst()
+                    .ifPresentOrElse(item -> {
+                        ShortLinkStatsAccessDailyRespDTO accessDailyRespDTO = ShortLinkStatsAccessDailyRespDTO.builder()
+                                .date(each)
+                                .pv(item.getPv())
+                                .uv(item.getUv())
+                                .uip(item.getUip())
+                                .build();
+                        daily.add(accessDailyRespDTO);
+                    }, () -> {
+                        ShortLinkStatsAccessDailyRespDTO accessDailyRespDTO = ShortLinkStatsAccessDailyRespDTO.builder()
+                                .date(each)
+                                .pv(0)
+                                .uv(0)
+                                .uip(0)
+                                .build();
+                        daily.add(accessDailyRespDTO);
+                    }));
+            return daily;
         });
-        // 访问网络类型详情
-        List<ShortLinkStatsNetworkRespDTO> networkStats = new ArrayList<>();
-        List<LinkNetworkStatsDO> listNetworkStatsByShortLink = linkNetworkStatsMapper.listNetworkStatsByShortLink(requestParam);
-        int networkSum = listNetworkStatsByShortLink.stream()
-                .mapToInt(LinkNetworkStatsDO::getCnt)
-                .sum();
-        listNetworkStatsByShortLink.forEach(each -> {
-            double ratio = (double) each.getCnt() / networkSum;
-            double actualRatio = Math.round(ratio * 100.0) / 100.0;
-            ShortLinkStatsNetworkRespDTO networkRespDTO = ShortLinkStatsNetworkRespDTO.builder()
-                    .cnt(each.getCnt())
-                    .network(each.getNetwork())
-                    .ratio(actualRatio)
-                    .build();
-            networkStats.add(networkRespDTO);
+
+        CompletableFuture<List<ShortLinkStatsLocaleCNRespDTO>> localeCnStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsLocaleCNRespDTO> localeCnStats = new ArrayList<>();
+            List<LinkLocaleStatsDO> listedLocaleByShortLink = linkLocaleStatsMapper.listLocaleByShortLink(requestParam);
+            int localeCnSum = listedLocaleByShortLink.stream()
+                    .mapToInt(LinkLocaleStatsDO::getCnt)
+                    .sum();
+            listedLocaleByShortLink.forEach(each -> {
+                double ratio = (double) each.getCnt() / localeCnSum;
+                double actualRatio = Math.round(ratio * 100.0) / 100.0;
+                ShortLinkStatsLocaleCNRespDTO localeCNRespDTO = ShortLinkStatsLocaleCNRespDTO.builder()
+                        .cnt(each.getCnt())
+                        .locale(each.getProvince())
+                        .ratio(actualRatio)
+                        .build();
+                localeCnStats.add(localeCNRespDTO);
+            });
+            return localeCnStats;
         });
-        return ShortLinkStatsRespDTO.builder()
-                .pv(pvUvUidStatsByShortLink.getPv())
-                .uv(pvUvUidStatsByShortLink.getUv())
-                .uip(pvUvUidStatsByShortLink.getUip())
-                .daily(daily)
-                .localeCnStats(localeCnStats)
-                .hourStats(hourStats)
-                .topIpStats(topIpStats)
-                .weekdayStats(weekdayStats)
-                .browserStats(browserStats)
-                .osStats(osStats)
-                .uvTypeStats(uvTypeStats)
-                .deviceStats(deviceStats)
-                .networkStats(networkStats)
-                .build();
+
+        CompletableFuture<List<Integer>> hourStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<Integer> hourStats = new ArrayList<>();
+            List<LinkAccessStatsDO> listHourStatsByShortLink = linkAccessStatsMapper.listHourStatsByShortLink(requestParam);
+            for (int i = 0; i < 24; i++) {
+                AtomicInteger hour = new AtomicInteger(i);
+                int hourCnt = listHourStatsByShortLink.stream()
+                        .filter(each -> Objects.equals(each.getHour(), hour.get()))
+                        .findFirst()
+                        .map(LinkAccessStatsDO::getPv)
+                        .orElse(0);
+                hourStats.add(hourCnt);
+            }
+            return hourStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsTopIpRespDTO>> topIpStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsTopIpRespDTO> topIpStats = new ArrayList<>();
+            List<HashMap<String, Object>> listTopIpByShortLink = linkAccessLogsMapper.listTopIpByShortLink(requestParam);
+            listTopIpByShortLink.forEach(each -> {
+                ShortLinkStatsTopIpRespDTO statsTopIpRespDTO = ShortLinkStatsTopIpRespDTO.builder()
+                        .ip(each.get("ip").toString())
+                        .cnt(Integer.parseInt(each.get("count").toString()))
+                        .build();
+                topIpStats.add(statsTopIpRespDTO);
+            });
+            return topIpStats;
+        });
+
+        CompletableFuture<List<Integer>> weekdayStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<Integer> weekdayStats = new ArrayList<>();
+            List<LinkAccessStatsDO> listWeekdayStatsByShortLink = linkAccessStatsMapper.listWeekdayStatsByShortLink(requestParam);
+            for (int i = 1; i < 8; i++) {
+                AtomicInteger weekday = new AtomicInteger(i);
+                int weekdayCnt = listWeekdayStatsByShortLink.stream()
+                        .filter(each -> Objects.equals(each.getWeekday(), weekday.get()))
+                        .findFirst()
+                        .map(LinkAccessStatsDO::getPv)
+                        .orElse(0);
+                weekdayStats.add(weekdayCnt);
+            }
+            return weekdayStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsBrowserRespDTO>> browserStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsBrowserRespDTO> browserStats = new ArrayList<>();
+            List<HashMap<String, Object>> listBrowserStatsByShortLink = linkBrowserStatsMapper.listBrowserStatsByShortLink(requestParam);
+            int browserSum = listBrowserStatsByShortLink.stream()
+                    .mapToInt(each -> Integer.parseInt(each.get("count").toString()))
+                    .sum();
+            listBrowserStatsByShortLink.forEach(each -> {
+                double ratio = (double) Integer.parseInt(each.get("count").toString()) / browserSum;
+                double actualRatio = Math.round(ratio * 100.0) / 100.0;
+                ShortLinkStatsBrowserRespDTO browserRespDTO = ShortLinkStatsBrowserRespDTO.builder()
+                        .cnt(Integer.parseInt(each.get("count").toString()))
+                        .browser(each.get("browser").toString())
+                        .ratio(actualRatio)
+                        .build();
+                browserStats.add(browserRespDTO);
+            });
+            return browserStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsOsRespDTO>> osStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsOsRespDTO> osStats = new ArrayList<>();
+            List<HashMap<String, Object>> listOsStatsByShortLink = linkOsStatsMapper.listOsStatsByShortLink(requestParam);
+            int osSum = listOsStatsByShortLink.stream()
+                    .mapToInt(each -> Integer.parseInt(each.get("count").toString()))
+                    .sum();
+            listOsStatsByShortLink.forEach(each -> {
+                double ratio = (double) Integer.parseInt(each.get("count").toString()) / osSum;
+                double actualRatio = Math.round(ratio * 100.0) / 100.0;
+                ShortLinkStatsOsRespDTO osRespDTO = ShortLinkStatsOsRespDTO.builder()
+                        .cnt(Integer.parseInt(each.get("count").toString()))
+                        .os(each.get("os").toString())
+                        .ratio(actualRatio)
+                        .build();
+                osStats.add(osRespDTO);
+            });
+            return osStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsUvRespDTO>> uvTypeStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsUvRespDTO> uvTypeStats = new ArrayList<>();
+            HashMap<String, Object> findUvTypeByShortLink = linkAccessLogsMapper.findUvTypeCntByShortLink(requestParam);
+            int oldUserCnt = Integer.parseInt(
+                    Optional.ofNullable(findUvTypeByShortLink)
+                            .map(each -> each.get("oldUserCnt"))
+                            .map(Object::toString)
+                            .orElse("0")
+            );
+            int newUserCnt = Integer.parseInt(
+                    Optional.ofNullable(findUvTypeByShortLink)
+                            .map(each -> each.get("newUserCnt"))
+                            .map(Object::toString)
+                            .orElse("0")
+            );
+            int uvSum = oldUserCnt + newUserCnt;
+            double oldRatio = (double) oldUserCnt / uvSum;
+            double actualOldRatio = Math.round(oldRatio * 100.0) / 100.0;
+            double newRatio = (double) newUserCnt / uvSum;
+            double actualNewRatio = Math.round(newRatio * 100.0) / 100.0;
+            ShortLinkStatsUvRespDTO newUvRespDTO = ShortLinkStatsUvRespDTO.builder()
+                    .uvType("newUser")
+                    .cnt(newUserCnt)
+                    .ratio(actualNewRatio)
+                    .build();
+            uvTypeStats.add(newUvRespDTO);
+            ShortLinkStatsUvRespDTO oldUvRespDTO = ShortLinkStatsUvRespDTO.builder()
+                    .uvType("oldUser")
+                    .cnt(oldUserCnt)
+                    .ratio(actualOldRatio)
+                    .build();
+            uvTypeStats.add(oldUvRespDTO);
+            return uvTypeStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsDeviceRespDTO>> deviceStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsDeviceRespDTO> deviceStats = new ArrayList<>();
+            List<LinkDeviceStatsDO> listDeviceStatsByShortLink = linkDeviceStatsMapper.listDeviceStatsByShortLink(requestParam);
+            int deviceSum = listDeviceStatsByShortLink.stream()
+                    .mapToInt(LinkDeviceStatsDO::getCnt)
+                    .sum();
+            listDeviceStatsByShortLink.forEach(each -> {
+                double ratio = (double) each.getCnt() / deviceSum;
+                double actualRatio = Math.round(ratio * 100.0) / 100.0;
+                ShortLinkStatsDeviceRespDTO deviceRespDTO = ShortLinkStatsDeviceRespDTO.builder()
+                        .cnt(each.getCnt())
+                        .device(each.getDevice())
+                        .ratio(actualRatio)
+                        .build();
+                deviceStats.add(deviceRespDTO);
+            });
+            return deviceStats;
+        });
+
+        CompletableFuture<List<ShortLinkStatsNetworkRespDTO>> networkStatsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ShortLinkStatsNetworkRespDTO> networkStats = new ArrayList<>();
+            List<LinkNetworkStatsDO> listNetworkStatsByShortLink = linkNetworkStatsMapper.listNetworkStatsByShortLink(requestParam);
+            int networkSum = listNetworkStatsByShortLink.stream()
+                    .mapToInt(LinkNetworkStatsDO::getCnt)
+                    .sum();
+            listNetworkStatsByShortLink.forEach(each -> {
+                double ratio = (double) each.getCnt() / networkSum;
+                double actualRatio = Math.round(ratio * 100.0) / 100.0;
+                ShortLinkStatsNetworkRespDTO networkRespDTO = ShortLinkStatsNetworkRespDTO.builder()
+                        .cnt(each.getCnt())
+                        .network(each.getNetwork())
+                        .ratio(actualRatio)
+                        .build();
+                networkStats.add(networkRespDTO);
+            });
+            return networkStats;
+        });
+
+        // 等待所有任务完成并获取结果
+        CompletableFuture.allOf(pvUvUidFuture, dailyFuture, localeCnStatsFuture, hourStatsFuture, topIpStatsFuture,
+                weekdayStatsFuture, browserStatsFuture, osStatsFuture, uvTypeStatsFuture, deviceStatsFuture, networkStatsFuture)
+                .join();
+
+        try {
+            LinkAccessStatsDO pvUvUidStatsByShortLink = pvUvUidFuture.get();
+            List<ShortLinkStatsAccessDailyRespDTO> daily = dailyFuture.get();
+            List<ShortLinkStatsLocaleCNRespDTO> localeCnStats = localeCnStatsFuture.get();
+            List<Integer> hourStats = hourStatsFuture.get();
+            List<ShortLinkStatsTopIpRespDTO> topIpStats = topIpStatsFuture.get();
+            List<Integer> weekdayStats = weekdayStatsFuture.get();
+            List<ShortLinkStatsBrowserRespDTO> browserStats = browserStatsFuture.get();
+            List<ShortLinkStatsOsRespDTO> osStats = osStatsFuture.get();
+            List<ShortLinkStatsUvRespDTO> uvTypeStats = uvTypeStatsFuture.get();
+            List<ShortLinkStatsDeviceRespDTO> deviceStats = deviceStatsFuture.get();
+            List<ShortLinkStatsNetworkRespDTO> networkStats = networkStatsFuture.get();
+
+            return ShortLinkStatsRespDTO.builder()
+                    .pv(pvUvUidStatsByShortLink.getPv())
+                    .uv(pvUvUidStatsByShortLink.getUv())
+                    .uip(pvUvUidStatsByShortLink.getUip())
+                    .daily(daily)
+                    .localeCnStats(localeCnStats)
+                    .hourStats(hourStats)
+                    .topIpStats(topIpStats)
+                    .weekdayStats(weekdayStats)
+                    .browserStats(browserStats)
+                    .osStats(osStats)
+                    .uvTypeStats(uvTypeStats)
+                    .deviceStats(deviceStats)
+                    .networkStats(networkStats)
+                    .build();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new ServiceException("统计数据获取失败", e);
+        }
     }
 
     @Override
