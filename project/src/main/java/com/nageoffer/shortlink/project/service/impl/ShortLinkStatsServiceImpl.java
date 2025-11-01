@@ -334,7 +334,7 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
                     .networkStats(networkStats)
                     .build();
         } catch (InterruptedException | ExecutionException e) {
-            throw new ServiceException("统计数据获取失败", e);
+            throw new ServiceException("统计数据获取失败", e, BaseErrorCode.SERVICE_ERROR);
         }
     }
 
