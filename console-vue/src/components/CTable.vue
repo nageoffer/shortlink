@@ -48,13 +48,13 @@ const getList = () => {
     if (!res) return
     result.value = res
     let data = res || {}
-    tableData.value = Array.isArray(data.records) ? data.records : [] // 表数据
-    total.value = data.total || 0 // 数据长度
+    tableData.value = Array.isArray(data.records) ? data.records : [] // Table data
+    total.value = data.total || 0 // Total records
     emit('getTotal', total.value)
     if (tableData.value.length === 0 && pageParams.value.pageNum > 1) {
       pageParams.value.pageNum = pageParams.value.pageNum - 1 || 1
       getList()
-    } // 无数据时，重定向前一页或第一页
+    } // If the current page is empty, fall back to the previous page or page 1.
   }
   if (typeof dataFun === 'function') {
     let dataPromise = dataFun && dataFun(ajaxParams)
@@ -83,7 +83,7 @@ const computedHeaders = ref([])
 function dealHeaders() {
   let headers = props.tableHeaders
   computedHeaders.value = headers.map((headItem) => {
-    // 序号类型，补充分页信息返回
+    // For index columns, inject pagination context into the formatter.
     let fun = headItem.index
     if (headItem.type === 'index' && typeof fun === 'function') {
       headItem.index = (index) => fun(index, pageParams.value.pageNum, pageParams.value.pageSize)
@@ -140,7 +140,7 @@ defineExpose({
         v-loading="pageLoading"
       >
         <template v-for="(col, index) in computedHeaders">
-          <!-- btns操作栏 -->
+          <!-- Action buttons -->
           <el-table-column
             :key="index + col"
             v-bind="col"
@@ -158,7 +158,7 @@ defineExpose({
               >
             </template>
           </el-table-column>
-          <!-- 自定义栏 -->
+          <!-- Custom column -->
           <el-table-column
             :key="index + col"
             v-bind="col"
@@ -168,14 +168,14 @@ defineExpose({
               <slot :name="col.slotName || col.prop" :row="scope.row"></slot>
             </template>
           </el-table-column>
-          <!-- 通用栏 -->
+          <!-- Generic column -->
           <el-table-column v-bind="col" :key="index + col" v-else-if="!col.hidden">
           </el-table-column>
         </template>
-        <!-- 数据为空 -->
+        <!-- Empty state -->
         <template v-slot:empty>
           <no-data v-if="showImg" class="nodata"></no-data>
-          <div v-else>暂无数据</div>
+          <div v-else>No data</div>
         </template>
       </el-table>
     </div>

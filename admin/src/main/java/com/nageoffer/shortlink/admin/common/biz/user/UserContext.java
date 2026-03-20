@@ -22,8 +22,8 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 import java.util.Optional;
 
 /**
- * 用户上下文
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * User context
+ * 
  */
 public final class UserContext {
 
@@ -33,18 +33,18 @@ public final class UserContext {
     private static final ThreadLocal<UserInfoDTO> USER_THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     /**
-     * 设置用户至上下文
+     * Store the current user in the context.
      *
-     * @param user 用户详情信息
+     * @param user user details
      */
     public static void setUser(UserInfoDTO user) {
         USER_THREAD_LOCAL.set(user);
     }
 
     /**
-     * 获取上下文中用户 ID
+     * Get the user ID from the context.
      *
-     * @return 用户 ID
+     * @return user ID
      */
     public static String getUserId() {
         UserInfoDTO userInfoDTO = USER_THREAD_LOCAL.get();
@@ -52,9 +52,9 @@ public final class UserContext {
     }
 
     /**
-     * 获取上下文中用户名称
+     * Get the username from the context.
      *
-     * @return 用户名称
+     * @return username
      */
     public static String getUsername() {
         UserInfoDTO userInfoDTO = USER_THREAD_LOCAL.get();
@@ -62,9 +62,9 @@ public final class UserContext {
     }
 
     /**
-     * 获取上下文中用户真实姓名
+     * Get the real name from the context.
      *
-     * @return 用户真实姓名
+     * @return real name
      */
     public static String getRealName() {
         UserInfoDTO userInfoDTO = USER_THREAD_LOCAL.get();
@@ -72,7 +72,7 @@ public final class UserContext {
     }
 
     /**
-     * 清理用户上下文
+     * Clear the user context.
      */
     public static void removeUser() {
         USER_THREAD_LOCAL.remove();

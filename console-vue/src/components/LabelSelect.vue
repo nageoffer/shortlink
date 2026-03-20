@@ -19,7 +19,7 @@ const emits = defineEmits(['changeValue'])
 defineProps({
   label: {
     type: String,
-    default: '选项名称'
+    default: 'Option'
   },
   options: {
     type: Array,
@@ -32,7 +32,7 @@ defineProps({
   },
   placeholder: {
     type: String,
-    default: '请选择'
+    default: 'Please select'
   }
 })
 watch(

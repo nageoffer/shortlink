@@ -24,8 +24,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 用户信息实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * User info DTO
+ * 
  */
 @Data
 @NoArgsConstructor
@@ -34,18 +34,18 @@ import lombok.NoArgsConstructor;
 public class UserInfoDTO {
 
     /**
-     * 用户 ID
+     * User ID
      */
     @JSONField(name = "id")
     private String userId;
 
     /**
-     * 用户名
+     * Username
      */
     private String username;
 
     /**
-     * 真实姓名
+     * Real name
      */
     private String realName;
 }

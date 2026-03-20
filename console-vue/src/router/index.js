@@ -25,19 +25,19 @@ const router = createRouter({
           path: 'space',
           name: 'MySpace',
           component: () => import('@/views/mySpace/MySpaceIndex.vue'),
-          meta: { title: '我的空间' }
+          meta: { title: 'My Space' }
         },
         {
           path: 'recycleBin',
           name: 'RecycleBin',
           component: () => import('@/views/recycleBin/RecycleBinIndex.vue'),
-          meta: { title: '账户设置' }
+          meta: { title: 'Recycle Bin' }
         },
         {
           path: 'account',
           name: 'Mine',
           component: () => import('@/views/mine/MineIndex.vue'),
-          meta: { title: '个人中心' }
+          meta: { title: 'Profile' }
         }
       ]
     }

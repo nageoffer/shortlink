@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 短链接监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link analytics response DTO
+ * 
  */
 @Data
 @Builder
@@ -35,67 +35,67 @@ import java.util.List;
 public class ShortLinkStatsRespDTO {
 
     /**
-     * 访问量
+     * Visits
      */
     private Integer pv;
 
     /**
-     * 独立访客数
+     * Unique visitors
      */
     private Integer uv;
 
     /**
-     * 独立IP数
+     * Unique IPs
      */
     private Integer uip;
 
     /**
-     * 基础访问详情
+     * Basic visit statistics.
      */
     private List<ShortLinkStatsAccessDailyRespDTO> daily;
 
     /**
-     * 地区访问详情（仅国内）
+     * Region statistics (China only).
      */
     private List<ShortLinkStatsLocaleCNRespDTO> localeCnStats;
 
     /**
-     * 小时访问详情
+     * Hourly visit statistics.
      */
     private List<Integer> hourStats;
 
     /**
-     * 高频访问IP详情
+     * Top IP statistics.
      */
     private List<ShortLinkStatsTopIpRespDTO> topIpStats;
 
     /**
-     * 一周访问详情
+     * Weekday visit statistics.
      */
     private List<Integer> weekdayStats;
 
     /**
-     * 浏览器访问详情
+     * Browser statistics.
      */
     private List<ShortLinkStatsBrowserRespDTO> browserStats;
 
     /**
-     * 操作系统访问详情
+     * Operating system statistics.
      */
     private List<ShortLinkStatsOsRespDTO> osStats;
 
     /**
-     * 访客访问类型详情
+     * Visitor type statistics.
      */
     private List<ShortLinkStatsUvRespDTO> uvTypeStats;
 
     /**
-     * 访问设备类型详情
+     * Device statistics.
      */
     private List<ShortLinkStatsDeviceRespDTO> deviceStats;
 
     /**
-     * 访问网络类型详情
+     * Network statistics.
      */
     private List<ShortLinkStatsNetworkRespDTO> networkStats;
 }

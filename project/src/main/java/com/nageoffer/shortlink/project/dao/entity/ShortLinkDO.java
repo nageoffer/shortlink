@@ -28,8 +28,55 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Entity
+ * <p>
+ * This entity represents a complete short link record in the system. It stores all information
+ * about a short link including the original long URL, domain, group association, expiration
+ * settings, and comprehensive statistics. This is the core entity of the short link system.
+ * </p>
+ * <p>
+ * Database table: t_link
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>domain</b>: Domain hosting the short link</li>
+ *   <li><b>shortUri</b>: Unique short URI (e.g., "abc123")</li>
+ *   <li><b>fullShortUrl</b>: Complete short URL (domain + shortUri)</li>
+ *   <li><b>originUrl</b>: Original long URL to redirect to</li>
+ *   <li><b>clickNum</b>: Click count (deprecated, use totalPv)</li>
+ *   <li><b>gid</b>: Group identifier for categorization</li>
+ *   <li><b>enableStatus</b>: Enable flag (0: enabled, 1: disabled)</li>
+ *   <li><b>createdType</b>: Creation type (0: API, 1: Console)</li>
+ *   <li><b>validDateType</b>: Expiration type (0: permanent, 1: custom)</li>
+ *   <li><b>validDate</b>: Expiration date for custom expiration</li>
+ *   <li><b>describe</b>: User-provided description</li>
+ *   <li><b>favicon</b>: Website favicon URL</li>
+ *   <li><b>totalPv/totalUv/totalUip</b>: Historical statistics</li>
+ *   <li><b>delTime</b>: Soft delete timestamp</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Statistics fields (transient):
+ * <ul>
+ *   <li><b>todayPv/todayUv/todayUip</b>: Today's statistics (not persisted)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Short link creation and management</li>
+ *   <li>Link expiration handling</li>
+ *   <li>Soft delete for link removal</li>
+ *   <li>Statistics aggregation and reporting</li>
+ *   <li>Group-based link organization</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

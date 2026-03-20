@@ -23,8 +23,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接创建响应对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short link创建响应对象
+ * 
  */
 @Data
 @Builder
@@ -33,17 +33,17 @@ import lombok.NoArgsConstructor;
 public class ShortLinkCreateRespDTO {
 
     /**
-     * 分组信息
+     * Group info
      */
     private String gid;
 
     /**
-     * 原始链接
+     * Original URL
      */
     private String originUrl;
 
     /**
-     * 短链接
+     * Short link
      */
     private String fullShortUrl;
 }

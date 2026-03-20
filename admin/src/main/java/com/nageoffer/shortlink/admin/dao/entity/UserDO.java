@@ -22,45 +22,44 @@ import com.nageoffer.shortlink.admin.common.database.BaseDO;
 import lombok.Data;
 
 /**
- * 用户持久层实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * User persistence entity.
  */
 @Data
 @TableName("t_user")
 public class UserDO extends BaseDO {
 
     /**
-     * id
+     * ID.
      */
     private Long id;
 
     /**
-     * 用户名
+     * Username.
      */
     private String username;
 
     /**
-     * 密码
+     * Password.
      */
     private String password;
 
     /**
-     * 真实姓名
+     * Real name.
      */
     private String realName;
 
     /**
-     * 手机号
+     * Phone number.
      */
     private String phone;
 
     /**
-     * 邮箱
+     * Email.
      */
     private String mail;
 
     /**
-     * 注销时间戳
+     * Deletion timestamp.
      */
     private Long deletionTime;
 }

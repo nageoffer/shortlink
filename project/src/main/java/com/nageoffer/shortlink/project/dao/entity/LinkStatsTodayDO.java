@@ -27,8 +27,50 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接今日统计实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Today's Statistics Entity
+ * <p>
+ * This entity stores real-time daily statistics for short links. It maintains a separate table
+ * for today's PV, UV, and UIp counts that gets updated in real-time as traffic flows through
+ * the system. This allows for quick access to current day statistics without scanning historical
+ * data, improving query performance for dashboards and real-time monitoring.
+ * </p>
+ * <p>
+ * Database table: t_link_stats_today
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Current date for the statistics</li>
+ *   <li><b>todayPv</b>: Page views for the current day</li>
+ *   <li><b>todayUv</b>: Unique visitors for the current day</li>
+ *   <li><b>todayUip</b>: Unique IP addresses for the current day</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Performance optimization:
+ * <ul>
+ *   <li>Separate table for fast read access to current day stats</li>
+ *   <li>Upsert pattern prevents duplicate records</li>
+ *   <li>Atomic updates ensure data consistency</li>
+ *   <li>Separation from historical data improves query performance</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Real-time dashboard displays</li>
+ *   <li>Current day performance monitoring</li>
+ *   <li>Alerting on unusual traffic patterns</li>
+ *   <li>Quick statistics retrieval for UI components</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @TableName("t_link_stats_today")
 @Data

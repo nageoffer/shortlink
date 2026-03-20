@@ -20,8 +20,40 @@ package com.nageoffer.shortlink.project.dto.req;
 import lombok.Data;
 
 /**
- * 回收站恢复功能
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Recycle Bin Recover Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates parameters for restoring a soft-deleted short
+ * link from the recycle bin back to active status. It includes the group identifier and complete
+ * short link URL to identify the link to be restored.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>gid</b>: Group identifier of the link</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL to be restored from recycle bin</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Restore behavior:
+ * <ul>
+ *   <li>delTime field is set to NULL</li>
+ *   <li>Link becomes visible in normal queries again</li>
+ *   <li>All statistics and configuration are preserved</li>
+ *   <li>Link retains its original group association</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Recovering accidentally deleted links</li>
+ *   <li>Restoring links after review</li>
+ *   <li>Recycle bin management in console</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class RecycleBinRecoverReqDTO {

@@ -27,8 +27,53 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 地区统计访问实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Locale Statistics Entity
+ * <p>
+ * This entity stores location-based access statistics for short links. It tracks traffic distribution
+ * across different geographic regions (country, province, city) to help understand user geographic
+ * distribution and optimize regional content delivery. The entity supports hierarchical location
+ * data from country down to specific city codes.
+ * </p>
+ * <p>
+ * Database table: t_link_locale_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>cnt</b>: Count of accesses from this location</li>
+ *   <li><b>country</b>: Country name or ISO code</li>
+ *   <li><b>province</b>: Province or state name</li>
+ *   <li><b>city</b>: City name</li>
+ *   <li><b>adcode</b>: Administrative division code (postal code)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Geographic data:
+ * <ul>
+ *   <li>Country: ISO 3166-1 alpha-2 or alpha-3 code</li>
+ *   <li>Province: State or province name</li>
+ *   <li>City: City or municipality name</li>
+ *   <li>Adcode: China's administrative division code (6 digits)</li>
+ *   <li>IP geolocation service for location detection</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Geographic traffic distribution analysis</li>
+ *   <li>Regional marketing effectiveness tracking</li>
+ *   <li>Content localization optimization</li>
+ *   <li>Server load balancing by region</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_link_locale_stats")

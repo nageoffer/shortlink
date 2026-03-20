@@ -21,8 +21,33 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.admin.dao.entity.GroupDO;
 
 /**
- * 短链接分组持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Group Mapper
+ * <p>
+ * This mapper provides database access operations for short link group entities.
+ * It extends MyBatis-Plus BaseMapper to inherit common CRUD operations without
+ * requiring explicit implementation. This layer handles persistence logic for
+ * group management functionality in the short link administration system.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for GroupDO entities</li>
+ *   <li>Database persistence for link grouping functionality</li>
+ *   <li>Integration with MyBatis-Plus for efficient data access</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Related components:
+ * <ul>
+ *   <li>{@link GroupDO} - Entity class representing group data structure</li>
+ *   <li>{@link com.nageoffer.shortlink.admin.service.GroupService} - Service layer</li>
+ *   <li>{@link com.nageoffer.shortlink.admin.controller.GroupController} - Controller layer</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface GroupMapper extends BaseMapper<GroupDO> {
 }

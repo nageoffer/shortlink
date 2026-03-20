@@ -7,7 +7,7 @@
 defineProps({
   text: {
     type: String,
-    default: '暂无数据，请点击创建短链按钮创建数据'
+    default: 'No data yet. Click Create Short Link to add one.'
   }
 })
 </script>

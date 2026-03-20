@@ -24,8 +24,45 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 短链接批量创建请求对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Batch Creation Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates parameters for creating multiple short links
+ * in a single operation. It allows users to submit a list of original URLs with corresponding
+ * descriptions, all organized under a single group with shared expiration settings. This is
+ * useful for bulk link creation scenarios.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>originUrls</b>: List of original long URLs to be shortened</li>
+ *   <li><b>describes</b>: List of descriptions corresponding to each URL</li>
+ *   <li><b>gid</b>: Group identifier for categorizing all created links</li>
+ *   <li><b>createdType</b>: Creation method (0: API, 1: Console)</li>
+ *   <li><b>validDateType</b>: Expiration type for all links (0: permanent, 1: custom)</li>
+ *   <li><b>validDate</b>: Expiration date for all links (required if validDateType=1)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Batch processing:
+ * <ul>
+ *   <li>One-to-one mapping between originUrls and describes</li>
+ *   <li>All links share the same group and expiration settings</li>
+ *   <li>Atomic operation - all succeed or all fail</li>
+ *   <li>Efficient database batch insert operations</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>API endpoint for bulk short link creation</li>
+ *   <li>Console import from file or list</li>
+ *   <li>Automated link generation for campaigns</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class ShortLinkBatchCreateReqDTO {

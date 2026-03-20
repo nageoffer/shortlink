@@ -23,8 +23,8 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 短链接分页返回参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link page response DTO
+ * 
  */
 @Data
 public class ShortLinkPageRespDTO {
@@ -35,54 +35,54 @@ public class ShortLinkPageRespDTO {
     private Long id;
 
     /**
-     * 域名
+     * Domain
      */
     private String domain;
 
     /**
-     * 短链接
+     * Short link
      */
     private String shortUri;
 
     /**
-     * 完整短链接
+     * Full short link
      */
     private String fullShortUrl;
 
     /**
-     * 原始链接
+     * Original URL
      */
     private String originUrl;
 
     /**
-     * 分组标识
+     * Group identifier
      */
     private String gid;
 
     /**
-     * 有效期类型 0：永久有效 1：自定义
+     * Expiration type 0: permanent 1: custom
      */
     private Integer validDateType;
 
     /**
-     * 启用标识 0：启用 1：未启用
+     * Enable flag 0: enabled 1: disabled
      */
     private Integer enableStatus;
 
     /**
-     * 有效期
+     * Expiration
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date validDate;
 
     /**
-     * 创建时间
+     * Created time
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
-     * 描述
+     * Description
      */
     private String describe;
 
@@ -93,32 +93,32 @@ public class ShortLinkPageRespDTO {
 
 
     /**
-     * 历史PV
+     * Total PV
      */
     private Integer totalPv;
 
     /**
-     * 今日PV
+     * Today PV
      */
     private Integer todayPv;
 
     /**
-     * 历史UV
+     * Total UV
      */
     private Integer totalUv;
 
     /**
-     * 今日UV
+     * Today UV
      */
     private Integer todayUv;
 
     /**
-     * 历史UIP
+     * Total UIP
      */
     private Integer totalUip;
 
     /**
-     * 今日UIP
+     * Today UIP
      */
     private Integer todayUip;
 }

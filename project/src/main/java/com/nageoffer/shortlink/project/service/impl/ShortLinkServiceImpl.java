@@ -95,8 +95,7 @@ import static com.nageoffer.shortlink.project.common.constant.RedisKeyConstant.S
 import static com.nageoffer.shortlink.project.common.constant.RedisKeyConstant.SHORT_LINK_STATS_UV_KEY;
 
 /**
- * 短链接接口实现层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link service implementation.
  */
 @Slf4j
 @Service
@@ -116,7 +115,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam) {
-        // 短链接接口的并发量有多少？如何测试？详情查看：https://nageoffer.com/shortlink/question
+        // Concurrency and load-testing guidance for the short-link APIs:
+        // https://nageoffer.com/shortlink/question
         verificationWhitelist(requestParam.getOriginUrl());
         String shortLinkSuffix = generateSuffix(requestParam);
         String fullShortUrl = StrBuilder.create(createShortLinkDefaultDomain)
@@ -145,24 +145,28 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 .gid(requestParam.getGid())
                 .build();
         try {
-            // 短链接项目有多少数据？如何解决海量数据存储？详情查看：https://nageoffer.com/shortlink/question
+            // Data volume and large-scale storage guidance:
+            // https://nageoffer.com/shortlink/question
             baseMapper.insert(shortLinkDO);
-            // 短链接数据库分片键是如何考虑的？详情查看：https://nageoffer.com/shortlink/question
+            // Sharding-key design guidance:
+            // https://nageoffer.com/shortlink/question
             shortLinkGotoMapper.insert(linkGotoDO);
         } catch (DuplicateKeyException ex) {
-            // 首先判断是否存在布隆过滤器，如果不存在直接新增
+            // Add the URL to the Bloom filter if it is not present yet.
             if (!shortUriCreateCachePenetrationBloomFilter.contains(fullShortUrl)) {
                 shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
             }
-            throw new ServiceException(String.format("短链接：%s 生成重复", fullShortUrl));
+            throw new ServiceException(String.format("Duplicate short link generated: %s", fullShortUrl));
         }
-        // 项目中短链接缓存预热是怎么做的？详情查看：https://nageoffer.com/shortlink/question
+        // Cache warm-up guidance:
+        // https://nageoffer.com/shortlink/question
         stringRedisTemplate.opsForValue().set(
                 String.format(GOTO_SHORT_LINK_KEY, fullShortUrl),
                 requestParam.getOriginUrl(),
                 LinkUtil.getLinkCacheValidTime(requestParam.getValidDate()), TimeUnit.MILLISECONDS
         );
-        // 删除短链接后，布隆过滤器如何删除？详情查看：https://nageoffer.com/shortlink/question
+        // Bloom filter removal strategy after deletion:
+        // https://nageoffer.com/shortlink/question
         shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
         return ShortLinkCreateRespDTO.builder()
                 .fullShortUrl("http://" + shortLinkDO.getFullShortUrl())
@@ -175,7 +179,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     public ShortLinkCreateRespDTO createShortLinkByLock(ShortLinkCreateReqDTO requestParam) {
         verificationWhitelist(requestParam.getOriginUrl());
         String fullShortUrl;
-        // 为什么说布隆过滤器性能远胜于分布式锁？详情查看：https://nageoffer.com/shortlink/question
+        // Bloom filter versus distributed lock discussion:
+        // https://nageoffer.com/shortlink/question
         RLock lock = redissonClient.getLock(SHORT_LINK_CREATE_LOCK_KEY);
         lock.lock();
         try {
@@ -209,7 +214,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 baseMapper.insert(shortLinkDO);
                 shortLinkGotoMapper.insert(linkGotoDO);
             } catch (DuplicateKeyException ex) {
-                throw new ServiceException(String.format("短链接：%s 生成重复", fullShortUrl));
+                throw new ServiceException(String.format("Duplicate short link generated: %s", fullShortUrl));
             }
             stringRedisTemplate.opsForValue().set(
                     String.format(GOTO_SHORT_LINK_KEY, fullShortUrl),
@@ -244,7 +249,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                         .build();
                 result.add(linkBaseInfoRespDTO);
             } catch (Throwable ex) {
-                log.error("批量创建短链接失败，原始参数：{}", originUrls.get(i));
+                log.error("Batch short-link creation failed. Original URL: {}", originUrls.get(i));
             }
         }
         return ShortLinkBatchCreateRespDTO.builder()
@@ -264,7 +269,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 .eq(ShortLinkDO::getEnableStatus, 0);
         ShortLinkDO hasShortLinkDO = baseMapper.selectOne(queryWrapper);
         if (hasShortLinkDO == null) {
-            throw new ClientException("短链接记录不存在");
+            throw new ClientException("Short-link record does not exist");
         }
         if (Objects.equals(hasShortLinkDO.getGid(), requestParam.getGid())) {
             LambdaUpdateWrapper<ShortLinkDO> updateWrapper = Wrappers.lambdaUpdate(ShortLinkDO.class)
@@ -286,7 +291,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                     .build();
             baseMapper.update(shortLinkDO, updateWrapper);
         } else {
-            // 为什么监控表要加上Gid？不加的话是否就不存在读写锁？详情查看：https://nageoffer.com/shortlink/question
+            // Why include GID in the monitoring table? See:
+            // https://nageoffer.com/shortlink/question
             RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(String.format(LOCK_GID_UPDATE_KEY, requestParam.getFullShortUrl()));
             RLock rLock = readWriteLock.writeLock();
             rLock.lock();
@@ -331,7 +337,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 rLock.unlock();
             }
         }
-        // 短链接如何保障缓存和数据库一致性？详情查看：https://nageoffer.com/shortlink/question
+        // How do we keep cache and database consistent for short links?
+        // https://nageoffer.com/shortlink/question
         if (!Objects.equals(hasShortLinkDO.getValidDateType(), requestParam.getValidDateType())
                 || !Objects.equals(hasShortLinkDO.getValidDate(), requestParam.getValidDate())
                 || !Objects.equals(hasShortLinkDO.getOriginUrl(), requestParam.getOriginUrl())) {
@@ -371,8 +378,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     @SneakyThrows
     @Override
     public void restoreUrl(String shortUri, ServletRequest request, ServletResponse response) {
-        // 短链接接口的并发量有多少？如何测试？详情查看：https://nageoffer.com/shortlink/question
-        // 面试中如何回答短链接是如何跳转长链接？详情查看：https://nageoffer.com/shortlink/question
+        // Concurrency and redirect design notes:
+        // https://nageoffer.com/shortlink/question
         String serverName = request.getServerName();
         String serverPort = Optional.of(request.getServerPort())
                 .filter(each -> !Objects.equals(each, 80))
@@ -492,7 +499,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     public void shortLinkStats(ShortLinkStatsRecordDTO statsRecord) {
         Map<String, String> producerMap = new HashMap<>();
         producerMap.put("statsRecord", JSON.toJSONString(statsRecord));
-        // 消息队列为什么选用RocketMQ？详情查看：https://nageoffer.com/shortlink/question
+        // Why RocketMQ was chosen for message queuing:
+        // https://nageoffer.com/shortlink/question
         shortLinkStatsSaveProducer.send(producerMap);
     }
 
@@ -501,14 +509,16 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         String shorUri;
         while (true) {
             if (customGenerateCount > 10) {
-                throw new ServiceException("短链接频繁生成，请稍后再试");
+                throw new ServiceException("Short links are being generated too frequently. Please try again later.");
             }
             String originUrl = requestParam.getOriginUrl();
             originUrl += UUID.randomUUID().toString();
-            // 短链接哈希算法生成冲突问题如何解决？详情查看：https://nageoffer.com/shortlink/question
+            // How hash collisions are handled:
+            // https://nageoffer.com/shortlink/question
             shorUri = HashUtil.hashToBase62(originUrl);
-            // 判断短链接是否存在为什么不使用Set结构？详情查看：https://nageoffer.com/shortlink/question
-            // 如果布隆过滤器挂了，里边存的数据全丢失了，怎么恢复呢？详情查看：https://nageoffer.com/shortlink/question
+            // Why not use a Set to check short-link existence?
+            // How to recover if the Bloom filter data is lost?
+            // https://nageoffer.com/shortlink/question
             if (!shortUriCreateCachePenetrationBloomFilter.contains(createShortLinkDefaultDomain + "/" + shorUri)) {
                 break;
             }
@@ -522,11 +532,12 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         String shorUri;
         while (true) {
             if (customGenerateCount > 10) {
-                throw new ServiceException("短链接频繁生成，请稍后再试");
+                throw new ServiceException("Short links are being generated too frequently. Please try again later.");
             }
             String originUrl = requestParam.getOriginUrl();
             originUrl += UUID.randomUUID().toString();
-            // 短链接哈希算法生成冲突问题如何解决？详情查看：https://nageoffer.com/shortlink/question
+            // How hash collisions are handled:
+            // https://nageoffer.com/shortlink/question
             shorUri = HashUtil.hashToBase62(originUrl);
             LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
                     .eq(ShortLinkDO::getGid, requestParam.getGid())
@@ -565,11 +576,11 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         }
         String domain = LinkUtil.extractDomain(originUrl);
         if (StrUtil.isBlank(domain)) {
-            throw new ClientException("跳转链接填写错误");
+            throw new ClientException("The redirect URL is invalid");
         }
         List<String> details = gotoDomainWhiteListConfiguration.getDetails();
         if (!details.contains(domain)) {
-            throw new ClientException("演示环境为避免恶意攻击，请生成以下网站跳转链接：" + gotoDomainWhiteListConfiguration.getNames());
+            throw new ClientException("To prevent abuse in the demo environment, only generate redirect links for: " + gotoDomainWhiteListConfiguration.getNames());
         }
     }
 }

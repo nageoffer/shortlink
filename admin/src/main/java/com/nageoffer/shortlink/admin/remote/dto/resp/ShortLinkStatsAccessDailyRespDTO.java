@@ -23,8 +23,8 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 短链接基础访问监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link access stats response DTO
+ * 
  */
 @Data
 public class ShortLinkStatsAccessDailyRespDTO {
@@ -36,17 +36,17 @@ public class ShortLinkStatsAccessDailyRespDTO {
     private Date date;
 
     /**
-     * 访问量
+     * Visits
      */
     private Integer pv;
 
     /**
-     * 独立访客数
+     * Unique visitors
      */
     private Integer uv;
 
     /**
-     * 独立IP数
+     * Unique IPs
      */
     private Integer uip;
 }

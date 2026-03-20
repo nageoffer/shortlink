@@ -23,8 +23,43 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 短链接分页返回参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Pagination Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents a short link record for display in paginated
+ * lists in the console. It includes comprehensive information about the link including
+ * domain, URI, original URL, group, expiration settings, and statistics.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>domain</b>: Domain hosting the short link</li>
+ *   <li><b>shortUri</b>: Unique short URI</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>originUrl</b>: Original long URL</li>
+ *   <li><b>gid</b>: Group identifier</li>
+ *   <li><b>validDateType</b>: Expiration type (0: permanent, 1: custom)</li>
+ *   <li><b>enableStatus</b>: Enable flag (0: enabled, 1: disabled)</li>
+ *   <li><b>validDate</b>: Expiration date</li>
+ *   <li><b>createTime</b>: Creation timestamp</li>
+ *   <li><b>describe</b>: User-provided description</li>
+ *   <li><b>favicon</b>: Website favicon URL</li>
+ *   <li><b>totalPv/totalUv/totalUip</b>: Historical statistics</li>
+ *   <li><b>todayPv/todayUv/todayUip</b>: Today's statistics</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Console short link list display</li>
+ *   <li>Paginated link browsing</li>
+ *   <li>Group-based link organization</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class ShortLinkPageRespDTO {

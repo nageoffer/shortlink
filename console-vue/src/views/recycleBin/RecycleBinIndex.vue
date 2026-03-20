@@ -1,6 +1,6 @@
 <template>
   <div>
-    回收站
+    Recycle Bin
   </div>
 </template>
 

@@ -25,8 +25,43 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 短链接监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents comprehensive statistics for a short link.
+ * It includes overall metrics (PV, UV, UIp) and detailed breakdowns by various dimensions
+ * including time, location, browser, OS, device, and network.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>pv</b>: Total Page Views</li>
+ *   <li><b>uv</b>: Total Unique Visitors</li>
+ *   <li><b>uip</b>: Total Unique IP addresses</li>
+ *   <li><b>daily</b>: Daily statistics list</li>
+ *   <li><b>localeCnStats</b>: Domestic geographic distribution</li>
+ *   <li><b>hourStats</b>: Hourly traffic pattern (0-23)</li>
+ *   <li><b>topIpStats</b>: Top IP addresses by traffic</li>
+ *   <li><b>weekdayStats</b>: Weekly traffic pattern (0-6)</li>
+ *   <li><b>browserStats</b>: Browser distribution</li>
+ *   <li><b>osStats</b>: OS distribution</li>
+ *   <li><b>uvTypeStats</b>: New vs returning visitor distribution</li>
+ *   <li><b>deviceStats</b>: Device type distribution</li>
+ *   <li><b>networkStats</b>: Network type distribution</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Comprehensive traffic reports</li>
+ *   <li>Dashboard analytics display</li>
+ *   <li>Performance monitoring</li>
+ *   <li>Marketing campaign analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

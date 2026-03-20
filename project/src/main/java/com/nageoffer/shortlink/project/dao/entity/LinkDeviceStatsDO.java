@@ -27,8 +27,47 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 访问设备统计访问实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Device Statistics Entity
+ * <p>
+ * This entity stores device-type-specific access statistics for short links. It tracks traffic
+ * distribution across different device categories (mobile, desktop, tablet, etc.) to help understand
+ * user access patterns and optimize the user experience for different device types.
+ * </p>
+ * <p>
+ * Database table: t_link_device_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>cnt</b>: Count of accesses from this device type</li>
+ *   <li><b>device</b>: Device type (mobile, desktop, tablet, bot, etc.)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Device detection:
+ * <ul>
+ *   <li>Device type extracted from HTTP User-Agent header</li>
+ *   <li>Common categories: mobile, desktop, tablet, bot, console, etc.</li>
+ *   <li>Responsive design optimization based on device distribution</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Responsive design validation and optimization</li>
+ *   <li>Mobile traffic trend analysis</li>
+ *   <li>Device-specific performance monitoring</li>
+ *   <li>Resource allocation for different device types</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_link_device_stats")

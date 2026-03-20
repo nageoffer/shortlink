@@ -29,8 +29,43 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 操作系统统计访问持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link OS Statistics Mapper
+ * <p>
+ * This mapper manages operating system-specific access statistics for short links. It tracks traffic
+ * distribution across different operating systems (Windows, macOS, Linux, Android, iOS) to help
+ * understand user platform preferences and optimize platform-specific development efforts.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkOsStatsDO entities</li>
+ *   <li>OS traffic aggregation and counting</li>
+ *   <li>Operating system classification (Windows, macOS, Linux, Android, iOS, etc.)</li>
+ *   <li>Support for both short-link-level and group-level analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: The complete short link identifier</li>
+ *   <li><b>os</b>: Operating system name extracted from user agent</li>
+ *   <li><b>cnt</b>: Count of accesses from this OS</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Platform compatibility testing prioritization</li>
+ *   <li>OS-specific feature development</li>
+ *   <li>Marketing campaign optimization by platform</li>
+ *   <li>Resource allocation for different OS user bases</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkOsStatsMapper extends BaseMapper<LinkOsStatsDO> {
 

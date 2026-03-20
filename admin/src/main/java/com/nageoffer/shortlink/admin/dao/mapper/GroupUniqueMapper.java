@@ -21,8 +21,35 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.admin.dao.entity.GroupUniqueDO;
 
 /**
- * 短链接分组唯一路由持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Group Unique Route Mapper
+ * <p>
+ * This mapper handles database operations for unique route configurations of short link groups.
+ * It manages the mapping between group identifiers and their unique URL routes, ensuring each
+ * group has a distinct path for link generation and redirection purposes. This is critical for
+ * maintaining URL uniqueness across the short link system.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for GroupUniqueDO entities</li>
+ *   <li>Management of unique route constraints for link groups</li>
+ *   <li>Support for URL routing logic in the short link service</li>
+ *   <li>Ensuring database-level uniqueness of group routes</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Creating new group with unique route</li>
+ *   <li>Querying group by unique route identifier</li>
+ *   <li>Updating route configuration for existing groups</li>
+ *   <li>Deleting group route mappings</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface GroupUniqueMapper extends BaseMapper<GroupUniqueDO> {
 }

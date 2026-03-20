@@ -20,8 +20,31 @@ package com.nageoffer.shortlink.project.dto.resp;
 import lombok.Data;
 
 /**
- * 短链接分组查询返回参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Group Count Query Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents the response for querying the count of short
+ * links within a specific group. It includes the group identifier and the total count of
+ * links in that group.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>gid</b>: Group identifier</li>
+ *   <li><b>shortLinkCount</b>: Total number of short links in the group</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Group summary display in console</li>
+ *   <li>Link count for group management</li>
+ *   <li>Group organization and navigation</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class ShortLinkGroupCountQueryRespDTO {

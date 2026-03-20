@@ -26,8 +26,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接基础信息响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link base info response DTO
+ * 
  */
 @Data
 @Builder
@@ -36,23 +36,23 @@ import lombok.NoArgsConstructor;
 public class ShortLinkBaseInfoRespDTO {
 
     /**
-     * 描述信息
+     * Description text.
      */
-    @ExcelProperty("标题")
+    @ExcelProperty("Title")
     @ColumnWidth(40)
     private String describe;
 
     /**
-     * 短链接
+     * Short link
      */
-    @ExcelProperty("短链接")
+    @ExcelProperty("Short link")
     @ColumnWidth(40)
     private String fullShortUrl;
 
     /**
-     * 原始链接
+     * Original URL
      */
-    @ExcelProperty("原始链接")
+    @ExcelProperty("Original URL")
     @ColumnWidth(80)
     private String originUrl;
 }

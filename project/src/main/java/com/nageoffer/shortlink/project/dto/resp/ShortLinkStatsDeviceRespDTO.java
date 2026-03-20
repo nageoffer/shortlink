@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接访问设备监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Device Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents device-specific statistics for a short link.
+ * It includes the count of accesses from a specific device type and the percentage of total
+ * traffic from that device type.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of accesses from this device type</li>
+ *   <li><b>device</b>: Device type (mobile, desktop, tablet, etc.)</li>
+ *   <li><b>ratio</b>: Percentage of total traffic (0.0 - 1.0)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Device distribution charts</li>
+ *   <li>Responsive design optimization</li>
+ *   <li>Mobile traffic analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

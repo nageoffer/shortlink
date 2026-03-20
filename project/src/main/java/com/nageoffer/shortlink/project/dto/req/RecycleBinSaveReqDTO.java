@@ -20,8 +20,41 @@ package com.nageoffer.shortlink.project.dto.req;
 import lombok.Data;
 
 /**
- * 回收站保存功能
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Recycle Bin Save Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates parameters for soft-deleting a short link and
+ * moving it to the recycle bin. It includes the group identifier and complete short link URL
+ * to identify the link to be moved to the recycle bin.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>gid</b>: Group identifier of the link</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL to be moved to recycle bin</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Soft delete behavior:
+ * <ul>
+ *   <li>Link is not physically deleted from database</li>
+ *   <li>delTime field is set to current timestamp</li>
+ *   <li>Link becomes invisible in normal queries</li>
+ *   <li>Link can be restored within retention period</li>
+ *   <li>Link can be permanently deleted from recycle bin</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Accidentally deleted link recovery</li>
+ *   <li>Temporary link removal without permanent deletion</li>
+ *   <li>Recycle bin management in console</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class RecycleBinSaveReqDTO {

@@ -26,8 +26,45 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接创建请求对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Creation Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates all the parameters required to create a new short link.
+ * It is used by the service layer to receive client requests and process short link creation.
+ * The DTO includes domain configuration, original URL, group association, expiration settings,
+ * and description fields.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>domain</b>: Custom domain for the short link (optional)</li>
+ *   <li><b>originUrl</b>: Original long URL to be shortened</li>
+ *   <li><b>gid</b>: Group identifier for categorization</li>
+ *   <li><b>createdType</b>: Creation method (0: API, 1: Console)</li>
+ *   <li><b>validDateType</b>: Expiration type (0: permanent, 1: custom)</li>
+ *   <li><b>validDate</b>: Expiration date (required if validDateType=1)</li>
+ *   <li><b>describe</b>: User-provided description for the link</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Validation rules:
+ * <ul>
+ *   <li>originUrl must be a valid URL format</li>
+ *   <li>validDate must be in the future if validDateType=1</li>
+ *   <li>gid must exist in the system</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>API endpoint for short link creation</li>
+ *   <li>Console form submission for link creation</li>
+ *   <li>Bulk link creation with batch processing</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @NoArgsConstructor

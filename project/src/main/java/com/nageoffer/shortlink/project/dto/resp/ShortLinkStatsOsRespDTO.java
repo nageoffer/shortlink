@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接操作系统监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link OS Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents operating system-specific statistics for a
+ * short link. It includes the count of accesses from a specific OS and the percentage of
+ * total traffic from that OS.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of accesses from this OS</li>
+ *   <li><b>os</b>: Operating system name (Windows, macOS, Linux, Android, iOS, etc.)</li>
+ *   <li><b>ratio</b>: Percentage of total traffic (0.0 - 1.0)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>OS distribution charts</li>
+ *   <li>Platform compatibility testing</li>
+ *   <li>Resource allocation by platform</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

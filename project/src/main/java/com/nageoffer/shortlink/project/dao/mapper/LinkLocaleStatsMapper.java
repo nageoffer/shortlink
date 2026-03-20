@@ -28,8 +28,46 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * 地区统计访问持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Locale Statistics Mapper
+ * <p>
+ * This mapper manages location-based access statistics for short links. It tracks traffic distribution
+ * across different geographical regions (country, province, city) to help understand user geographic
+ * distribution and optimize regional content delivery.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkLocaleStatsDO entities</li>
+ *   <li>Geographic traffic aggregation and counting</li>
+ *   <li>Region-level analysis (country, province, city)</li>
+ *   <li>Support for both short-link-level and group-level analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: The complete short link identifier</li>
+ *   <li><b>country</b>: Country name or code</li>
+ *   <li><b>province</b>: Province or state name</li>
+ *   <li><b>city</b>: City name</li>
+ *   <li><b>adcode</b>: Administrative division code (postal code)</li>
+ *   <li><b>cnt</b>: Count of accesses from this location</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Geographic traffic distribution analysis</li>
+ *   <li>Regional marketing effectiveness tracking</li>
+ *   <li>Content localization optimization</li>
+ *   <li>Server load balancing by region</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkLocaleStatsMapper extends BaseMapper<LinkLocaleStatsDO> {
 

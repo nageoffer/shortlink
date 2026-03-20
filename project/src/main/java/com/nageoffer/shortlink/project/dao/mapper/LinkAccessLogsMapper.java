@@ -32,8 +32,47 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 访问日志监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Access Logs Mapper
+ * <p>
+ * This mapper provides database access operations for short link access log monitoring.
+ * It handles detailed access records including user information, browser, OS, IP, network,
+ * device, and locale data. This mapper contains complex SQL queries for statistical analysis
+ * of short link traffic patterns and user behavior.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkAccessLogsDO entities</li>
+ *   <li>Top IP tracking for short links and groups</li>
+ *   <li>New vs returning visitor analysis</li>
+ *   <li>PV, UV, UIp statistics calculation</li>
+ *   <li>Group-level access record pagination</li>
+ * </ul>
+ * </p>
+ * <p>
+ * SQL query features:
+ * <ul>
+ *   <li>JOIN operations between t_link and t_link_access_logs tables</li>
+ *   <li>Time range filtering for date-based statistics</li>
+ *   <li>GROUP BY aggregation for counting and summarization</li>
+ *   <li>ORDER BY with LIMIT for top-N results</li>
+ *   <li>Conditional aggregation using CASE WHEN for visitor type classification</li>
+ *   <li>MyBatis dynamic SQL with foreach for batch user queries</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Identifying high-traffic sources for security monitoring</li>
+ *   <li>Understanding user behavior patterns</li>
+ *   <li>Generating traffic reports for administrators</li>
+ *   <li>Supporting real-time analytics dashboards</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkAccessLogsMapper extends BaseMapper<LinkAccessLogsDO> {
 

@@ -23,8 +23,33 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接基础访问监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Base Access Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents daily access statistics for a short link.
+ * It includes PV (Page Views), UV (Unique Visitors), and UIp (Unique IP) counts for
+ * a specific date.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>date</b>: Date of the statistics (format: yyyy-MM-dd)</li>
+ *   <li><b>pv</b>: Page Views - total number of accesses</li>
+ *   <li><b>uv</b>: Unique Visitors - distinct users</li>
+ *   <li><b>uip</b>: Unique IP addresses - distinct IPs</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Daily traffic reports</li>
+ *   <li>Time-series data for charts</li>
+ *   <li>Performance trend analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

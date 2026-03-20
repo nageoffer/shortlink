@@ -1,21 +1,21 @@
 <template>
   <div>
     <el-form ref="ruleFormRef" :model="formData" :rules="formRule" label-width="80px">
-      <el-form-item label="跳转链接" prop="originUrl">
+      <el-form-item label="Redirect URL" prop="originUrl">
         <el-input
           v-if="isSingle"
           v-model="formData.originUrl"
-          placeholder="请输入http://或https://开头的链接或应用跳转链接"
+          placeholder="Enter a link starting with http:// or https://"
         ></el-input>
         <el-input
           v-else
           :rows="4"
           v-model="formData.originUrl"
           type="textarea"
-          placeholder="请输入http://或https://开头的链接或应用跳转链接，一行一个，最多100行"
+          placeholder="Enter links starting with http:// or https://, one per line, up to 100 lines"
         />
       </el-form-item>
-      <el-form-item label="描述信息" prop="describe">
+      <el-form-item label="Description" prop="describe">
         <el-input
           maxlength="100"
           show-word-limit
@@ -23,13 +23,13 @@
           :rows="4"
           v-model="formData.describe"
           type="textarea"
-          placeholder="请输入描述信息"
+          placeholder="Enter a description"
         />
-        <span style="font-size: 12px">{{ '将创建' + describeRows + '条短链' }}</span>
+        <span style="font-size: 12px">{{ 'Will create ' + describeRows + ' short links' }}</span>
       </el-form-item>
 
-      <el-form-item label="短链分组" prop="gid">
-        <el-select v-model="formData.gid" placeholder="请选择">
+      <el-form-item label="Short Link Group" prop="gid">
+        <el-select v-model="formData.gid" placeholder="Please select">
           <el-option
             v-for="item in groupInfo"
             :key="item.gid"
@@ -38,22 +38,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="有效期" prop="v">
+      <el-form-item label="Expiration" prop="v">
         <el-radio-group v-model="formData.validDateType">
-          <el-radio :label="0">永久</el-radio>
-          <el-radio :label="1">自定义</el-radio>
+          <el-radio :label="0">Permanent</el-radio>
+          <el-radio :label="1">Custom</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="formData.validDateType === 1" label="选择时间">
+      <el-form-item v-if="formData.validDateType === 1" label="Select date">
         <el-date-picker
           :disabled-date="disabledDate"
           v-model="formData.validDate"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="datetime"
-          placeholder="选择日期"
+          placeholder="Select a date"
           :shortcuts="shortcuts"
         />
-        <span class="alert">链接失效后将自动跳转到404页面 !</span>
+        <span class="alert">Expired links will automatically redirect to the 404 page!</span>
       </el-form-item>
       <el-form-item>
         <div style="width: 100%; display: flex; justify-content: flex-end">
@@ -62,9 +62,9 @@
             type="primary"
             :disabled="submitDisable"
             @click="onSubmit(ruleFormRef)"
-            >确认</el-button
+            >Confirm</el-button
           >
-          <el-button class="buttons" @click="cancel">取消</el-button>
+          <el-button class="buttons" @click="cancel">Cancel</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -91,7 +91,7 @@ const reg =
 // 自定义时间中选择几天
 const shortcuts = [
   {
-    text: '一天',
+    text: '1 day',
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() + 3600 * 1000 * 24)
@@ -99,7 +99,7 @@ const shortcuts = [
     }
   },
   {
-    text: '七天',
+    text: '7 days',
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
@@ -107,7 +107,7 @@ const shortcuts = [
     }
   },
   {
-    text: '三十天',
+    text: '30 days',
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() + 3600 * 1000 * 24 * 30)
@@ -263,7 +263,7 @@ const formRule = reactive({
     }
   ],
   validDate: [
-    { required: false, message: '请输日期', trigger: 'blur' }
+    { required: false, message: 'Enter a date', trigger: 'blur' }
     // {
     //   validator: function (rule, value, callback) {
     //     if (describeRows.value > maxDescribeRows.value) {
@@ -305,12 +305,12 @@ const onSubmit = async (formEl) => {
           ElMessage.error(res.data.message)
         }
       } else {
-        ElMessage.success('创建成功！')
+        ElMessage.success('Created successfully.')
         emits('onSubmit', false)
         submitDisable.value = false
       }
     } else {
-      ElMessage.error('创建失败！')
+      ElMessage.error('Creation failed.')
     }
   })
 }

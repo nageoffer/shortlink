@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接浏览器监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Browser Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents browser-specific statistics for a short link.
+ * It includes the count of accesses from a specific browser and the percentage of total
+ * traffic from that browser.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of accesses from this browser</li>
+ *   <li><b>browser</b>: Browser name (Chrome, Firefox, Safari, etc.)</li>
+ *   <li><b>ratio</b>: Percentage of total traffic (0.0 - 1.0)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Browser distribution charts</li>
+ *   <li>Compatibility testing prioritization</li>
+ *   <li>Understanding user demographics</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

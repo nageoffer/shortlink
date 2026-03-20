@@ -44,8 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 短链接控制层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link controller.
  */
 @RestController
 @RequiredArgsConstructor
@@ -54,7 +53,7 @@ public class ShortLinkController {
     private final ShortLinkService shortLinkService;
 
     /**
-     * 短链接跳转原始链接
+     * Redirect a short link to its original URL.
      */
     @GetMapping("/{short-uri}")
     public void restoreUrl(@PathVariable("short-uri") String shortUri, ServletRequest request, ServletResponse response) {
@@ -62,7 +61,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 创建短链接
+     * Create a short link.
      */
     @PostMapping("/api/short-link/v1/create")
     @SentinelResource(
@@ -75,7 +74,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 通过分布式锁创建短链接
+     * Create a short link using a distributed lock.
      */
     @PostMapping("/api/short-link/v1/create/by-lock")
     public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@RequestBody ShortLinkCreateReqDTO requestParam) {
@@ -83,7 +82,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 批量创建短链接
+     * Create short links in batch.
      */
     @PostMapping("/api/short-link/v1/create/batch")
     public Result<ShortLinkBatchCreateRespDTO> batchCreateShortLink(@RequestBody ShortLinkBatchCreateReqDTO requestParam) {
@@ -91,7 +90,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 修改短链接
+     * Update a short link.
      */
     @PostMapping("/api/short-link/v1/update")
     public Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
@@ -100,7 +99,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 分页查询短链接
+     * Query short links with pagination.
      */
     @GetMapping("/api/short-link/v1/page")
     public Result<IPage<ShortLinkPageRespDTO>> pageShortLink(ShortLinkPageReqDTO requestParam) {
@@ -108,7 +107,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 查询短链接分组内数量
+     * Query the number of short links within groups.
      */
     @GetMapping("/api/short-link/v1/count")
     public Result<List<ShortLinkGroupCountQueryRespDTO>> listGroupShortLinkCount(@RequestParam("requestParam") List<String> requestParam) {

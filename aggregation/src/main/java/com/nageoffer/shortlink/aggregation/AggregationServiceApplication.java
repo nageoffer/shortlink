@@ -23,8 +23,52 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * 短链接聚合应用
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Aggregation Service Application
+ * <p>
+ * This is the main entry point for the ShortLink Aggregation Service, which serves as a unified
+ * application that combines multiple microservices (admin, project, aggregation) into a single
+ * deployable unit. This approach simplifies deployment and reduces operational complexity while
+ * maintaining modular code organization.
+ * </p>
+ * <p>
+ * Architecture Pattern: This follows a hybrid architecture combining microservices and monolith
+ * patterns. During development, individual services can be developed and tested separately.
+ * For production, the aggregation service combines all functionality into a single application.
+ * </p>
+ * <p>
+ * Component Scanning:
+ * <ul>
+ *   <li>com.nageoffer.shortlink.admin - Admin module for user and group management</li>
+ *   <li>com.nageoffer.shortlink.project - Project module for link management and statistics</li>
+ *   <li>com.nageoffer.shortlink.aggregation - Aggregation-specific configurations and services</li>
+ * </ul>
+ * </p>
+ * <p>
+ * MyBatis Mapper Scanning:
+ * <ul>
+ *   <li>com.nageoffer.shortlink.project.dao.mapper - Project module data access objects</li>
+ *   <li>com.nageoffer.shortlink.admin.dao.mapper - Admin module data access objects</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Service Discovery: Enabled via {@link EnableDiscoveryClient} for integration with service
+ * discovery mechanisms like Nacos, Eureka, or Consul.
+ * </p>
+ * <p>
+ * Use Cases:
+ * <ul>
+ *   <li>Simplified development and testing environment</li>
+ *   <li>Small to medium-scale deployments</li>
+ *   <li>Demo and demonstration environments</li>
+ *   <li>Gradual migration from monolith to microservices</li>
+ * </ul>
+ * </p>
+ * 
+ * @author 马丁玩编程 (Martin Plays Programming)
+ * @version 1.0.0
+ * @since 2024
+ * @see org.springframework.boot.SpringApplication
+ * @see org.springframework.cloud.client.discovery.EnableDiscoveryClient
  */
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {
@@ -38,6 +82,16 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 })
 public class AggregationServiceApplication {
 
+    /**
+     * Main application entry point.
+     * <p>
+     * Initializes the Spring Boot application context, registers all configured beans
+     * from the scanned packages, starts the embedded web server, and registers the
+     * demo mode interceptor for public deployments.
+     * </p>
+     * 
+     * @param args command-line arguments passed to the application
+     */
     public static void main(String[] args) {
         SpringApplication.run(AggregationServiceApplication.class, args);
     }

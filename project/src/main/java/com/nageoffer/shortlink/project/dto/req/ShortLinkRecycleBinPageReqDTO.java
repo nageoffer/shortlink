@@ -24,8 +24,57 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 回收站短链接分页请求参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Recycle Bin Pagination Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) extends MyBatis-Plus Page class to provide pagination support
+ * for querying soft-deleted short links in the recycle bin. It includes group filtering to enable
+ * organized browsing of deleted links by group.
+ * </p>
+ * <p>
+ * Inherited from Page<ShortLinkDO>:
+ * <ul>
+ *   <li><b>current</b>: Current page number (1-indexed)</li>
+ *   <li><b>size</b>: Number of records per page</li>
+ *   <li><b>total</b>: Total number of records</li>
+ *   <li><b>records</b>: List of ShortLinkDO records</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Additional fields:
+ * <ul>
+ *   <li><b>gidList</b>: List of group identifiers for filtering deleted links</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Query capabilities:
+ * <ul>
+ *   <li>Paginated retrieval of soft-deleted short links</li>
+ *   <li>Filter by multiple groups for organized browsing</li>
+ *   <li>Efficient database query with soft delete condition (delTime > 0)</li>
+ *   <li>Support for bulk recovery operations</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Soft delete behavior:
+ * <ul>
+ *   <li>Links are not physically deleted from database</li>
+ *   <li>delTime field stores deletion timestamp</li>
+ *   <li>Links can be restored within retention period</li>
+ *   <li>Permanent deletion requires explicit remove operation</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Recycle bin display in console</li>
+ *   <li>Group-based deleted link browsing</li>
+ *   <li>Recovery operations for accidentally deleted links</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class ShortLinkRecycleBinPageReqDTO extends Page<ShortLinkDO> {

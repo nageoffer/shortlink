@@ -24,39 +24,39 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 短链接批量创建请求对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link batch create request DTO
+ * 
  */
 @Data
 public class ShortLinkBatchCreateReqDTO {
 
     /**
-     * 原始链接集合
+     * List of original URLs.
      */
     private List<String> originUrls;
 
     /**
-     * 描述集合
+     * List of descriptions.
      */
     private List<String> describes;
 
     /**
-     * 分组标识
+     * Group identifier
      */
     private String gid;
 
     /**
-     * 创建类型 0：接口创建 1：控制台创建
+     * Create type 0: API 1: console
      */
     private Integer createdType;
 
     /**
-     * 有效期类型 0：永久有效 1：自定义
+     * Expiration type 0: permanent 1: custom
      */
     private Integer validDateType;
 
     /**
-     * 有效期
+     * Expiration
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date validDate;

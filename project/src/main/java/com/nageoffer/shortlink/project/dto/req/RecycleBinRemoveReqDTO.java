@@ -20,8 +20,40 @@ package com.nageoffer.shortlink.project.dto.req;
 import lombok.Data;
 
 /**
- * 回收站移除功能
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Recycle Bin Remove Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates parameters for permanently deleting a short link
+ * from the recycle bin. It includes the group identifier and complete short link URL to identify
+ * the link to be permanently removed from the database.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>gid</b>: Group identifier of the link</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL to be permanently deleted</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Permanent delete behavior:
+ * <ul>
+ *   <li>Link is physically removed from database</li>
+ *   <li>All associated statistics are also deleted</li>
+ *   <li>Link cannot be recovered after removal</li>
+ *   <li>Group association is preserved for audit purposes</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Permanent deletion after retention period</li>
+ *   <li>Manual cleanup of recycle bin</li>
+ *   <li>Compliance with data retention policies</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class RecycleBinRemoveReqDTO {

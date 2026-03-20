@@ -29,8 +29,43 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 浏览器统计访问持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Browser Statistics Mapper
+ * <p>
+ * This mapper manages browser-specific access statistics for short links. It tracks the distribution
+ * of traffic across different web browsers (Chrome, Firefox, Safari, Edge, etc.) to help understand
+ * user browser preferences and optimize compatibility testing efforts.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkBrowserStatsDO entities</li>
+ *   <li>Browser traffic aggregation and counting</li>
+ *   <li>Percentage calculation for browser distribution</li>
+ *   <li>Support for both short-link-level and group-level analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: The complete short link identifier</li>
+ *   <li><b>browser</b>: Browser name extracted from user agent</li>
+ *   <li><b>cnt</b>: Count of accesses from this browser</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Identifying browser compatibility issues</li>
+ *   <li>Optimizing frontend development priorities</li>
+ *   <li>Understanding user demographics by browser preference</li>
+ *   <li>Reporting browser distribution to stakeholders</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkBrowserStatsMapper extends BaseMapper<LinkBrowserStatsDO> {
 

@@ -23,8 +23,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接访问设备监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link device stats response DTO
+ * 
  */
 @Data
 @Builder
@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class ShortLinkStatsDeviceRespDTO {
 
     /**
-     * 统计
+     * Count
      */
     private Integer cnt;
 
@@ -43,7 +43,7 @@ public class ShortLinkStatsDeviceRespDTO {
     private String device;
 
     /**
-     * 占比
+     * Share
      */
     private Double ratio;
 }

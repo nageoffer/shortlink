@@ -25,8 +25,39 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 短链接批量创建响应对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Batch Creation Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents the response for batch short link creation
+ * operations. It includes the total count of successfully created links and a list of
+ * base information for each created link.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>total</b>: Total number of successfully created short links</li>
+ *   <li><b>baseLinkInfos</b>: List of ShortLinkBaseInfoRespDTO containing information for each link</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Response structure:
+ * <ul>
+ *   <li>Contains summary information (total count)</li>
+ *   <li>Includes detailed information for each created link</li>
+ *   <li>May include failed links in error responses (separate error handling)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Response for batch short link creation API</li>
+ *   <li>Console display of batch creation results</li>
+ *   <li>Client-side processing of multiple created links</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

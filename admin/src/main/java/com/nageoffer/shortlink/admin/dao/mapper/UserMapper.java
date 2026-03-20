@@ -21,8 +21,42 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.admin.dao.entity.UserDO;
 
 /**
- * 用户持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * User Mapper
+ * <p>
+ * This mapper provides data access operations for user entities in the short link
+ * administration system. It handles all database interactions related to user management,
+ * including authentication, authorization, and user profile operations. This is a core
+ * component of the system's security and user management infrastructure.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for UserDO entities</li>
+ *   <li>User authentication and session management support</li>
+ *   <li>User permission and role data access</li>
+ *   <li>Integration with security filters for access control</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Security considerations:
+ * <ul>
+ *   <li>Phone number desensitization through {@link com.nageoffer.shortlink.admin.common.serialize.PhoneDesensitizationSerializer}</li>
+ *   <li>Integration with {@link UserFlowRiskControlFilter} for traffic control</li>
+ *   <li>Support for user context management via {@link UserContext}</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Related components:
+ * <ul>
+ *   <li>{@link UserDO} - Entity class representing user data structure</li>
+ *   <li>{@link com.nageoffer.shortlink.admin.controller.UserController} - User management controller</li>
+ *   <li>{@link com.nageoffer.shortlink.admin.common.biz.user.UserContext} - User context holder</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface UserMapper extends BaseMapper<UserDO> {
 }

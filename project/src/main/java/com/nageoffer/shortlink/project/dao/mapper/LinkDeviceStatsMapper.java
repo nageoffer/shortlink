@@ -28,8 +28,43 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * 访问设备监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Device Statistics Mapper
+ * <p>
+ * This mapper handles device-specific access statistics for short links. It tracks traffic distribution
+ * across different device types (desktop, mobile, tablet) to help understand user access patterns
+ * and optimize the user experience for different device categories.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkDeviceStatsDO entities</li>
+ *   <li>Device traffic aggregation and counting</li>
+ *   <li>Device type classification (mobile, desktop, tablet, etc.)</li>
+ *   <li>Support for both short-link-level and group-level analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: The complete short link identifier</li>
+ *   <li><b>device</b>: Device type extracted from user agent</li>
+ *   <li><b>cnt</b>: Count of accesses from this device type</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Responsive design validation and optimization</li>
+ *   <li>Mobile traffic trend analysis</li>
+ *   <li>Device-specific performance monitoring</li>
+ *   <li>Resource allocation for different device types</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkDeviceStatsMapper extends BaseMapper<LinkDeviceStatsDO> {
 

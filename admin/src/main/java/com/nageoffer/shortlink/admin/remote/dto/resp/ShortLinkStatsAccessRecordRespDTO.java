@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接监控访问记录响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link analytics access-record response DTO
+ * 
  */
 @Data
 @Builder
@@ -36,17 +36,17 @@ import java.util.Date;
 public class ShortLinkStatsAccessRecordRespDTO {
 
     /**
-     * 访客类型
+     * Visitor type
      */
     private String uvType;
 
     /**
-     * 浏览器
+     * Browser
      */
     private String browser;
 
     /**
-     * 操作系统
+     * Operating system
      */
     private String os;
 
@@ -56,17 +56,17 @@ public class ShortLinkStatsAccessRecordRespDTO {
     private String ip;
 
     /**
-     * 访问网络
+     * Network
      */
     private String network;
 
     /**
-     * 访问设备
+     * Device
      */
     private String device;
 
     /**
-     * 地区
+     * Region
      */
     private String locale;
 

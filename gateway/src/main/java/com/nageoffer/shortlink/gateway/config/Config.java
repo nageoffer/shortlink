@@ -22,14 +22,79 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 过滤器配置
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Gateway Filter Configuration
+ * <p>
+ * This configuration class defines the settings for the token validation gateway filter.
+ * It is designed to be used with Spring Cloud Gateway's filter factory pattern, allowing
+ * for dynamic configuration of filter behavior through Spring Boot's configuration properties.
+ * </p>
+ * <p>
+ * Configuration Example (application.yml):
+ * <pre>{@code
+ * spring:
+ *   cloud:
+ *     gateway:
+ *       routes:
+ *         - id: admin-service
+ *           uri: http://localhost:8080
+ *           filters:
+ *             - TokenValidate
+ * 
+ * gateway:
+ *   filter:
+ *     white-path-list:
+ *       - /api/short-link/admin/v1/user
+ *       - /api/short-link/admin/v1/health
+ * }</pre>
+ * </p>
+ * <p>
+ * The configuration is automatically bound to this class by Spring Boot's @ConfigurationProperties
+ * mechanism, using the prefix "gateway.filter".
+ * </p>
+ * <p>
+ * Thread Safety: This class is immutable after construction and thread-safe for read operations.
+ * </p>
+ * 
+ * @author 马丁玩编程 (Martin Plays Programming)
+ * @version 1.0.0
+ * @since 2024
+ * @see TokenValidateGatewayFilterFactory
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
  */
 @Data
 public class Config {
 
     /**
-     * 白名单前置路径
+     * White-list Path Prefixes
+     * <p>
+     * A list of URL path prefixes that are exempt from authentication requirements.
+     * Any incoming request whose path starts with one of these prefixes will be
+     * allowed to proceed without token validation.
+     * </p>
+     * <p>
+     * Use Cases:
+     * <ul>
+     *   <li>Public endpoints (health checks, status pages)</li>
+     *   <li>Authentication endpoints (login, registration)</li>
+     *   <li>Static resource endpoints</li>
+     *   <li>API documentation endpoints</li>
+     * </ul>
+     * </p>
+     * <p>
+     * Matching Logic: The filter uses prefix matching (path.startsWith(whitelistEntry)),
+     * so "/api/public" will match "/api/public/endpoint1", "/api/public/endpoint2", etc.
+     * </p>
+     * <p>
+     * Security Considerations:
+     * <ul>
+     *   <li>Be cautious when adding paths to the white-list</li>
+     *   <li>Avoid overly broad prefixes that might expose sensitive endpoints</li>
+     *   <li>Regularly review and audit the white-list configuration</li>
+     *   <li>Consider environment-specific white-lists (dev vs production)</li>
+     * </ul>
+     * </p>
+     * 
+     * @see TokenValidateGatewayFilterFactory#isPathInWhiteList(String, String, List)
      */
     private List<String> whitePathList;
 }

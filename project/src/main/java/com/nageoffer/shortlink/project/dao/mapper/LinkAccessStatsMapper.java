@@ -28,8 +28,46 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * 短链接基础访问监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Base Access Statistics Mapper
+ * <p>
+ * This mapper handles database operations for aggregated short link access statistics.
+ * It maintains daily, hourly, and weekday-level statistics for PV (Page Views), UV (Unique Visitors),
+ * and UIp (Unique IP addresses). The mapper uses MyBatis-Plus with custom SQL for upsert operations
+ * to efficiently update statistics without duplicate records.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkAccessStatsDO entities</li>
+ *   <li>Upsert (INSERT ON DUPLICATE KEY UPDATE) for efficient statistics aggregation</li>
+ *   <li>Time-series data queries for trend analysis</li>
+ *   <li>Group-level and short-link-level statistics</li>
+ *   <li>Hourly and weekday breakdowns for traffic pattern analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Statistics tracking:
+ * <ul>
+ *   <li><b>PV (Page Views)</b>: Total number of accesses</li>
+ *   <li><b>UV (Unique Visitors)</b>: Count of distinct users</li>
+ *   <li><b>UIP (Unique IP)</b>: Count of distinct IP addresses</li>
+ *   <li><b>Hour</b>: Hour of day for traffic distribution</li>
+ *   <li><b>Weekday</b>: Day of week for weekly patterns</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Generating daily traffic reports</li>
+ *   <li>Identifying peak usage hours</li>
+ *   <li>Analyzing weekly traffic patterns</li>
+ *   <li>Monitoring short link performance over time</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkAccessStatsMapper extends BaseMapper<LinkAccessStatsDO> {
 

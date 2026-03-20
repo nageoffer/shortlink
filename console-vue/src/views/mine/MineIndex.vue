@@ -2,13 +2,13 @@
   <div style="display: flex; height: 100%; width: 100%">
     <div class="options-box">
       <div>
-        <span>账号设置</span>
+        <span>Account Settings</span>
       </div>
     </div>
     <div class="main-box">
       <el-descriptions
         class="margin-top content-box"
-        title="个人信息"
+        title="Profile"
         :column="1"
         :size="size"
         border
@@ -19,7 +19,7 @@
               <el-icon :style="iconStyle">
                 <user />
               </el-icon>
-              用户名
+              Username
             </div>
           </template>
           <span v-if="!dialogVisible">{{ userInfo?.data?.data?.username }}</span>
@@ -30,7 +30,7 @@
               <el-icon :style="iconStyle">
                 <iphone />
               </el-icon>
-              手机号
+              Phone
             </div>
           </template>
           <span>{{ userInfo?.data?.data?.phone }}</span>
@@ -41,7 +41,7 @@
               <el-icon :style="iconStyle">
                 <tickets />
               </el-icon>
-              姓名
+              Name
             </div>
           </template>
           <span>{{ userInfo?.data?.data?.realName }}</span>
@@ -52,17 +52,17 @@
               <el-icon :style="iconStyle">
                 <Message />
               </el-icon>
-              邮箱
+              Email
             </div>
           </template>
           <span>{{ userInfo?.data?.data?.mail }}</span>
         </el-descriptions-item>
       </el-descriptions>
-      <el-button style="position: absolute;left: 35px; top: 250px; " type="primary" @click="dialogVisible = !dialogVisible">修改个人信息</el-button>
+      <el-button style="position: absolute;left: 35px; top: 250px; " type="primary" @click="dialogVisible = !dialogVisible">Edit Profile</el-button>
     </div>
   </div>
   <!-- 修改信息 -->
-  <el-dialog v-model="dialogVisible" title="修改个人信息" width="60%" :before-close="handleClose">
+  <el-dialog v-model="dialogVisible" title="Edit Profile" width="60%" :before-close="handleClose">
     <div class="register" :class="{ hidden: isLogin }">
       <el-form
         ref="loginFormRef"
@@ -75,53 +75,53 @@
         <el-form-item prop="username">
           <el-input
             v-model="userInfoForm.username"
-            placeholder="请输入用户名"
+            placeholder="Enter username"
             maxlength="11"
             show-word-limit
             disabled
           >
-            <template v-slot:prepend> 用户名 </template>
+            <template v-slot:prepend> Username </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="mail">
-          <el-input v-model="userInfoForm.mail" placeholder="请输入邮箱" show-word-limit clearable>
-            <template v-slot:prepend> 邮<span class="second-font">箱</span> </template>
+          <el-input v-model="userInfoForm.mail" placeholder="Enter email" show-word-limit clearable>
+            <template v-slot:prepend> Email </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="phone">
           <el-input
             v-model="userInfoForm.phone"
-            placeholder="请输入手机号"
+            placeholder="Enter phone number"
             show-word-limit
             clearable
           >
-            <template v-slot:prepend> 手机号 </template>
+            <template v-slot:prepend> Phone </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="realName">
           <el-input
             v-model="userInfoForm.realName"
-            placeholder="请输入姓名"
+            placeholder="Enter name"
             show-word-limit
             clearable
           >
-            <template v-slot:prepend> 姓<span class="second-font">名</span> </template>
+            <template v-slot:prepend> Name </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
             v-model="userInfoForm.password"
-            placeholder="默认密码，如需修改可输入新密码"
+            placeholder="Leave blank to keep the current password, or enter a new one"
             show-word-limit
             clearable
           >
-            <template v-slot:prepend> 密<span class="second-font">码</span> </template>
+            <template v-slot:prepend> Password </template>
           </el-input>
         </el-form-item>
         <el-form-item>
           <div style="width: 100%; display: flex; justify-content: flex-end">
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="changeUserInfo(loginFormRef)"> 提交 </el-button>
+            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="changeUserInfo(loginFormRef)"> Save </el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -151,28 +151,28 @@ getUserInfo()
 const dialogVisible = ref(false)
 const formRule = reactive({
   phone: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { required: true, message: 'Enter a phone number', trigger: 'blur' },
     {
       pattern: /^1[3|5|7|8|9]\d{9}$/,
-      message: '请输入正确的手机号',
+      message: 'Enter a valid phone number',
       trigger: 'blur'
     },
-    { min: 11, max: 11, message: '手机号必须是11位', trigger: 'blur' }
+    { min: 11, max: 11, message: 'Phone number must be 11 digits', trigger: 'blur' }
   ],
-  username: [{ required: true, message: '请输入您的用户名', trigger: 'blur' }],
+  username: [{ required: true, message: 'Enter your username', trigger: 'blur' }],
   mail: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { required: true, message: 'Enter an email address', trigger: 'blur' },
     {
       pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
-      message: '请输入正确的邮箱号',
+      message: 'Enter a valid email address',
       trigger: 'blur'
     }
   ],
   password: [
-    { required: false, message: '请输入密码', trigger: 'blur' },
-    { min: 8, max: 15, message: '密码长度请在八位以上', trigger: 'blur' }
+    { required: false, message: 'Enter a password', trigger: 'blur' },
+    { min: 8, max: 15, message: 'Password must be at least 8 characters', trigger: 'blur' }
   ],
-  realNamee: [{ required: true, message: '请输姓名', trigger: 'blur' }]
+  realNamee: [{ required: true, message: 'Enter your name', trigger: 'blur' }]
 })
 const changeUserInfo = (formEl) => {
   if (!formEl) return
@@ -184,7 +184,7 @@ const changeUserInfo = (formEl) => {
         } else {
           getUserInfo()
           dialogVisible.value = false
-          ElMessage.success('修改成功!')
+          ElMessage.success('Profile updated successfully.')
         }
       })
     } else {

@@ -28,8 +28,43 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * 访问网络监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Network Statistics Mapper
+ * <p>
+ * This mapper handles network-type access statistics for short links. It tracks traffic distribution
+ * across different network types (WiFi, 4G, 5G, etc.) to help understand user connectivity patterns
+ * and optimize network performance for different connection types.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for LinkNetworkStatsDO entities</li>
+ *   <li>Network traffic aggregation and counting</li>
+ *   <li>Network type classification (WiFi, 4G, 5G, etc.)</li>
+ *   <li>Support for both short-link-level and group-level analysis</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: The complete short link identifier</li>
+ *   <li><b>network</b>: Network type extracted from user agent or IP geolocation</li>
+ *   <li><b>cnt</b>: Count of accesses from this network type</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Network performance optimization</li>
+ *   <li>Mobile data usage analysis</li>
+ *   <li>Bandwidth allocation planning</li>
+ *   <li>Network-specific user behavior analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface LinkNetworkStatsMapper extends BaseMapper<LinkNetworkStatsDO> {
 

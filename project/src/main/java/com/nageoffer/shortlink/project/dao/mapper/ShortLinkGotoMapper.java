@@ -21,8 +21,43 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.project.dao.entity.ShortLinkGotoDO;
 
 /**
- * 短链接跳转持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Redirect Mapper
+ * <p>
+ * This mapper manages the redirect configuration for short links. It stores the mapping between
+ * short links and their target destinations, along with group association information. This mapper
+ * is critical for the core short link functionality - routing users from the short URL to the
+ * original long URL.
+ * </p>
+ * <p>
+ * Key responsibilities:
+ * <ul>
+ *   <li>CRUD operations for ShortLinkGotoDO entities</li>
+ *   <li>Redirect configuration storage and retrieval</li>
+ *   <li>Group association for redirect categorization</li>
+ *   <li>Support for URL routing logic</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data model:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>gid</b>: Group identifier for categorization</li>
+ *   <li><b>fullShortUrl</b>: The complete short link URL</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>URL redirection processing</li>
+ *   <li>Redirect configuration management</li>
+ *   <li>Group-based redirect organization</li>
+ *   <li>Redirect analytics and tracking</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 public interface ShortLinkGotoMapper extends BaseMapper<ShortLinkGotoDO> {
 }

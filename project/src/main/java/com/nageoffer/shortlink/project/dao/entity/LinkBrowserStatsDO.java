@@ -27,8 +27,48 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 浏览器统计访问实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Browser Statistics Entity
+ * <p>
+ * This entity stores browser-specific access statistics for short links. It tracks the distribution
+ * of traffic across different web browsers to help understand user browser preferences and optimize
+ * compatibility testing efforts. Each record represents a unique combination of short link, date,
+ * and browser with a count of accesses.
+ * </p>
+ * <p>
+ * Database table: t_link_browser_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>cnt</b>: Count of accesses from this browser</li>
+ *   <li><b>browser</b>: Browser name (Chrome, Firefox, Safari, Edge, etc.)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Browser detection:
+ * <ul>
+ *   <li>Browser name extracted from HTTP User-Agent header</li>
+ *   <li>Common browsers: Chrome, Firefox, Safari, Edge, Opera, Brave, etc.</li>
+ *   <li>Bot detection for non-human traffic filtering</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Browser compatibility testing prioritization</li>
+ *   <li>Frontend development resource allocation</li>
+ *   <li>Understanding user demographics by browser preference</li>
+ *   <li>Reporting browser distribution to stakeholders</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_link_browser_stats")

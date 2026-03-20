@@ -27,8 +27,52 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接基础访问监控实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Base Access Statistics Entity
+ * <p>
+ * This entity stores aggregated access statistics for short links at different time granularities.
+ * It maintains daily, hourly, and weekday-level statistics for PV (Page Views), UV (Unique Visitors),
+ * and UIp (Unique IP addresses). This table is optimized for fast querying of traffic patterns
+ * without scanning detailed access logs.
+ * </p>
+ * <p>
+ * Database table: t_link_access_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>pv</b>: Page Views - total number of accesses</li>
+ *   <li><b>uv</b>: Unique Visitors - distinct users</li>
+ *   <li><b>uip</b>: Unique IP addresses - distinct IPs</li>
+ *   <li><b>hour</b>: Hour of day (0-23) for hourly breakdown</li>
+ *   <li><b>weekday</b>: Day of week (0-6) for weekly patterns</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Data aggregation:
+ * <ul>
+ *   <li>Daily aggregation: hour and weekday are NULL</li>
+ *   <li>Hourly aggregation: date is the specific date, hour is 0-23</li>
+ *   <li>Weekly aggregation: date is the specific date, weekday is 0-6</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Fast retrieval of traffic statistics</li>
+ *   <li>Generating daily/weekly reports</li>
+ *   <li>Identifying peak usage hours</li>
+ *   <li>Understanding weekly traffic patterns</li>
+ *   <li>Performance monitoring dashboards</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

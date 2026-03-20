@@ -21,7 +21,7 @@
             <artifactId>spring-cloud-loadbalancer</artifactId>
         </dependency>
 
-        <!-- Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider xxx -->
+        <!-- Fixes the io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider loading issue on macOS. -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>

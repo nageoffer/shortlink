@@ -3,7 +3,7 @@
     <div class="options-box">
       <div class="option-title flex-box">
         <div>
-          短链分组<span> 共{{ editableTabs?.length }}组</span>
+          Short Link Groups<span> {{ editableTabs?.length }} total</span>
         </div>
         <div class="hover-box" style="width: 24px" @click="showAddGroup">
           <img src="@/assets/svg/添加.svg" alt="" />
@@ -20,7 +20,7 @@
             </div>
             <div class="flex-box">
               <!-- 图标 -->
-              <el-tooltip show-after="500" class="box-item" effect="dark" :content="'查看图表'" placement="bottom-end">
+              <el-tooltip show-after="500" class="box-item" effect="dark" content="View chart" placement="bottom-end">
                 <!-- 传group是为了表示这个请求是查询分组图表数据 -->
                 <el-icon v-if="!(item.shortLinkCount === 0 || item.shortLinkCount === null)" class="edit"
                   :class="{ zero: item.shortLinkCount === 0 }"
@@ -37,8 +37,8 @@
                 </div>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="showEditGroup(item.gid, item.name)">编辑</el-dropdown-item>
-                    <el-dropdown-item @click="deleteGroup(item.gid)">删除</el-dropdown-item>
+                  <el-dropdown-item @click="showEditGroup(item.gid, item.name)">Edit</el-dropdown-item>
+                    <el-dropdown-item @click="deleteGroup(item.gid)">Delete</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -50,7 +50,7 @@
       <div class="recycle-bin">
         <!-- 当selectIndex等于-1时代表选中的是回收站 -->
         <div class="recycle-box hover-box" :class="{ selectedItem: selectedIndex === -1 }" @click="recycleBin">
-          回收站
+          Recycle Bin
           <el-icon style="margin-left: 5px; font-size: 20px">
             <Delete />
           </el-icon>
@@ -65,14 +65,14 @@
           <div style="width: 100%; display: flex">
             <!-- <el-input style="flex: 1; margin-right: 20px" placeholder="请输入http://或https://开头的连接或引用跳转程序"></el-input> -->
             <el-button class="addButton" type="primary" style="width: 130px; margin-right: 10px"
-              @click="isAddSmallLink = true">创建短链</el-button>
-            <el-button style="width: 130px; margin-right: 10px" @click="isAddSmallLinks = true">批量创建</el-button>
+              @click="isAddSmallLink = true">Create Short Link</el-button>
+            <el-button style="width: 130px; margin-right: 10px" @click="isAddSmallLinks = true">Bulk Create</el-button>
           </div>
         </div>
         <!-- 展示回收站信息 -->
         <div v-else class="recycle-bin-box">
-          <span>回收站</span>
-          <span>共{{ recycleBinNums }}条短链接</span>
+          <span>Recycle Bin</span>
+          <span>{{ recycleBinNums }} short links</span>
         </div>
         <!-- 表格展示区域 -->
         <el-table :data="tableData" height="calc(100vh - 240px)" style="width: calc(100vw - 230px)"
@@ -80,21 +80,21 @@
           <!-- 数据为空时展示的内容 -->
           <template #empty>
             <div style="height: 60vh; display: flex; align-items: center; justify-content: center">
-              暂无链接
+              No links yet.
             </div>
           </template>
           <el-table-column type="selection" width="35" />
-          <el-table-column label="短链接信息" prop="info" min-width="300">
+          <el-table-column label="Short Link Info" prop="info" min-width="300">
             <template #header>
               <el-dropdown>
                 <div :class="{ orderIndex: orderIndex === 0 }" class="block" style="margin-top: 3px">
-                  <span>短链接信息</span>
+                  <span>Short Link Info</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = null, orderIndex = 0">创建时间</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = null, orderIndex = 0">Created time</el-dropdown-item>
                 </template>
               </el-dropdown>
             </template>
@@ -112,14 +112,14 @@
                     <el-tooltip show-after="500" v-if="scope?.row?.validDate" :content="'到期时间：' + scope?.row?.validDate">
                       <img v-if="isExpire(scope?.row?.validDate)" width="18" height="18" src="@/assets/png/沙漏倒计时.png"
                         alt="" />
-                      <div v-else><span>已失效</span></div>
+                      <div v-else><span>Expired</span></div>
                     </el-tooltip>
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="短链接网址" prop="url" min-width="300">
+          <el-table-column label="Short Link URL" prop="url" min-width="300">
             <template #default="scope">
               <div class="table-url-box">
                 <!-- 当失效后就不能在点击跳转了 -->
@@ -138,7 +138,7 @@
                 <!-- 二维码 -->
                 <QRCode :url="'http://' + scope.row.fullShortUrl"></QRCode>
                 <!-- 表格中的复制链接按钮 -->
-                <el-tooltip show-after="500" class="box-item" effect="dark" content="复制链接" placement="bottom-end">
+                <el-tooltip show-after="500" class="box-item" effect="dark" content="Copy link" placement="bottom-end">
                   <el-icon @click="copyUrl('http://' + scope.row.fullShortUrl)" class="table-edit copy-url">
                     <Share />
                   </el-icon>
@@ -146,91 +146,91 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="访问次数" prop="times" width="120">
+          <el-table-column label="Visits" prop="times" width="120">
             <template #header>
               <el-dropdown>
                 <div :class="{ orderIndex: orderIndex === 1 }" class="block" style="margin-top: 3px">
-                  <span>访问次数</span>
+                  <span>Visits</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayPv', orderIndex = 1">今日访问次数</el-dropdown-item>
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalPv', orderIndex = 1">累计访问次数</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayPv', orderIndex = 1">Today visits</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalPv', orderIndex = 1">Total visits</el-dropdown-item>
                 </template>
               </el-dropdown>
             </template>
             <template #default="scope">
               <div class="times-box">
                 <div class="today-box">
-                  <span>今日</span>
+                  <span>Today</span>
                   <span>{{ scope.row.todayPv }}</span>
                 </div>
                 <div class="total-box">
-                  <span>累计</span>
+                  <span>Total</span>
                   <span>{{ scope.row.totalPv }}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="访问人数" prop="people" width="120">
+          <el-table-column label="Visitors" prop="people" width="120">
             <template #header>
               <el-dropdown>
                 <div :class="{ orderIndex: orderIndex === 2 }" class="block" style="margin-top: 3px">
-                  <span>访问人数</span>
+                  <span>Visitors</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayUv', orderIndex = 2">今日访问人数</el-dropdown-item>
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalUv', orderIndex = 2">累计访问人数</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayUv', orderIndex = 2">Today visitors</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalUv', orderIndex = 2">Total visitors</el-dropdown-item>
                 </template>
               </el-dropdown>
             </template>
             <template #default="scope">
               <div class="times-box">
                 <div class="today-box">
-                  <span>今日</span>
+                  <span>Today</span>
                   <span>{{ scope.row.todayUv }}</span>
                 </div>
                 <div class="total-box">
-                  <span>累计</span>
+                  <span>Total</span>
                   <span>{{ scope.row.totalUv }}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="IP数" prop="IP" width="120">
+          <el-table-column label="IP Count" prop="IP" width="120">
             <template #header>
               <el-dropdown>
                 <div :class="{ orderIndex: orderIndex === 3 }" class="block" style="margin-top: 3px">
-                  <span>IP数</span>
+                  <span>IP Count</span>
                   <el-icon>
                     <CaretBottom />
                   </el-icon>
                 </div>
                 <template #dropdown>
-                  <el-dropdown-item @click="pageParams.orderTag = 'todayUip', orderIndex = 3">今日IP数</el-dropdown-item>
-                  <el-dropdown-item @click="pageParams.orderTag = 'totalUip', orderIndex = 3">累计IP数</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'todayUip', orderIndex = 3">Today IP count</el-dropdown-item>
+                  <el-dropdown-item @click="pageParams.orderTag = 'totalUip', orderIndex = 3">Total IP count</el-dropdown-item>
                 </template>
               </el-dropdown>
             </template>
             <template #default="scope">
               <div class="times-box">
                 <div class="today-box">
-                  <span>今日</span>
+                  <span>Today</span>
                   <span>{{ scope.row.todayUip }}</span>
                 </div>
                 <div class="total-box">
-                  <span>累计</span>
+                  <span>Total</span>
                   <span>{{ scope.row.totalUip }}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="180">
+          <el-table-column fixed="right" label="Actions" width="180">
             <template #default="scope">
               <div style="display: flex; align-items: center">
                 <!-- <el-link
@@ -242,7 +242,7 @@
               >
               <el-link :underline="false" class="el-link" type="primary">编辑</el-link> -->
                 <!-- 表格中的数据按钮 -->
-                <el-tooltip show-after="500" class="box-item" effect="dark" content="查看图表" placement="bottom-end">
+                <el-tooltip show-after="500" class="box-item" effect="dark" content="View chart" placement="bottom-end">
                   <el-icon class="table-edit" @click="chartsVisible(scope.row)">
                     <Histogram />
                   </el-icon>
@@ -250,14 +250,14 @@
                 <!-- 正常页面展示编辑和删除 -->
                 <template v-if="selectedIndex !== -1">
                   <!-- 表格中的编辑按钮 -->
-                  <el-tooltip show-after="500" class="box-item" effect="dark" content="编辑" placement="bottom-end">
+                  <el-tooltip show-after="500" class="box-item" effect="dark" content="Edit" placement="bottom-end">
                     <el-icon @click="editLink(scope.row)" class="table-edit">
                       <Tools />
                     </el-icon>
                   </el-tooltip>
                   <!-- 删除按钮 -->
-                  <el-tooltip show-after="500" class="box-item" effect="dark" content="删除" placement="bottom-end">
-                    <el-popconfirm width="100" title="是否移入回收站" @confirm="toRecycleBin(scope.row)">
+                  <el-tooltip show-after="500" class="box-item" effect="dark" content="Delete" placement="bottom-end">
+                    <el-popconfirm width="100" title="Move to recycle bin?" @confirm="toRecycleBin(scope.row)">
                       <template #reference>
                         <el-icon class="table-edit">
                           <Delete />
@@ -269,14 +269,14 @@
                 <!-- 回收站操作 -->
                 <template v-else>
                   <!-- 回收站中的恢复按钮 -->
-                  <el-tooltip show-after="500" class="box-item" effect="dark" content="恢复" placement="bottom-end">
+                  <el-tooltip show-after="500" class="box-item" effect="dark" content="Restore" placement="bottom-end">
                     <el-icon @click="recoverLink(scope.row)" class="table-edit">
                       <HelpFilled />
                     </el-icon>
                   </el-tooltip>
                   <!-- 回收站中的删除按钮 -->
-                  <el-tooltip show-after="500" class="box-item" effect="dark" content="删除" placement="bottom-end">
-                    <el-popconfirm width="300" title="删除后短链跳转会失效，同时停止数据统计，这是一个不可逆的操作，是否删除?"
+                  <el-tooltip show-after="500" class="box-item" effect="dark" content="Delete" placement="bottom-end">
+                    <el-popconfirm width="300" title="Deleting this link disables redirects and stops analytics. This cannot be undone. Delete it?"
                       @confirm="removeLink(scope.row)">
                       <template #reference>
                         <el-icon class="table-edit">
@@ -303,37 +303,37 @@
       :tableInfo="tableInfo" :isGroup="isGroup" :nums="nums" :favicon="favicon1" :originUrl="originUrl1"
       @changeTime="changeTime" @changePage="changePage" top="60px"></ChartsInfo>
     <!-- 新建分组弹框 -->
-    <el-dialog v-model="isAddGroup" title="新建短链接分组" style="width: 40%">
+    <el-dialog v-model="isAddGroup" title="Create Short Link Group" style="width: 40%">
       <el-form :model="form">
-        <el-form-item label="分组名称：" :label-width="formLabelWidth">
+        <el-form-item label="Group name:" :label-width="formLabelWidth">
           <el-input autocomplete="off" v-model="newGroupName" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="isAddGroup = false">取消</el-button>
-          <el-button type="primary" @click="addGroup" :disabled="addGroupLoading"> 确认 </el-button>
+          <el-button @click="isAddGroup = false">Cancel</el-button>
+          <el-button type="primary" @click="addGroup" :disabled="addGroupLoading"> Confirm </el-button>
         </span>
       </template>
     </el-dialog>
     <!-- 编辑分组弹框 -->
-    <el-dialog v-model="isEditGroup" title="编辑短链接分组" style="width: 40%">
+    <el-dialog v-model="isEditGroup" title="Edit Short Link Group" style="width: 40%">
       <el-form :model="form">
-        <el-form-item label="分组名称：" :label-width="formLabelWidth">
+        <el-form-item label="Group name:" :label-width="formLabelWidth">
           <el-input autocomplete="off" v-model="editGroupName" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="isEditGroup = false">取消</el-button>
+          <el-button @click="isEditGroup = false">Cancel</el-button>
           <el-button type="primary" @click="editGroup" :disabled="editGroupLoading">
-            确认
+            Confirm
           </el-button>
         </span>
       </template>
     </el-dialog>
     <!-- 创建短链弹框 -->
-    <el-dialog @close="afterAddLink" v-model="isAddSmallLink" title="创建链接">
+    <el-dialog @close="afterAddLink" v-model="isAddSmallLink" title="Create Link">
       <el-tabs class="demo-tabs">
         <el-tab-pane>
           <template #label>
@@ -341,7 +341,7 @@
               <el-icon>
                 <Link />
               </el-icon>
-              <span>普通跳转</span>
+              <span>Standard Redirect</span>
             </span>
           </template>
           <CreateLink ref="createLink1Ref" :groupInfo="editableTabs" @onSubmit="addLink" @cancel="cancelAddLink"
@@ -353,17 +353,17 @@
               <el-icon>
                 <Connection />
               </el-icon>
-              <span>随机跳转</span>
-            </span> </template>暂未开发</el-tab-pane>
+              <span>Random Redirect</span>
+            </span> </template>Not implemented yet</el-tab-pane>
       </el-tabs>
     </el-dialog>
     <!-- 修改短链信息弹框 -->
-    <el-dialog @close="afterAddLink" v-model="isEditLink" title="编辑链接">
+    <el-dialog @close="afterAddLink" v-model="isEditLink" title="Edit Link">
       <EditLink ref="editLinkRef" :editData="editData" :groupInfo="editableTabs" @onSubmit="coverEditLink"
         @updatePage="updatePage" @cancel="coverEditLink"></EditLink>
     </el-dialog>
     <!-- 批量创建短链弹框 -->
-    <el-dialog @close="afterAddLink" v-model="isAddSmallLinks" title="批量链接">
+    <el-dialog @close="afterAddLink" v-model="isAddSmallLinks" title="Bulk Create Links">
       <CreateLinks ref="createLink2Ref" :groupInfo="editableTabs" @onSubmit="addLink" @cancel="cancelAddLink"
         :defaultGid="pageParams.gid"></CreateLinks>
     </el-dialog>
@@ -669,7 +669,7 @@ const addGroup = async () => {
   addGroupLoading.value = true
   const res1 = await API.group.addGroup({ name: newGroupName.value })
   if (res1?.data.success) {
-    ElMessage.success('添加成功')
+    ElMessage.success('Added successfully.')
     getGroupInfo(queryPage)
   } else {
     ElMessage.error(res1?.data.message)
@@ -682,7 +682,7 @@ const deleteGroup = async (gid) => {
   const res = await API.group.deleteGroup({ gid })
   selectedIndex.value = 0
   if (res.data.success) {
-    ElMessage.success('删除成功')
+    ElMessage.success('Deleted successfully.')
     getGroupInfo(queryPage)
   } else {
     ElMessage.error(res.data.message)
@@ -704,10 +704,10 @@ const editGroup = async () => {
   editGroupLoading.value = true
   const res = await API.group.editGroup({ gid: editGid.value, name: editGroupName.value })
   if (res.data.success) {
-    ElMessage.success('编辑成功')
+    ElMessage.success('Edited successfully.')
     getGroupInfo(queryPage)
   } else {
-    ElMessage.error('编辑失败')
+    ElMessage.error('Edit failed.')
   }
   isEditGroup.value = false
   editGroupLoading.value = false
@@ -745,7 +745,7 @@ const copyUrl = (url) => {
   eInput.style.display = 'none'
   if (copyText) {
     // console.log(eInput.value)
-    ElMessage.success('链接复制成功!')
+    ElMessage.success('Link copied successfully!')
   }
 }
 // 修改短链信息
@@ -770,12 +770,12 @@ const toRecycleBin = (data) => {
       if (res?.data?.code !== '0') {
         ElMessage.error(res.data.message)
       } else {
-        ElMessage.success('删除成功')
+        ElMessage.success('Deleted successfully.')
         getGroupInfo(queryPage)
       }
     })
     .catch((reason) => {
-      ElMessage.error('删除失败')
+      ElMessage.error('Delete failed.')
     })
 }
 // 回收站中恢复
@@ -784,13 +784,13 @@ const recoverLink = (data) => {
   API.smallLinkPage
     .recoverLink({ gid, fullShortUrl })
     .then((res) => {
-      ElMessage.success('恢复成功')
+      ElMessage.success('Restored successfully.')
       queryRecycleBinPage()
       // getGroupInfo(queryPage)
-      getGroupInfo()         //修复短链接恢复会报系统执行出错的问题
+      getGroupInfo()
     })
     .catch((reason) => {
-      ElMessage.error('恢复失败')
+      ElMessage.error('Restore failed.')
     })
 }
 // 从回收站中删除
@@ -802,12 +802,12 @@ const removeLink = (data) => {
       if (res?.data?.code !== '0') {
         ElMessage.error(res.data.message)
       } else {
-        ElMessage.success('删除成功')
+        ElMessage.success('Deleted successfully.')
         queryRecycleBinPage()
       }
     })
     .catch((reason) => {
-      ElMessage.error('删除失败')
+      ElMessage.error('Delete failed.')
     })
 }
 </script>

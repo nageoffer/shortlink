@@ -24,8 +24,50 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 演示环境配置属性
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Demo Mode Configuration Properties
+ * <p>
+ * This class holds the configuration properties for the demo mode feature. It is bound to
+ * configuration properties with the prefix "short-link.demo-mode" using Spring Boot's
+ * {@link ConfigurationProperties} mechanism.
+ * </p>
+ * <p>
+ * Configuration Example (application.yml):
+ * <pre>{@code
+ * short-link:
+ *   demo-mode:
+ *     enable: true
+ *     blacklist:
+ *       - /api/short-link/admin/v1/user
+ *       - /api/short-link/admin/v1/group
+ *       - /api/short-link/admin/v1/short-link
+ * }</pre>
+ * </p>
+ * <p>
+ * Property Details:
+ * <ul>
+ *   <li>enable: When true, activates demo mode restrictions</li>
+ *   <li>blacklist: List of paths that should be restricted in demo mode</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Blacklist Path Guidelines:
+ * <ul>
+ *   <li>Include paths that modify user data (create, update, delete users)</li>
+ *   <li>Include paths that modify link configurations</li>
+ *   <li>Include paths that modify group settings</li>
+ *   <li>Exclude read-only endpoints (statistics, queries)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Thread Safety: This class is immutable after Spring Boot's property binding and
+ * is thread-safe for read operations.
+ * </p>
+ * 
+ * @author 马丁玩编程 (Martin Plays Programming)
+ * @version 1.0.0
+ * @since 2024
+ * @see DemoModeConfiguration
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
  */
 @Data
 @Component
@@ -33,12 +75,35 @@ import java.util.List;
 public class DemoModeProperties {
 
     /**
-     * 是否开启演示环境模式
+     * Enable Demo Mode
+     * <p>
+     * When set to true, the demo mode interceptor will block write operations on
+     * blacklisted paths. When false, all operations are allowed without restrictions.
+     * </p>
+     * <p>
+     * Default: false
+     * </p>
      */
     private Boolean enable;
 
     /**
-     * 演示环境黑名单路径
+     * Blacklist of Restricted Paths
+     * <p>
+     * A list of URL paths that should be restricted in demo mode. Only GET requests
+     * to these paths will be allowed; all other HTTP methods will be blocked.
+     * </p>
+     * <p>
+     * Path Matching: Exact path matching is used (not prefix matching).
+     * Each path in the list must match the request URI exactly.
+     * </p>
+     * <p>
+     * Example Paths:
+     * <ul>
+     *   <li>/api/short-link/admin/v1/user - User management endpoints</li>
+     *   <li>/api/short-link/admin/v1/group - Group management endpoints</li>
+     *   <li>/api/short-link/admin/v1/short-link - Link management endpoints</li>
+     * </ul>
+     * </p>
      */
     private List<String> blacklist;
 }

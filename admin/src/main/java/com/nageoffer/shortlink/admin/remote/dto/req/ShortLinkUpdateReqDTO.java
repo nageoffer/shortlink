@@ -23,45 +23,45 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 短链接修改请求对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link update request DTO
+ * 
  */
 @Data
 public class ShortLinkUpdateReqDTO {
 
     /**
-     * 原始链接
+     * Original URL
      */
     private String originUrl;
 
     /**
-     * 完整短链接
+     * Full short link
      */
     private String fullShortUrl;
 
     /**
-     * 原始分组标识
+     * 原始Group identifier
      */
     private String originGid;
 
     /**
-     * 分组标识
+     * Group identifier
      */
     private String gid;
 
     /**
-     * 有效期类型 0：永久有效 1：自定义
+     * Expiration type 0: permanent 1: custom
      */
     private Integer validDateType;
 
     /**
-     * 有效期
+     * Expiration
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date validDate;
 
     /**
-     * 描述
+     * Description
      */
     private String describe;
 }

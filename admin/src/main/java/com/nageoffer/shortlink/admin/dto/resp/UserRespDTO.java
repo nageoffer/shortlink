@@ -22,8 +22,8 @@ import com.nageoffer.shortlink.admin.common.serialize.PhoneDesensitizationSerial
 import lombok.Data;
 
 /**
- * 用户返回参数响应
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * User response DTO
+ * 
  */
 @Data
 public class UserRespDTO {
@@ -34,23 +34,23 @@ public class UserRespDTO {
     private Long id;
 
     /**
-     * 用户名
+     * Username
      */
     private String username;
 
     /**
-     * 真实姓名
+     * Real name
      */
     private String realName;
 
     /**
-     * 手机号
+     * Phone number
      */
     @JsonSerialize(using = PhoneDesensitizationSerializer.class)
     private String phone;
 
     /**
-     * 邮箱
+     * Email
      */
     private String mail;
 }

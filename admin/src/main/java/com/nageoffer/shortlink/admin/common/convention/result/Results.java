@@ -23,13 +23,12 @@ import com.nageoffer.shortlink.admin.common.convention.exception.AbstractExcepti
 import java.util.Optional;
 
 /**
- * 全局返回对象构造器
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Factory helpers for standard API responses.
  */
 public final class Results {
 
     /**
-     * 构造成功响应
+     * Build a success response.
      */
     public static Result<Void> success() {
         return new Result<Void>()
@@ -37,7 +36,7 @@ public final class Results {
     }
 
     /**
-     * 构造带返回数据的成功响应
+     * Build a success response with payload.
      */
     public static <T> Result<T> success(T data) {
         return new Result<T>()
@@ -46,7 +45,7 @@ public final class Results {
     }
 
     /**
-     * 构建服务端失败响应
+     * Build a server-failure response.
      */
     public static Result<Void> failure() {
         return new Result<Void>()
@@ -55,7 +54,7 @@ public final class Results {
     }
 
     /**
-     * 通过 {@link AbstractException} 构建失败响应
+     * Build a failure response from {@link AbstractException}.
      */
     public static Result<Void> failure(AbstractException abstractException) {
         String errorCode = Optional.ofNullable(abstractException.getErrorCode())
@@ -68,7 +67,7 @@ public final class Results {
     }
 
     /**
-     * 通过 errorCode、errorMessage 构建失败响应
+     * Build a failure response from error code and message.
      */
     public static Result<Void> failure(String errorCode, String errorMessage) {
         return new Result<Void>()

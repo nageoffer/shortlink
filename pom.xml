@@ -9,12 +9,12 @@
     <packaging>pom</packaging>
 
     <description>
-        🔥热门推荐🔥SaaS 短链接系统，承载高并发和海量存储等场景难题。专为实习、校招以及社招而出的最新项目，项目质量不亚于12306铁路购票项目。
+        SaaS short-link system for high concurrency and large-scale storage scenarios. Built for internships, campus recruiting, and professional interviews.
     </description>
 
     <developers>
         <developer>
-            <name>马丁</name>
+            <name>Martin</name>
             <email>machen@apache.org</email>
             <url>https://github.com/magestacks</url>
             <organization>Apache and openGoofy</organization>
@@ -152,7 +152,7 @@
                             <file>${maven.multiModuleProjectDirectory}/format/short-link_spotless_formatter.xml</file>
                         </eclipse>-->
                         <licenseHeader>
-                            <!-- ${maven.multiModuleProjectDirectory} 爆红属于正常，并不影响编译或者运行，忽略就好 -->
+                            <!-- A red highlight on ${maven.multiModuleProjectDirectory} is normal and does not affect compilation or runtime. -->
                             <file>${maven.multiModuleProjectDirectory}/format/license-header</file>
                         </licenseHeader>
                     </java>

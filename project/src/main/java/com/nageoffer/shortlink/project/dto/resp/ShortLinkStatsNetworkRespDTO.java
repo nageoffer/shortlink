@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接访问网络监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Network Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents network-type statistics for a short link.
+ * It includes the count of accesses from a specific network type and the percentage of total
+ * traffic from that network type.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of accesses from this network type</li>
+ *   <li><b>network</b>: Network type (WiFi, 4G, 5G, etc.)</li>
+ *   <li><b>ratio</b>: Percentage of total traffic (0.0 - 1.0)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Network distribution charts</li>
+ *   <li>Mobile data usage analysis</li>
+ *   <li>Network performance optimization</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

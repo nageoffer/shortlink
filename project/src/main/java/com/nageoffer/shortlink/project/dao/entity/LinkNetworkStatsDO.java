@@ -27,8 +27,48 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 访问网络统计访问实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Network Statistics Entity
+ * <p>
+ * This entity stores network-type-specific access statistics for short links. It tracks traffic
+ * distribution across different network types (WiFi, 4G, 5G, etc.) to help understand user connectivity
+ * patterns and optimize network performance for different connection types. This is particularly
+ * valuable for mobile traffic analysis and bandwidth planning.
+ * </p>
+ * <p>
+ * Database table: t_link_network_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>cnt</b>: Count of accesses from this network type</li>
+ *   <li><b>network</b>: Network type (WiFi, 4G, 5G, 3G, 2G, etc.)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Network detection:
+ * <ul>
+ *   <li>Network type detected via mobile network indicators in user agent</li>
+ *   <li>Common types: WiFi, 4G, 5G, 3G, 2G, Ethernet, etc.</li>
+ *   <li>Useful for mobile data usage analysis and optimization</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Network performance optimization</li>
+ *   <li>Mobile data usage analysis</li>
+ *   <li>Bandwidth allocation planning</li>
+ *   <li>Network-specific user behavior analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_link_network_stats")

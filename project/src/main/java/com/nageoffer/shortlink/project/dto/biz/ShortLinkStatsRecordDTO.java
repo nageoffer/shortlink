@@ -25,8 +25,42 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接统计实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Statistics Record DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents a statistics record for processing short link
+ * access events. It is used internally by the system to collect and process access data
+ * before persisting it to the database. It includes all necessary information for tracking
+ * and analyzing short link traffic.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>remoteAddr</b>: Client IP address</li>
+ *   <li><b>os</b>: Operating system name</li>
+ *   <li><b>browser</b>: Browser name</li>
+ *   <li><b>device</b>: Device type</li>
+ *   <li><b>network</b>: Network type</li>
+ *   <li><b>uv</b>: User identifier for visitor tracking</li>
+ *   <li><b>uvFirstFlag</b>: Flag indicating if this is the user's first visit</li>
+ *   <li><b>uipFirstFlag</b>: Flag indicating if this is the IP's first visit</li>
+ *   <li><b>keys</b>: Message queue unique identifier for deduplication</li>
+ *   <li><b>currentDate</b>: Current timestamp for statistics</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Message queue processing for async statistics</li>
+ *   <li>Access event aggregation</li>
+ *   <li>Duplicate request handling</li>
+ *   <li>Real-time statistics collection</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

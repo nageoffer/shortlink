@@ -23,8 +23,39 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接访客监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Visitor Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents visitor type statistics for a short link.
+ * It includes the count of new vs returning visitors and the percentage of total traffic
+ * from each visitor type.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of visitors of this type</li>
+ *   <li><b>uvType</b>: Visitor type (新访客: new, 老访客: returning)</li>
+ *   <li><b>ratio</b>: Percentage of total traffic (0.0 - 1.0)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Visitor type definition:
+ * <ul>
+ *   <li><b>新访客 (New Visitor)</b>: First-time visitor within the date range</li>
+ *   <li><b>老访客 (Returning Visitor)</b>: Visitor with history before the date range</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>User engagement analysis</li>
+ *   <li>Content retention measurement</li>
+ *   <li>Marketing campaign effectiveness</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

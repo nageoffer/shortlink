@@ -2,7 +2,7 @@
   <el-popover placement="bottom" trigger="click" :width="180">
     <div class="main-box">
       <canvas ref="canvas"></canvas>
-      <el-button type="primary" :width="100" @click="download">下载二维码</el-button>
+      <el-button type="primary" :width="100" @click="download">Download QR Code</el-button>
     </div>
     <template #reference>
       <div class="qr-code">
@@ -32,9 +32,9 @@ const createQrCode = () => {
 const download = () => {
   let a = document.createElement('a')
   a.href = canvas.value.toDataURL('image/png');
-  a.download = '二维码';
+  a.download = 'qr-code';
   a.click()
-  ElMessage.success('正在下载')
+  ElMessage.success('Downloading...')
 }
 onMounted(() => {
   createQrCode()

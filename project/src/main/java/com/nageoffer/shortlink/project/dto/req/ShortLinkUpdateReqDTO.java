@@ -23,8 +23,45 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 短链接修改请求对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Update Request DTO
+ * <p>
+ * This Data Transfer Object (DTO) encapsulates all the parameters required to update an existing
+ * short link. It includes fields for modifying the original URL, group association, expiration
+ * settings, and description. The DTO uses fullShortUrl to identify the link to update and
+ * originGid to track group changes.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>originUrl</b>: Updated original long URL</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL to identify the record</li>
+ *   <li><b>originGid</b>: Original group identifier (for change tracking)</li>
+ *   <li><b>gid</b>: New group identifier for reorganization</li>
+ *   <li><b>validDateType</b>: Updated expiration type (0: permanent, 1: custom)</li>
+ *   <li><b>validDate</b>: Updated expiration date (required if validDateType=1)</li>
+ *   <li><b>describe</b>: Updated description for the link</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Update behavior:
+ * <ul>
+ *   <li>Only specified fields are updated (partial update)</li>
+ *   <li>Group change tracking via originGid</li>
+ *   <li>Expiration date validation for custom expiration</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>API endpoint for short link modification</li>
+ *   <li>Console form submission for link updates</li>
+ *   <li>Batch link update operations</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 public class ShortLinkUpdateReqDTO {

@@ -20,19 +20,19 @@ package com.nageoffer.shortlink.admin.remote.dto.req;
 import lombok.Data;
 
 /**
- * 短链接监控请求参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link analytics request DTO
+ * 
  */
 @Data
 public class ShortLinkStatsReqDTO {
 
     /**
-     * 完整短链接
+     * Full short link
      */
     private String fullShortUrl;
 
     /**
-     * 分组标识
+     * Group identifier
      */
     private String gid;
 
@@ -47,7 +47,7 @@ public class ShortLinkStatsReqDTO {
     private String endDate;
 
     /**
-     * 启用标识 0：启用 1：未启用
+     * Enable flag 0: enabled 1: disabled
      */
     private Integer enableStatus;
 }

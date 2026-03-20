@@ -3,35 +3,35 @@
     <el-container>
       <el-header height="54px" style="padding: 0">
         <div class="header">
-          <div @click="toMySpace" class="logo">拿个offer-SaaS短链接@马丁</div>
+          <div @click="toMySpace" class="logo">Nageoffer SaaS Short Link</div>
           <div style="display: flex; align-items: center">
             <a
               class="link-span"
               style="text-decoration: none"
               target="_blank"
               href="https://nageoffer.com/shortlink/"
-              >官方文档</a
+              >Documentation</a
             >
             <a
               class="link-span"
               style="text-decoration: none"
               target="_blank"
               href="https://nageoffer.com/planet/group/"
-              >加沟通群</a
+              >Community</a
             >
             <a
                 class="link-span"
                 style="text-decoration: none"
                 target="_blank"
                 href="https://nageoffer.com/shortlink/video/"
-            >🔥视频教程</a
+            >🔥Video Tutorials</a
             >
             <a
                 class="link-span"
                 style="text-decoration: none"
                 target="_blank"
                 href="http://shortlink.nageoffer.com"
-            >演示环境</a
+            >Demo</a
             >
             <el-dropdown>
               <div class="block">
@@ -43,8 +43,8 @@
               </div>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="toMine">个人信息</el-dropdown-item>
-                  <el-dropdown-item divided @click="logout">退出</el-dropdown-item>
+                  <el-dropdown-item @click="toMine">Profile</el-dropdown-item>
+                  <el-dropdown-item divided @click="logout">Sign out</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -105,7 +105,7 @@ const logout = async () => {
   localStorage.removeItem('token')
   localStorage.removeItem('username')
   router.push('/login')
-  ElMessage.success('成功退出！')
+  ElMessage.success('Signed out successfully.')
 }
 // 点击左上方的图片跳转到我的空间
 const toMySpace = () => {

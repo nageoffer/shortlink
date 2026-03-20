@@ -73,7 +73,7 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <!-- openfeign 已不再提供默认负载均衡器 -->
+        <!-- OpenFeign no longer provides a default load balancer. -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-loadbalancer</artifactId>

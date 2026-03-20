@@ -26,8 +26,39 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 短链接监控访问记录响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Access Record Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents a detailed access log record for a short link.
+ * It includes comprehensive information about each visit including user type, browser, OS,
+ * device, network, location, and timestamp.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>uvType</b>: Visitor type (新访客: new, 老访客: returning)</li>
+ *   <li><b>browser</b>: Browser name</li>
+ *   <li><b>os</b>: Operating system name</li>
+ *   <li><b>ip</b>: Client IP address</li>
+ *   <li><b>network</b>: Network type (WiFi, 4G, 5G, etc.)</li>
+ *   <li><b>device</b>: Device type (mobile, desktop, tablet, etc.)</li>
+ *   <li><b>locale</b>: Geographic location</li>
+ *   <li><b>user</b>: User identifier</li>
+ *   <li><b>createTime</b>: Access timestamp</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Detailed access log display in console</li>
+ *   <li>Security audit and monitoring</li>
+ *   <li>User behavior analysis</li>
+ *   <li>Exporting access logs for analysis</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

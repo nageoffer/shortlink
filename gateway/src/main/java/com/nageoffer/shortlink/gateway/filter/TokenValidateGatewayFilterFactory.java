@@ -39,19 +39,85 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * SpringCloud Gateway Token 拦截器
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Token Validation Gateway Filter Factory
+ * <p>
+ * This filter implements authentication and authorization logic for the API gateway. It intercepts
+ * incoming requests and validates whether they contain valid authentication tokens before allowing
+ * them to proceed to backend services.
+ * </p>
+ * <p>
+ * Filter Logic Flow:
+ * <ol>
+ *   <li>Extract request path and HTTP method</li>
+ *   <li>Check if the path is in the white-list (exempt from authentication)</li>
+ *   <li>For non-white-listed paths:
+ *     <ul>
+ *       <li>Extract username and token from request headers</li>
+ *       <li>Validate token against Redis cache</li>
+ *       <li>On success: Extract user info and add to request headers (userId, realName)</li>
+ *       <li>On failure: Return 401 Unauthorized with error message</li>
+ *     </ul>
+ *   </li>
+ *   <li>Forward request to next filter or backend service</li>
+ * </ol>
+ * </p>
+ * <p>
+ * White-list Paths:
+ * <ul>
+ *   <li>Paths matching any prefix in {@link Config#getWhitePathList()}</li>
+ *   <li>POST /api/short-link/admin/v1/user (user registration endpoint)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Redis Key Pattern: {@code short-link:login:{username}} (Hash containing token -> user info mappings)
+ * </p>
+ * <p>
+ * Security Features:
+ * <ul>
+ *   <li>Token validation using Redis for fast lookups</li>
+ *   <li>URL encoding of user real names to prevent header injection</li>
+ *   <li>Proper HTTP status codes for authentication failures</li>
+ *   <li>Non-blocking reactive implementation using Project Reactor</li>
+ * </ul>
+ * </p>
+ * 
+ * @author 马丁玩编程 (Martin Plays Programming)
+ * @version 1.0.0
+ * @since 2024
+ * @see AbstractGatewayFilterFactory
+ * @see Config
+ * @see GatewayErrorResult
  */
 @Component
 public class TokenValidateGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
 
     private final StringRedisTemplate stringRedisTemplate;
 
+    /**
+     * Constructor with dependency injection.
+     * <p>
+     * Injects the Redis template for token validation. The StringRedisTemplate provides
+     * convenient methods for working with string-based Redis operations.
+     * </p>
+     * 
+     * @param stringRedisTemplate Redis template for token validation operations
+     */
     public TokenValidateGatewayFilterFactory(StringRedisTemplate stringRedisTemplate) {
         super(Config.class);
         this.stringRedisTemplate = stringRedisTemplate;
     }
 
+    /**
+     * Creates and configures the gateway filter instance.
+     * <p>
+     * This method returns a lambda function that implements the actual filtering logic.
+     * It uses reactive programming with Project Reactor's Mono and Flux to handle
+     * non-blocking I/O operations.
+     * </p>
+     * 
+     * @param config filter configuration containing white-list paths
+     * @return configured GatewayFilter instance
+     */
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
@@ -76,7 +142,7 @@ public class TokenValidateGatewayFilterFactory extends AbstractGatewayFilterFact
                     DataBufferFactory bufferFactory = response.bufferFactory();
                     GatewayErrorResult resultMessage = GatewayErrorResult.builder()
                             .status(HttpStatus.UNAUTHORIZED.value())
-                            .message("Token validation error")
+                            .message("Unauthorized request")
                             .build();
                     return bufferFactory.wrap(JSON.toJSONString(resultMessage).getBytes());
                 }));
@@ -85,6 +151,25 @@ public class TokenValidateGatewayFilterFactory extends AbstractGatewayFilterFact
         };
     }
 
+    /**
+     * Checks if a request path is in the white-list.
+     * <p>
+     * Determines whether the given request path should bypass authentication based on
+     * the white-list configuration. Two types of paths are considered white-listed:
+     * </p>
+     * <ul>
+     *   <li>Paths that start with any prefix in the whitePathList configuration</li>
+     *   <li>The specific admin user registration endpoint (POST /api/short-link/admin/v1/user)</li>
+     * </ul>
+     * <p>
+     * This method is called for every request to determine if authentication is required.
+     * </p>
+     * 
+     * @param requestPath the incoming request path
+     * @param requestMethod the HTTP method of the request
+     * @param whitePathList list of white-list path prefixes
+     * @return true if the path is white-listed (no authentication required), false otherwise
+     */
     private boolean isPathInWhiteList(String requestPath, String requestMethod, List<String> whitePathList) {
         return (!CollectionUtils.isEmpty(whitePathList) && whitePathList.stream().anyMatch(requestPath::startsWith)) || (Objects.equals(requestPath, "/api/short-link/admin/v1/user") && Objects.equals(requestMethod, "POST"));
     }

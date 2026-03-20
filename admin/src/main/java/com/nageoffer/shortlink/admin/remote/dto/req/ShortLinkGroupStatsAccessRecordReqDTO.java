@@ -21,14 +21,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 /**
- * 分组短链接监控访问记录请求参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * 分组Short-link analytics access-record request DTO
+ * 
  */
 @Data
 public class ShortLinkGroupStatsAccessRecordReqDTO extends Page {
 
     /**
-     * 分组标识
+     * Group identifier
      */
     private String gid;
 

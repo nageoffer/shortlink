@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接基础信息响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Base Information Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents the base information of a short link returned
+ * to the client after creation or query operations. It includes essential information such
+ * as description, original URL, and the complete short link URL.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>describe</b>: User-provided description for the link</li>
+ *   <li><b>originUrl</b>: Original long URL that the short link redirects to</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL (domain + shortUri)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Response for single short link creation</li>
+ *   <li>Response for batch short link creation (included in list)</li>
+ *   <li>Response for short link query operations</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

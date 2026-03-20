@@ -27,8 +27,47 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * 操作系统统计访问实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link OS Statistics Entity
+ * <p>
+ * This entity stores operating system-specific access statistics for short links. It tracks traffic
+ * distribution across different operating systems (Windows, macOS, Linux, Android, iOS) to help
+ * understand user platform preferences and optimize platform-specific development efforts.
+ * </p>
+ * <p>
+ * Database table: t_link_os_stats
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL</li>
+ *   <li><b>date</b>: Date of the statistics record</li>
+ *   <li><b>cnt</b>: Count of accesses from this OS</li>
+ *   <li><b>os</b>: Operating system name (Windows, macOS, Linux, Android, iOS, etc.)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * OS detection:
+ * <ul>
+ *   <li>Operating system extracted from HTTP User-Agent header</li>
+ *   <li>Common OS: Windows, macOS, Linux, Android, iOS, ChromeOS, etc.</li>
+ *   <li>Bot detection for non-human traffic filtering</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Platform compatibility testing prioritization</li>
+ *   <li>OS-specific feature development</li>
+ *   <li>Marketing campaign optimization by platform</li>
+ *   <li>Resource allocation for different OS user bases</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_link_os_stats")

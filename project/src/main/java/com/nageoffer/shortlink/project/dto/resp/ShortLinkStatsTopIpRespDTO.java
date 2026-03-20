@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接高频访问IP监控响应参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Top IP Statistics Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents high-traffic IP address statistics for a short link.
+ * It includes the count of accesses from a specific IP and is typically used to identify
+ * top traffic sources or potential suspicious activity.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>cnt</b>: Count of accesses from this IP</li>
+ *   <li><b>ip</b>: IP address</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Identifying top traffic sources</li>
+ *   <li>Security monitoring for suspicious IPs</li>
+ *   <li>Bot detection and filtering</li>
+ *   <li>DDoS attack detection</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

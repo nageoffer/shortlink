@@ -23,8 +23,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接创建响应对象
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Creation Response DTO
+ * <p>
+ * This Data Transfer Object (DTO) represents the response for single short link creation
+ * operations. It includes the group identifier, original URL, and the complete short link
+ * URL that was created.
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>gid</b>: Group identifier where the link was created</li>
+ *   <li><b>originUrl</b>: Original long URL that the short link redirects to</li>
+ *   <li><b>fullShortUrl</b>: Complete short link URL (domain + shortUri)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Response for single short link creation API</li>
+ *   <li>Console display of created link</li>
+ *   <li>Client-side processing of created link</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @Builder

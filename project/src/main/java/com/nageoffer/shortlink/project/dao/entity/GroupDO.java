@@ -25,8 +25,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接分组实体
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short Link Group Entity
+ * <p>
+ * This entity represents a group or category for organizing short links. Groups allow users to
+ * categorize and manage their short links in a structured manner. Each group has a unique identifier,
+ * name, and can be associated with a specific user. Groups support sorting through the sortOrder
+ * field to enable custom ordering in the UI.
+ * </p>
+ * <p>
+ * Database table: t_group
+ * </p>
+ * <p>
+ * Key fields:
+ * <ul>
+ *   <li><b>id</b>: Primary key identifier</li>
+ *   <li><b>gid</b>: Unique group identifier (UUID or similar)</li>
+ *   <li><b>name</b>: Human-readable group name</li>
+ *   <li><b>username</b>: Owner of the group</li>
+ *   <li><b>sortOrder</b>: Order for display in UI (ascending)</li>
+ *   <li><b>BaseDO fields</b>: id, createTime, updateTime, delTime (soft delete)</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Use cases:
+ * <ul>
+ *   <li>Organizing short links by project, topic, or category</li>
+ *   <li>Enabling group-based statistics and reporting</li>
+ *   <li>Supporting user-specific link organization</li>
+ *   <li>Facilitating bulk operations on link groups</li>
+ * </ul>
+ * </p>
+ * 
+ * @author NageOffer
+ * @version 1.0
+ * @since 2024
  */
 @Data
 @TableName("t_group")

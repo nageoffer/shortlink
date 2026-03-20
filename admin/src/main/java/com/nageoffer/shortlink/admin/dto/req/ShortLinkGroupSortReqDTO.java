@@ -20,19 +20,19 @@ package com.nageoffer.shortlink.admin.dto.req;
 import lombok.Data;
 
 /**
- * 短链接分组排序参数
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Short-link group sort request DTO
+ * 
  */
 @Data
 public class ShortLinkGroupSortReqDTO {
 
     /**
-     * 分组ID
+     * Group ID
      */
     private String gid;
 
     /**
-     * 排序
+     * Sort order
      */
     private Integer sortOrder;
 }

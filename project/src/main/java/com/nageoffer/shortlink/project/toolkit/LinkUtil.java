@@ -29,16 +29,15 @@ import java.util.Optional;
 import static com.nageoffer.shortlink.project.common.constant.ShortLinkConstant.DEFAULT_CACHE_VALID_TIME;
 
 /**
- * 短链接工具类
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
+ * Utility methods for short links.
  */
 public class LinkUtil {
 
     /**
-     * 获取短链接缓存有效期时间
+     * Get the cache TTL for a short link.
      *
      * @param validDate 有效期时间
-     * @return 有限期时间戳
+     * @return TTL in milliseconds
      */
     public static long getLinkCacheValidTime(Date validDate) {
         return Optional.ofNullable(validDate)
@@ -47,7 +46,7 @@ public class LinkUtil {
     }
 
     /**
-     * 获取用户真实IP
+     * Get the user's real IP address.
      *
      * @param request 请求
      * @return 用户真实IP
@@ -73,7 +72,7 @@ public class LinkUtil {
     }
 
     /**
-     * 获取用户访问操作系统
+     * Get the user's operating system.
      *
      * @param request 请求
      * @return 访问操作系统
@@ -96,7 +95,7 @@ public class LinkUtil {
     }
 
     /**
-     * 获取用户访问浏览器
+     * Get the user's browser.
      *
      * @param request 请求
      * @return 访问浏览器
@@ -121,7 +120,7 @@ public class LinkUtil {
     }
 
     /**
-     * 获取用户访问设备
+     * Get the user's device type.
      *
      * @param request 请求
      * @return 访问设备
@@ -135,24 +134,23 @@ public class LinkUtil {
     }
 
     /**
-     * 获取用户访问网络
+     * Get the user's network type.
      *
      * @param request 请求
      * @return 访问设备
      */
     public static String getNetwork(HttpServletRequest request) {
         String actualIp = getActualIp(request);
-        // 这里简单判断IP地址范围，您可能需要更复杂的逻辑
-        // 例如，通过调用IP地址库或调用第三方服务来判断网络类型
+        // This is a simple IP-range heuristic. A production system may need a more accurate network classifier.
         return actualIp.startsWith("192.168.") || actualIp.startsWith("10.") ? "WIFI" : "Mobile";
     }
 
     /**
-     * 获取原始链接中的域名
-     * 如果原始链接包含 www 开头的话需要去掉
+     * Extract the domain from the original URL.
+     * Strip the leading www prefix if present.
      *
-     * @param url 创建或者修改短链接的原始链接
-     * @return 原始链接中的域名
+     * @param url the original URL used to create or update the short link
+     * @return the domain extracted from the original URL
      */
     public static String extractDomain(String url) {
         String domain = null;
